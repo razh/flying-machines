@@ -1,0 +1,36 @@
+{
+  "name": "flying-machines",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/razh/flying-machines.git"
+  },
+  "author": "razh",
+  "private": true,
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/razh/flying-machines/issues"
+  },
+  "homepage": "https://github.com/razh/flying-machines#readme",
+  "dependencies": {
+    "lodash": "^3.7.0",
+    "three": "^0.71.0"
+  },
+  "devDependencies": {
+    "babelify": "^6.0.2",
+    "browser-sync": "^2.6.5",
+    "browserify": "^9.0.8",
+    "del": "^1.1.1",
+    "gulp": "^3.8.11",
+    "gulp-load-plugins": "^0.10.0",
+    "gulp-util": "^3.0.4",
+    "run-sequence": "^1.1.0",
+    "vinyl-source-stream": "^1.1.0",
+    "watchify": "^3.2.0"
+  }
+}
