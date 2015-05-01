@@ -129,16 +129,17 @@ export default class FlyControls {
   }
 
   update( dt ) {
-    const dv = this.speed * dt;
-    const dr = this.turnRate * dt;
-
-    // Translate.
-    vector.copy( this.movementVector ).multiplyScalar( dv );
-    this.object.position.add( vector );
+    const { object } = this;
 
     // Rotate.
-    vector.copy( this.rotationVector ).multiplyScalar( dr );
+    const dr = this.turnRate * dt;
+    vector.copy( this.rotationVector ).setLength( dr );
     quaternion.set( vector.x, vector.y, vector.z, 1 ).normalize();
-    this.object.quaternion.multiply( quaternion );
+    object.quaternion.multiply( quaternion );
+
+    // Translate.
+    const dv = this.speed * dt;
+    vector.copy( this.movementVector ).setLength( dv );
+    object.position.add( vector.applyQuaternion( object.quaternion ) );
   }
 }
