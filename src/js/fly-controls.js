@@ -9,12 +9,10 @@ export default class FlyControls {
     this.object = object;
     this.domElement = domElement;
 
-    if ( domElement ) {
-      this.domElement.setAttribute( 'tabindex', -1 );
-    }
-
     this.speed = 1.0;
     this.turnRate = Math.PI / 4;
+    this.mouseSensitivity = 0.002;
+    this.enabled = false;
 
     this.state = {
       up: 0,
@@ -39,6 +37,7 @@ export default class FlyControls {
     this.movementVector = new THREE.Vector3();
     this.rotationVector = new THREE.Vector3();
 
+    document.addEventListener( 'mousemove', this.onMouseMove.bind( this ) );
     document.addEventListener( 'keydown', this.onKeyDown.bind( this ) );
     document.addEventListener( 'keyup', this.onKeyUp.bind( this ) );
 
@@ -47,65 +46,86 @@ export default class FlyControls {
   }
 
   onKeyDown( event ) {
+    if ( !this.enabled ) {
+      return;
+    }
+
     const { keyCode } = event;
+    const { state } = this;
 
-    // W.
-    if ( keyCode === 87 ) { this.state.forward = 1; }
-    // S.
-    if ( keyCode === 83 ) { this.state.back = 1; }
+    // W. S.
+    if ( keyCode === 87 ) { state.forward = 1; }
+    if ( keyCode === 83 ) { state.back = 1; }
 
-    // A.
-    if ( keyCode === 65 ) { this.state.left = 1; }
-    // D.
-    if ( keyCode === 68 ) { this.state.right = 1; }
+    // A. D.
+    if ( keyCode === 65 ) { state.left = 1; }
+    if ( keyCode === 68 ) { state.right = 1; }
 
-    // R.
-    if ( keyCode === 82 ) { this.state.up = 1; }
-    // F.
-    if ( keyCode === 70 ) { this.state.down = 1; }
+    // R. F.
+    if ( keyCode === 82 ) { state.up = 1; }
+    if ( keyCode === 70 ) { state.down = 1; }
 
-    // Up.
-    if ( keyCode === 38 ) { this.state.pitchUp = 1; }
-    // Down.
-    if ( keyCode === 40 ) { this.state.pitchDown = 1; }
+    // Up. Down.
+    if ( keyCode === 38 ) { state.pitchUp = 1; }
+    if ( keyCode === 40 ) { state.pitchDown = 1; }
 
-    // Left.
-    if ( keyCode === 37 ) { this.state.yawLeft = 1; }
-    // Right.
-    if ( keyCode === 39 ) { this.state.yawRight = 1; }
+    // Left. Right.
+    if ( keyCode === 37 ) { state.yawLeft = 1; }
+    if ( keyCode === 39 ) { state.yawRight = 1; }
 
-    // Q.
-    if ( keyCode === 81 ) { this.state.rollLeft = 1; }
-    // E.
-    if ( keyCode === 69 ) { this.state.rollRight = 1; }
+    // Q. E.
+    if ( keyCode === 81 ) { state.rollLeft = 1; }
+    if ( keyCode === 69 ) { state.rollRight = 1; }
 
     this.updateMovementVector();
     this.updateRotationVector();
   }
 
   onKeyUp( event ) {
+    if ( !this.enabled ) {
+      return;
+    }
+
     const { keyCode } = event;
+    const { state } = this;
 
-    if ( keyCode === 87 ) { this.state.forward = 0; }
-    if ( keyCode === 83 ) { this.state.back = 0; }
+    if ( keyCode === 87 ) { state.forward = 0; }
+    if ( keyCode === 83 ) { state.back = 0; }
 
-    if ( keyCode === 65 ) { this.state.left = 0; }
-    if ( keyCode === 68 ) { this.state.right = 0; }
+    if ( keyCode === 65 ) { state.left = 0; }
+    if ( keyCode === 68 ) { state.right = 0; }
 
-    if ( keyCode === 82 ) { this.state.up = 0; }
-    if ( keyCode === 70 ) { this.state.down = 0; }
+    if ( keyCode === 82 ) { state.up = 0; }
+    if ( keyCode === 70 ) { state.down = 0; }
 
-    if ( keyCode === 38 ) { this.state.pitchUp = 0; }
-    if ( keyCode === 40 ) { this.state.pitchDown = 0; }
+    if ( keyCode === 38 ) { state.pitchUp = 0; }
+    if ( keyCode === 40 ) { state.pitchDown = 0; }
 
-    if ( keyCode === 37 ) { this.state.yawLeft = 0; }
-    if ( keyCode === 39 ) { this.state.yawRight = 0; }
+    if ( keyCode === 37 ) { state.yawLeft = 0; }
+    if ( keyCode === 39 ) { state.yawRight = 0; }
 
-    if ( keyCode === 81 ) { this.state.rollLeft = 0; }
-    if ( keyCode === 69 ) { this.state.rollRight = 0; }
+    if ( keyCode === 81 ) { state.rollLeft = 0; }
+    if ( keyCode === 69 ) { state.rollRight = 0; }
 
     this.updateMovementVector();
     this.updateRotationVector();
+  }
+
+  onMouseMove( event ) {
+    if ( !this.enabled ) {
+      return;
+    }
+
+    const movementX = event.movementX || event.mozMovementX || event.webkitMovementX || 0;
+    const movementY = event.movementY || event.mozMovementY || event.webkitMovementY || 0;
+
+    const pitch = -movementY * this.mouseSensitivity;
+    const yaw   = -movementX * this.mouseSensitivity;
+
+    const { object } = this;
+
+    quaternion.set( pitch, yaw, 0, 1 ).normalize();
+    object.quaternion.multiply( quaternion );
   }
 
   updateMovementVector() {
