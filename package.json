@@ -19,7 +19,8 @@
   "homepage": "https://github.com/razh/flying-machines#readme",
   "dependencies": {
     "lodash": "^3.7.0",
-    "three": "^0.71.0"
+    "three": "^0.71.0",
+    "ws": "^0.7.1"
   },
   "devDependencies": {
     "babelify": "^6.0.2",
