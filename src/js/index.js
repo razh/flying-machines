@@ -32,38 +32,38 @@ scene.add( light );
 scene.add( new THREE.HemisphereLight( '#f43', '#33a', 0.5 ) );
 
 const ship = new Ship();
-ship.mesh.position.set( 0, 0, 8 );
-scene.add( ship.mesh );
+ship.position.set( 0, 0, 8 );
+scene.add( ship );
 
-const controls = new FlyControls( ship.mesh, renderer.domElement );
+const controls = new FlyControls( ship, renderer.domElement );
 pointerLock( controls );
 
 const clock = new THREE.Clock();
 
-const updateCamera = (() => {
+const updateCamera = ( object => {
   const offset = new THREE.Vector3( 0, 0.3, 1 );
   const vector = new THREE.Vector3();
 
   return () => {
     // Camera position.
     vector.copy( offset )
-      .applyQuaternion( ship.mesh.quaternion )
-      .add( ship.mesh.position );
+      .applyQuaternion( object.quaternion )
+      .add( object.position );
 
     camera.position.copy( vector );
 
     // Camera up.
-    vector.set( 0, 1, 0 ).applyQuaternion( ship.mesh.quaternion );
+    vector.set( 0, 1, 0 ).applyQuaternion( object.quaternion );
     camera.up.copy( vector );
 
     // Camera lookAt target.
     vector.set( 0, 0, -1 )
-      .applyQuaternion( ship.mesh.quaternion )
+      .applyQuaternion( object.quaternion )
       .add( camera.position );
 
     camera.lookAt( vector );
   };
-})();
+})( ship );
 
 function animate() {
   const delta = clock.getDelta();
