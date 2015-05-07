@@ -9,7 +9,7 @@ export default function createClient( scene, ship ) {
   socket.binaryType = 'arraybuffer';
 
   socket.addEventListener( 'open', () => {
-    setInterval(() => {
+    const interval = setInterval(() => {
       const array = new Float32Array( 7 );
       ship.position.toArray( array );
       ship.quaternion.toArray( array, 3 );
@@ -36,5 +36,7 @@ export default function createClient( scene, ship ) {
         ship.quaternion.fromArray( datum, 3 );
       });
     });
+
+    socket.addEventListener( 'close', () => clearInterval( interval ) );
   });
 }

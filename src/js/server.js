@@ -2,11 +2,10 @@
 
 const INTERVAL = process.env.INTERVAL || 16;
 
-const _ = require( 'lodash' );
 const WebSocketServer = require( 'ws' ).Server;
 const wss = new WebSocketServer({ port: 8080 });
 
-const state = {};
+const state = [];
 
 function toArrayBuffer( buffer ) {
   const arrayBuffer = new ArrayBuffer( buffer.length );
@@ -18,8 +17,9 @@ function toArrayBuffer( buffer ) {
   return arrayBuffer;
 }
 
+let count = 0;
 wss.on( 'connection', function( socket ) {
-  const id = _.uniqueId();
+  const id = count++;
 
   // Initial id message.
   socket.send( JSON.stringify({ id }) );
