@@ -9,7 +9,7 @@ export default function createClient( scene, ship ) {
   socket.binaryType = 'arraybuffer';
 
   socket.addEventListener( 'open', () => {
-    setInterval(() => {
+    const interval = setInterval(() => {
       const array = new Float32Array( 7 );
       ship.position.toArray( array );
       ship.quaternion.toArray( array, 3 );
@@ -17,24 +17,32 @@ export default function createClient( scene, ship ) {
     }, INTERVAL );
 
     socket.addEventListener( 'message', event => {
-      const data = JSON.parse( event.data );
-      // Handle id message.
-      if ( data.id ) {
+      if ( !( event.data instanceof ArrayBuffer ) ) {
+        console.log( JSON.parse( event.data ));
         return;
       }
 
-      Object.keys( data ).forEach( key => {
-        const datum = new Float32Array( data[ key ] );
-        let ship = ships[ key ];
+      const float32Array = new Float32Array( event.data );
+      const uint32Array = new Uint32Array( event.data );
+      const state = new Float32Array( 7 );
+      for ( let i = 0, il = float32Array.length; i < il; i += 8 ) {
+        const id = uint32Array[i];
+        for ( let j = 0, jl = state.length; j < jl; j++ ) {
+          state[j] = float32Array[ i + j + 1 ];
+        }
+
+        let ship = ships[ id ];
         if ( !ship ) {
           ship = new Ship();
-          ships[ key ] = ship;
+          ships[ id ] = ship;
           scene.add( ship );
         }
 
-        ship.position.fromArray( datum );
-        ship.quaternion.fromArray( datum, 3 );
-      });
+        ship.position.fromArray( state );
+        ship.quaternion.fromArray( state, 3 );
+      }
     });
+
+    socket.addEventListener( 'close', () => clearInterval( interval ) );
   });
 }
