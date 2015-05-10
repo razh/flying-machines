@@ -2,6 +2,7 @@ import THREE from 'three';
 import FlyControls from './fly-controls';
 import pointerLock from './pointer-lock';
 import Ship from './ship';
+import Bullet from './bullet';
 
 const container = document.createElement( 'div' );
 document.body.appendChild( container );
@@ -65,9 +66,24 @@ const updateCamera = ( object => {
   };
 })( ship );
 
+const update = (() => {
+  const vector = new THREE.Vector3();
+
+  return dt => {
+    scene.traverse( object => {
+      if ( object.type === 'Bullet' ) {
+        vector.copy( object.velocity ).multiplyScalar( dt );
+        object.position.addVectors( object.position, vector );
+      }
+    });
+  };
+})();
+
 function animate() {
   const delta = clock.getDelta();
   controls.update( delta );
+
+  update( delta );
   updateCamera();
 
   renderer.render( scene, camera );
@@ -75,3 +91,19 @@ function animate() {
 }
 
 animate();
+
+const fire = (() => {
+  const vector = new THREE.Vector3();
+
+  return () =>  {
+    const bullet = new Bullet();
+    bullet.position.copy( ship.position );
+
+    vector.set( 0, 0, -1 ).applyQuaternion( ship.quaternion );
+    bullet.velocity.copy( vector );
+
+    scene.add( bullet );
+  };
+})();
+
+document.addEventListener( 'mousedown', fire );
