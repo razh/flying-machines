@@ -74,6 +74,7 @@ const update = (() => {
       if ( object.type === 'Bullet' ) {
         vector.copy( object.velocity ).multiplyScalar( dt );
         object.position.addVectors( object.position, vector );
+        object.lookAt( camera.position );
       }
     });
   };

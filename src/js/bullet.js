@@ -1,28 +1,16 @@
 import THREE from 'three';
 
-const diameter = 32;
-const radius   = diameter / 2;
+const geometry = new THREE.PlaneBufferGeometry( 1, 1 );
+geometry.applyMatrix( new THREE.Matrix4().makeRotationZ( Math.PI / 4 ) );
 
-const canvas = document.createElement( 'canvas' );
-const ctx    = canvas.getContext( '2d' );
+const material = new THREE.MeshBasicMaterial();
 
-canvas.width = diameter;
-canvas.height = diameter;
-
-ctx.fillStyle = '#fff';
-ctx.arc( radius, radius, radius, 0, 2 * Math.PI );
-ctx.fill();
-
-const map = new THREE.Texture( canvas );
-map.needsUpdate = true;
-
-const material = new THREE.SpriteMaterial({ map });
-
-export default class Bullet extends THREE.Sprite {
+export default class Bullet extends THREE.Mesh {
   constructor() {
-    super( material );
+    super( geometry, material );
+    this.scale.setLength( 1 / 16 );
+
     this.type = 'Bullet';
     this.velocity = new THREE.Vector3();
-    this.scale.setLength( 1 / radius );
   }
 }
