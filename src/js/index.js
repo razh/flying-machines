@@ -100,8 +100,16 @@ const fire = (() => {
     const bullet = new Bullet();
     bullet.position.copy( ship.position );
 
+    // Fire in ship direction.
     vector.set( 0, 0, -1 ).applyQuaternion( ship.quaternion );
     bullet.velocity.copy( vector );
+
+    // Add ship velocity.
+    vector.copy( controls.movementVector )
+      .normalize()
+      .applyQuaternion( ship.quaternion );
+
+    bullet.velocity.addVectors( bullet.velocity, vector );
 
     scene.add( bullet );
   };
