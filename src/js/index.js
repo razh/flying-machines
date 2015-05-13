@@ -21,6 +21,8 @@ scene.add( client );
 const server = new THREE.Group();
 scene.add( server );
 
+createClient( client, server );
+
 const camera = new THREE.PerspectiveCamera( 60, window.innerWidth / window.innerHeight, 0.1 );
 camera.position.set( 0, 0, 4 );
 scene.add( camera );
@@ -124,4 +126,11 @@ const fire = (() => {
 
 document.addEventListener( 'mousedown', fire );
 
-createClient( client, server );
+window.addEventListener( 'resize', () => {
+  renderer.setPixelRatio( window.devicePixelRatio );
+  renderer.setSize( window.innerWidth, window.innerHeight );
+
+  camera.aspect = window.innerWidth / window.innerHeight;
+  camera.updateProjectionMatrix();
+});
+
