@@ -15,5 +15,6 @@ export default class Ship extends THREE.Mesh {
     });
 
     super( geometry, material );
+    this.type = 'ship';
   }
 }

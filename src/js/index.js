@@ -3,6 +3,7 @@ import FlyControls from './fly-controls';
 import pointerLock from './pointer-lock';
 import Ship from './ship';
 import Bullet from './bullet';
+import createClient from './client';
 
 const container = document.createElement( 'div' );
 document.body.appendChild( container );
@@ -13,6 +14,12 @@ renderer.setSize( window.innerWidth, window.innerHeight );
 container.appendChild( renderer.domElement );
 
 const scene = new THREE.Scene();
+
+const client = new THREE.Group();
+scene.add( client );
+
+const server = new THREE.Group();
+scene.add( server );
 
 const camera = new THREE.PerspectiveCamera( 60, window.innerWidth / window.innerHeight, 0.1 );
 camera.position.set( 0, 0, 4 );
@@ -34,7 +41,7 @@ scene.add( new THREE.HemisphereLight( '#f43', '#33a', 0.5 ) );
 
 const ship = new Ship();
 ship.position.set( 0, 0, 8 );
-scene.add( ship );
+client.add( ship );
 
 const controls = new FlyControls( ship, renderer.domElement );
 pointerLock( controls );
@@ -71,7 +78,7 @@ const update = (() => {
 
   return dt => {
     scene.traverse( object => {
-      if ( object.type === 'Bullet' ) {
+      if ( object.type === 'bullet' ) {
         vector.copy( object.velocity ).multiplyScalar( dt );
         object.position.addVectors( object.position, vector );
         object.lookAt( camera.position );
@@ -111,8 +118,10 @@ const fire = (() => {
 
     bullet.velocity.addVectors( bullet.velocity, vector );
 
-    scene.add( bullet );
+    client.add( bullet );
   };
 })();
 
 document.addEventListener( 'mousedown', fire );
+
+createClient( client, server );

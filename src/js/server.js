@@ -7,16 +7,6 @@ const wss = new WebSocketServer({ port: 8080 });
 
 const state = [];
 
-function toArrayBuffer( buffer ) {
-  const arrayBuffer = new ArrayBuffer( buffer.length );
-  const view = new Uint8Array( arrayBuffer );
-  for ( let i = 0, il = buffer.length; i < il; i++ ) {
-    view[i] = buffer[i];
-  }
-
-  return arrayBuffer;
-}
-
 let count = 0;
 wss.on( 'connection', function( socket ) {
   const id = count++;
@@ -25,14 +15,7 @@ wss.on( 'connection', function( socket ) {
   socket.send( JSON.stringify({ id }) );
 
   socket.on( 'message', function( message ) {
-    /*
-      message data is a ArrayBuffer of the structure:
-        [0, 1, 2] : float32 - position
-        [3, 4, 5] : float32 - quaternion
-        [6, 7, 8] : float32 - velocity
-        [9, 10, 11] : float32 - angular velocity
-     */
-    state[ id ] = [].slice.call( new Float32Array( toArrayBuffer( message ) ) );
+    state[ id ] = JSON.parse( message );
   });
 
   const interval = setInterval(function() {
