@@ -126,6 +126,13 @@ const fire = (() => {
 
 document.addEventListener( 'mousedown', fire );
 
+document.addEventListener( 'keydown', event => {
+  // Space.
+  if ( event.keyCode === 32 ) {
+    fire();
+  }
+});
+
 window.addEventListener( 'resize', () => {
   renderer.setPixelRatio( window.devicePixelRatio );
   renderer.setSize( window.innerWidth, window.innerHeight );
@@ -133,4 +140,3 @@ window.addEventListener( 'resize', () => {
   camera.aspect = window.innerWidth / window.innerHeight;
   camera.updateProjectionMatrix();
 });
-
