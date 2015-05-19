@@ -4,6 +4,7 @@ import pointerLock from './pointer-lock';
 import Ship from './ship';
 import Bullet from './bullet';
 import createClient from './client';
+import update from './update';
 
 const container = document.createElement( 'div' );
 document.body.appendChild( container );
@@ -75,25 +76,11 @@ const updateCamera = ( object => {
   };
 })( ship );
 
-const update = (() => {
-  const vector = new THREE.Vector3();
-
-  return dt => {
-    scene.traverse( object => {
-      if ( object.type === 'bullet' ) {
-        vector.copy( object.velocity ).multiplyScalar( dt );
-        object.position.addVectors( object.position, vector );
-        object.lookAt( camera.position );
-      }
-    });
-  };
-})();
-
 function animate() {
   const delta = clock.getDelta();
   controls.update( delta );
 
-  update( delta );
+  update( scene, camera, delta );
   updateCamera();
 
   renderer.render( scene, camera );
