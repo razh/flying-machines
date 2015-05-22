@@ -1,4 +1,5 @@
 import THREE from 'three';
+import { collisionMixin } from './collision';
 
 const rotationMatrix = new THREE.Matrix4()
   .makeRotationFromEuler( new THREE.Euler( -Math.PI / 2, 0, 0 ) );
@@ -17,6 +18,8 @@ const sphere = new THREE.Sphere();
 export default class Ship extends THREE.Mesh {
   constructor() {
     super( geometry, material.clone() );
+    collisionMixin( this );
+
     this.type = 'ship';
   }
 

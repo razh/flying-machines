@@ -1,5 +1,10 @@
 import THREE from 'three';
 
+export function collisionMixin( object ) {
+  object.collisionFilterGroup = 1;
+  object.collisionFilterMask = 1;
+}
+
 export const intersectLineSphere = (() => {
   const v0 = new THREE.Vector3();
   const v1 = new THREE.Vector3();
