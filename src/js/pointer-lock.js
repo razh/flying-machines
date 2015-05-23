@@ -1,25 +1,24 @@
 import THREE from 'three';
 
-export default function pointerLock( controls ) {
-  const hasPointerLock = 'pointerLockElement' in document ||
+export default function pointerLock( controls, element = document.body ) {
+  const hasPointerLock = (
+    'pointerLockElement' in document ||
     'mozPointerLockElement' in document ||
-    'webkitPointerLockElement' in document;
+    'webkitPointerLockElement' in document
+  );
 
   if ( !hasPointerLock ) {
     return;
   }
 
-  const element = document.body;
   const dispatcher = new THREE.EventDispatcher();
 
   function onPointerLockChange() {
-    if ( document.pointerLockElement === element ||
-         document.mozPointerLockElement === element ||
-         document.webkitPointerLockElement === element ) {
-      controls.enabled = true;
-    } else {
-      controls.enabled = false;
-    }
+    controls.enabled = (
+      element === document.pointerLockElement ||
+      element === document.mozPointerLockElement ||
+      element === document.webkitPointerLockElement
+    );
 
     dispatcher.dispatchEvent({
       type: 'change',
@@ -39,9 +38,11 @@ export default function pointerLock( controls ) {
   document.addEventListener( 'mozpointerlockerror', onPointerLockError );
   document.addEventListener( 'webkitpointerlockerror', onPointerLockError );
 
-  element.requestPointerLock = element.requestPointerLock ||
+  element.requestPointerLock = (
+    element.requestPointerLock ||
     element.mozRequestPointerLock ||
-    element.webkitRequestPointerLock;
+    element.webkitRequestPointerLock
+  );
 
   document.addEventListener( 'click', () => element.requestPointerLock() );
 
