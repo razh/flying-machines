@@ -80,7 +80,12 @@ function animate() {
   const delta = clock.getDelta();
   controls.update( delta );
 
-  update( scene, camera, delta );
+  update( scene, delta, object => {
+    if ( object.type === 'bullet' ) {
+      object.lookAt( camera.position );
+    }
+  });
+
   updateCamera();
 
   renderer.render( scene, camera );
