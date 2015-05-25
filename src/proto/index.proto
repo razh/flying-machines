@@ -1,0 +1,22 @@
+message Vector3 {
+  optional float x = 1;
+  optional float y = 1;
+  optional float z = 3;
+}
+
+message Quaternion {
+  optional float x = 1;
+  optional float y = 2;
+  optional float z = 3;
+  optional float w = 4;
+}
+
+message Ship {
+  optional Vector3 position = 1;
+  optional Quaternion quaternion = 2;
+}
+
+message Bullet {
+  optional Vector3 position = 1;
+  optional Vector3 velocity = 2;
+}
