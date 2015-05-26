@@ -7,6 +7,7 @@ const BUILD_DIR = 'dist';
 
 const _ = require('lodash');
 const babelify = require('babelify');
+const brfs = require( 'brfs' );
 const browserify = require('browserify');
 const browserSync = require('browser-sync').create();
 const del = require('del');
@@ -38,7 +39,9 @@ gulp.task('js', function() {
       debug: true
     }, watchify.args)));
 
-  bundler.transform(babelify);
+  bundler
+    .transform(babelify)
+    .transform(brfs);
 
   function rebundle() {
     return bundler.bundle()
