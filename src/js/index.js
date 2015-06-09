@@ -5,6 +5,7 @@ import Ship from './ship';
 import Bullet from './bullet';
 import createClient from './client';
 import update from './update';
+import config from './config';
 
 const container = document.createElement( 'div' );
 document.body.appendChild( container );
@@ -47,6 +48,7 @@ ship.position.set( 0, 0, 8 );
 client.add( ship );
 
 const controls = new FlyControls( ship, renderer.domElement );
+controls.speed = config.ship.speed;
 pointerLock( controls );
 
 const clock = new THREE.Clock();
@@ -95,22 +97,20 @@ function animate() {
 animate();
 
 const fire = (() => {
-  const vector = new THREE.Vector3();
+  const velocity = new THREE.Vector3();
 
   return () =>  {
     const bullet = new Bullet();
     bullet.position.copy( ship.position );
 
+    // Calculate local ship velocity.
+    velocity.copy( controls.movementVector )
+      .setLength( config.ship.speed );
+
     // Fire in ship direction.
-    vector.set( 0, 0, -1 ).applyQuaternion( ship.quaternion );
-    bullet.velocity.copy( vector );
-
-    // Add ship velocity.
-    vector.copy( controls.movementVector )
-      .normalize()
+    bullet.velocity.set( 0, 0, -config.bullet.speed )
+      .add( velocity )
       .applyQuaternion( ship.quaternion );
-
-    bullet.velocity.addVectors( bullet.velocity, vector );
 
     client.add( bullet );
   };

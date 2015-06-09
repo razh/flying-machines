@@ -6,7 +6,7 @@ export default function update( scene, dt, callback ) {
   scene.traverse( object => {
     if ( object.type === 'bullet' ) {
       vector.copy( object.velocity ).multiplyScalar( dt );
-      object.position.addVectors( object.position, vector );
+      object.position.add( vector );
     }
 
     if ( callback ) {

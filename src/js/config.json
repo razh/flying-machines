@@ -1,0 +1,8 @@
+{
+  "ship": {
+    "speed": 1
+  },
+  "bullet": {
+    "speed": 1
+  }
+}
