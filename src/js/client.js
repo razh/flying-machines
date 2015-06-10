@@ -1,34 +1,8 @@
 import Ship from './ship';
 import Bullet from './bullet';
-import messages from './messages';
+import { encodeClientState, decodeServerMessage } from './client-encode';
 
 const INTERVAL = 16;
-
-function encode( scene ) {
-  const state = {
-    bullets: []
-  };
-
-  scene.traverse( object => {
-    if ( object.type === 'ship' ) {
-      state.ship = object;
-    } else if ( object.type === 'bullet' ) {
-      state.bullets.push( object );
-    }
-  });
-
-  return messages.ClientState.encode( state );
-}
-
-function toBuffer( arrayBuffer ) {
-  const buffer = new Buffer( arrayBuffer.byteLength );
-  const view = new Uint8Array( arrayBuffer );
-  for ( let i = 0, il = buffer.length; i < il; i++ ) {
-    buffer[i] = view[i];
-  }
-
-  return buffer;
-}
 
 function createPool( scene, Constructor ) {
   const pool = [];
@@ -64,11 +38,11 @@ export default function createClient( client, server ) {
 
   socket.addEventListener( 'open', () => {
     const interval = setInterval(() => {
-      socket.send( encode( client ) );
+      socket.send( encodeClientState( client ) );
     }, INTERVAL );
 
     socket.addEventListener( 'message', event => {
-      const state = messages.ServerState.decode( toBuffer( event.data ) );
+      const state = decodeServerMessage( event.data );
       if ( !state ) {
         return;
       }

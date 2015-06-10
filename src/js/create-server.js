@@ -1,26 +1,7 @@
-import _ from 'lodash';
 import { Server as WebSocketServer } from 'ws';
-import messages from './messages';
+import { encodeServerState, decodeClientMessage } from './server-encode';
 
 const INTERVAL = process.env.INTERVAL || 16;
-
-function encode( state ) {
-  return messages.ServerState.encode(
-    _( state )
-      .filter( Boolean )
-      .reduce(
-        ( object, value ) => {
-          object.ships.push( value.ship );
-          object.bullets.push( ...value.bullets );
-          return object;
-        },
-        {
-          ships: [],
-          bullets: []
-        }
-      )
-  );
-}
 
 export default function createServer() {
   const server = new WebSocketServer({ port: 8080 });
@@ -34,13 +15,13 @@ export default function createServer() {
   server.on( 'connection', socket => {
     const id = uuid();
 
-    socket.on( 'message', message => {
-      state[ id ] = messages.ClientState.decode( message );
-    });
+    socket.on( 'message', message =>
+      state[ id ] = decodeClientMessage( message )
+    );
 
     const interval = setInterval(() => {
       try {
-        socket.send( encode( state ), { binary: true } );
+        socket.send( encodeServerState( state ), { binary: true } );
        } catch ( error ) {
          console.error( error );
          clearInterval( interval );
