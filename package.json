@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node ./src/js/server.js"
   },
   "repository": {
     "type": "git",
@@ -27,7 +27,7 @@
     "babel": "^5.5.6",
     "babelify": "^6.1.2",
     "brfs": "^1.4.0",
-    "browser-sync": "^2.7.6",
+    "browser-sync": "^2.7.7",
     "browserify": "^10.2.4",
     "del": "^1.2.0",
     "gulp": "^3.9.0",
