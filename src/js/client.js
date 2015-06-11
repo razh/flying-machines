@@ -1,6 +1,6 @@
 import Ship from './ship';
 import Bullet from './bullet';
-import { encodeClientState, decodeServerMessage } from './client-encode';
+import { encodeClientState, decodeServerMessage } from './encode';
 import createPool from './pool';
 
 const INTERVAL = 16;

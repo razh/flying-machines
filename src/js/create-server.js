@@ -1,5 +1,5 @@
 import { Server as WebSocketServer } from 'ws';
-import { encodeServerState, decodeClientMessage } from './server-encode';
+import { encodeServerState, decodeClientMessage } from './encode';
 
 const INTERVAL = process.env.INTERVAL || 16;
 

@@ -26,6 +26,28 @@ export function encodeClientState( scene ) {
   return messages.ClientState.encode( state );
 }
 
+export function decodeClientMessage( message ) {
+  return messages.ClientState.decode( message );
+}
+
+export function encodeServerState( state ) {
+  return messages.ServerState.encode(
+    state
+      .filter( Boolean )
+      .reduce(
+        ( object, value ) => {
+          object.ships.push( value.ship );
+          object.bullets.push( ...value.bullets );
+          return object;
+        },
+        {
+          ships: [],
+          bullets: []
+        }
+      )
+  );
+}
+
 export function decodeServerMessage( message ) {
   return messages.ServerState.decode( toBuffer( message ) );
 }
