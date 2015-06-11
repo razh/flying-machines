@@ -1,33 +1,9 @@
 import Ship from './ship';
 import Bullet from './bullet';
 import { encodeClientState, decodeServerMessage } from './client-encode';
+import createPool from './pool';
 
 const INTERVAL = 16;
-
-function createPool( scene, Constructor ) {
-  const pool = [];
-  let count = 0;
-  let length = 0;
-
-  function get() {
-    if ( count === length ) {
-      const object = new Constructor();
-      scene.add( object );
-      pool.push( object );
-      length++;
-      count++;
-      return object;
-    }
-
-    return pool[ count++ ];
-  }
-
-  function reset() {
-    count = 0;
-  }
-
-  return { get, reset };
-}
 
 export default function createClient( client, server ) {
   const shipPool = createPool( server, Ship );
