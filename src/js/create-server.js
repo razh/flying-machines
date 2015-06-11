@@ -7,17 +7,8 @@ export default function createServer() {
   const server = new WebSocketServer({ port: 8080 });
   const state = [];
 
-  const uuid = (() => {
-    let id = 0;
-    return () => id++;
-  })();
-
   server.on( 'connection', socket => {
-    const id = uuid();
-
-    socket.on( 'message', message =>
-      state[ id ] = decodeClientMessage( message )
-    );
+    const id = state.length;
 
     const interval = setInterval(() => {
       try {
@@ -27,6 +18,10 @@ export default function createServer() {
          clearInterval( interval );
        }
     }, INTERVAL );
+
+    socket.on( 'message', message =>
+      state[ id ] = decodeClientMessage( message )
+    );
 
     socket.on( 'close', () => {
       clearInterval( interval );
