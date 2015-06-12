@@ -20,6 +20,7 @@
   "dependencies": {
     "lodash": "^3.9.3",
     "protocol-buffers": "^3.1.2",
+    "simple-peer": "^5.11.0",
     "three": "^0.71.0",
     "ws": "^0.7.2"
   },
@@ -27,7 +28,7 @@
     "babel": "^5.5.6",
     "babelify": "^6.1.2",
     "brfs": "^1.4.0",
-    "browser-sync": "^2.7.7",
+    "browser-sync": "^2.7.9",
     "browserify": "^10.2.4",
     "del": "^1.2.0",
     "gulp": "^3.9.0",
