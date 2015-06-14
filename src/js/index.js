@@ -6,6 +6,7 @@ import Bullet from './bullet';
 import createClient from './client';
 import update from './update';
 import config from './config';
+import createMap from './map';
 
 const container = document.createElement( 'div' );
 document.body.appendChild( container );
@@ -16,6 +17,7 @@ renderer.setSize( window.innerWidth, window.innerHeight );
 container.appendChild( renderer.domElement );
 
 const scene = new THREE.Scene();
+createMap( scene, 'minimal' );
 
 const client = new THREE.Group();
 scene.add( client );
@@ -26,25 +28,9 @@ scene.add( server );
 createClient( client, server );
 
 const camera = new THREE.PerspectiveCamera( 60, window.innerWidth / window.innerHeight, 0.1 );
-camera.position.set( 0, 0, 4 );
 scene.add( camera );
 
-const geometry = new THREE.IcosahedronGeometry( 1, 2 );
-const material = new THREE.MeshPhongMaterial({
-  shading: THREE.FlatShading
-});
-
-const mesh = new THREE.Mesh( geometry, material );
-scene.add( mesh );
-
-const light = new THREE.PointLight();
-light.position.set( 8, 8, 8 );
-scene.add( light );
-
-scene.add( new THREE.HemisphereLight( '#f43', '#33a', 0.5 ) );
-
 const ship = new Ship();
-ship.position.set( 0, 0, 8 );
 client.add( ship );
 
 const controls = new FlyControls( ship, renderer.domElement );
