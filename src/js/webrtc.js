@@ -40,12 +40,9 @@ function createPeerServer( peer ) {
     }
   }, INTERVAL );
 
-  peer.on( 'data', message => {
-    const clientState = decodeClientMessage( message );
-    if ( clientState ) {
-      state[ id ] = clientState;
-    }
-  });
+  peer.on( 'data', message =>
+    state[ id ] = decodeClientMessage( message )
+  );
 
   peer.on( 'close', () => {
     clearInterval( interval );
