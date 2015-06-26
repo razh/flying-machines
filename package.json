@@ -20,22 +20,22 @@
   "dependencies": {
     "lodash": "^3.9.3",
     "protocol-buffers": "^3.1.2",
-    "simple-peer": "^5.11.1",
+    "simple-peer": "^5.11.2",
     "three": "^0.71.0",
     "ws": "^0.7.2"
   },
   "devDependencies": {
-    "babel": "^5.5.8",
+    "babel": "^5.6.11",
     "babelify": "^6.1.2",
     "brfs": "^1.4.0",
-    "browser-sync": "^2.7.10",
+    "browser-sync": "^2.7.12",
     "browserify": "^10.2.4",
     "del": "^1.2.0",
     "gulp": "^3.9.0",
     "gulp-load-plugins": "^0.10.0",
-    "gulp-util": "^3.0.5",
-    "run-sequence": "^1.1.0",
+    "gulp-util": "^3.0.6",
+    "run-sequence": "^1.1.1",
     "vinyl-source-stream": "^1.1.0",
-    "watchify": "^3.2.2"
+    "watchify": "^3.2.3"
   }
 }
