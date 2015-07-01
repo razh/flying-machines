@@ -53,9 +53,9 @@ function createPeerServer( peer ) {
 export function createPeer( client, server, options = {} ) {
   const peer = new Peer( options );
 
-  peer.on( 'connect', () => {
+  return peer.on( 'connect', () => {
     createPeerClient( peer, client, server );
-    if ( options.initializer ) {
+    if ( options.initiator ) {
       createPeerServer( peer );
     }
   });
