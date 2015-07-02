@@ -1,10 +1,6 @@
-import THREE from 'three';
 import { createPeer } from './webrtc';
 
-export default function createWebRTCInterface() {
-  const client = new THREE.Group();
-  const server = new THREE.Group();
-
+export default function createWebRTCInterface( client, server ) {
   const group = document.createElement( 'div' );
   group.className = 'webrtc-group';
 
@@ -14,34 +10,53 @@ export default function createWebRTCInterface() {
 
   textarea.addEventListener( 'click', event => event.stopPropagation() );
 
-  const clientButton = document.createElement( 'button' );
-  clientButton.textContent = 'Client';
-  group.appendChild( clientButton );
-
-  clientButton.addEventListener( 'click', event => {
-    event.preventDefault();
-    event.stopPropagation();
-
-    createPeer( client, server, { trickle: false } )
-      .on( 'signal', answer => textarea.value = JSON.stringify( answer ) )
-      .signal( textarea.value );
-  });
-
   const serverButton = document.createElement( 'button' );
-  serverButton.textContent = 'Server';
+  serverButton.textContent = 'Create Server';
   group.appendChild( serverButton );
 
   let peer;
+
+  function createOffer() {
+    peer = createPeer( client, server, { initiator: true, trickle: false } )
+      .on( 'signal', offer => textarea.value = JSON.stringify( offer ) );
+    }
+
+  function createAnswer() {
+    createPeer( client, server, { trickle: false } )
+      .on( 'signal', answer => textarea.value = JSON.stringify( answer ) )
+      .signal( textarea.value );
+  }
+
+  function connect() {
+    peer.signal( textarea.value );
+  }
+
   serverButton.addEventListener( 'click', event => {
     event.preventDefault();
     event.stopPropagation();
 
     if ( !peer ) {
-      peer = createPeer( client, server, { initiator: true, trickle: false } )
-        .on( 'signal', offer => textarea.value = JSON.stringify( offer ) );
+      createOffer();
     } else {
-      peer.signal( textarea.value );
+      connect();
     }
+  });
+
+  textarea.addEventListener( 'input', () => {
+    const message = JSON.parse( textarea.value );
+    if ( !message ) {
+      return;
+    }
+
+    if ( message.type === 'offer' ) {
+      createAnswer();
+    } else if ( message.type === 'answer' ) {
+      connect();
+    } else {
+      return;
+    }
+
+    textarea.value = '';
   });
 
   document.body.appendChild( group );
