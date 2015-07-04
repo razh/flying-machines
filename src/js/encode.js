@@ -10,7 +10,7 @@ function toBuffer( arrayBuffer ) {
   return buffer;
 }
 
-export function encodeClientState( scene ) {
+export function serializeClientState( scene ) {
   const state = {
     bullets: []
   };
@@ -23,29 +23,35 @@ export function encodeClientState( scene ) {
     }
   });
 
-  return messages.ClientState.encode( state );
+  return state;
+}
+
+export function encodeClientState( scene ) {
+  return messages.ClientState.encode( serializeClientState( scene ) );
 }
 
 export function decodeClientMessage( message ) {
   return messages.ClientState.decode( message );
 }
 
+export function serializeServerState( state ) {
+  return state
+    .filter( Boolean )
+    .reduce(
+      ( object, value ) => {
+        object.ships.push( value.ship );
+        object.bullets.push( ...value.bullets );
+        return object;
+      },
+      {
+        ships: [],
+        bullets: []
+      }
+    );
+}
+
 export function encodeServerState( state ) {
-  return messages.ServerState.encode(
-    state
-      .filter( Boolean )
-      .reduce(
-        ( object, value ) => {
-          object.ships.push( value.ship );
-          object.bullets.push( ...value.bullets );
-          return object;
-        },
-        {
-          ships: [],
-          bullets: []
-        }
-      )
-  );
+  return messages.ServerState.encode( serializeServerState( state ) );
 }
 
 export function decodeServerMessage( message ) {
