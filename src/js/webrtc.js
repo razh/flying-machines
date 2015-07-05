@@ -2,61 +2,55 @@ import Peer from 'simple-peer';
 
 import { createState } from './client';
 import {
-  encodeClientState,
-  encodeServerState,
-  decodeClientMessage,
-  decodeServerMessage
+  serializeClientState,
+  serializeServerState
 } from './encode';
+import messages from './messages';
 
 const INTERVAL = 16;
 
-function createPeerClient( peer, client, server ) {
-  const setState = createState( server );
+export const createPeer = (() => {
+  const state = [ null ];
 
-  const interval = setInterval(() => {
-    peer.send( encodeClientState( client ) );
-  }, INTERVAL );
+  return ( client, server, options = {} ) => {
+    const peer = new Peer( options );
+    const setState = createState( server );
 
-  peer.on( 'data', message => {
-    const state = decodeServerMessage( message );
-    if ( state ) {
-      setState( state );
-    }
-  });
+    peer.on( 'connect', () => {
+      const id = state.length;
 
-  peer.on( 'close', () => clearInterval( interval ) );
-}
+      const interval = setInterval(() => {
+        try {
+          const clientState = serializeClientState( client );
+          state[ 0 ] = clientState;
+          peer.send( messages.RTCMessage.encode({
+            clientState,
+            serverState: serializeServerState( state )
+          }));
+        } catch ( error ) {
+          console.error( error );
+          clearInterval( interval );
+        }
+      }, INTERVAL );
 
-function createPeerServer( peer ) {
-  const state = [];
-  const id = state.length;
+      peer.on( 'data', data => {
+        const {
+          clientState,
+          serverState
+        } = messages.RTCMessage.decode( data );
 
-  const interval = setInterval(() => {
-    try {
-      peer.send( encodeServerState( state ) );
-    } catch ( error ) {
-      console.error( error );
-      clearInterval( interval );
-    }
-  }, INTERVAL );
+        state[ id ] = clientState;
+        if ( serverState ) {
+          setState( serverState );
+        }
+      });
 
-  peer.on( 'data', message =>
-    state[ id ] = decodeClientMessage( message )
-  );
+      peer.on( 'close', () => {
+        clearInterval( interval );
+        delete state[ id ];
+      });
+    });
 
-  peer.on( 'close', () => {
-    clearInterval( interval );
-    delete state[ id ];
-  });
-}
-
-export function createPeer( client, server, options = {} ) {
-  const peer = new Peer( options );
-
-  return peer.on( 'connect', () => {
-    createPeerClient( peer, client, server );
-    if ( options.initiator ) {
-      createPeerServer( peer );
-    }
-  });
-}
+    return peer;
+  };
+})();
