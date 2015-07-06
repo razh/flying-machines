@@ -1,15 +1,28 @@
 import THREE from 'three';
 
+function createAsteroidMesh( x, y, z, radius ) {
+  const geometry = new THREE.IcosahedronGeometry( radius, 2 );
+  const material = new THREE.MeshPhongMaterial({
+    shading: THREE.FlatShading
+  });
+
+  const mesh = new THREE.Mesh( geometry, material );
+  mesh.position.set( x, y, z );
+  return mesh;
+}
+
+function createAsteroidMeshes( asteroids ) {
+  return asteroids.map( asteroid => createAsteroidMesh( ...asteroid ) );
+}
+
 const maps = {
   minimal( scene ) {
-    const geometry = new THREE.IcosahedronGeometry( 1, 2 );
-    const material = new THREE.MeshPhongMaterial({
-      shading: THREE.FlatShading
-    });
+    const meshes = createAsteroidMeshes([
+      [ 0, 0, -8, 1 ],
+      [ 4, -2, -4, 2 ]
+    ]);
 
-    const mesh = new THREE.Mesh( geometry, material );
-    mesh.position.set( 0, 0, -8 );
-    scene.add( mesh );
+    scene.add( ...meshes );
 
     const light = new THREE.PointLight();
     light.position.set( 8, 8, 8 );
