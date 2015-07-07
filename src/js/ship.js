@@ -1,4 +1,5 @@
 import THREE from 'three';
+import Shield from './shield';
 import { collisionMixin } from './collision';
 
 const rotationMatrix = new THREE.Matrix4()
@@ -21,6 +22,9 @@ export default class Ship extends THREE.Mesh {
     collisionMixin( this );
 
     this.type = 'ship';
+
+    this.shield = new Shield();
+    this.add( this.shield );
   }
 
   containsPoint( point ) {
