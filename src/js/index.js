@@ -3,6 +3,7 @@ import FlyControls from './fly-controls';
 import pointerLock from './pointer-lock';
 import Ship from './ship';
 import Bullet from './bullet';
+import Radar from './radar';
 import createClient from './client';
 import update from './update';
 import config from './config';
@@ -32,6 +33,9 @@ scene.add( camera );
 
 const ship = new Ship();
 client.add( ship );
+
+const radar = new Radar( ship );
+client.add( radar );
 
 const controls = new FlyControls( ship, renderer.domElement );
 controls.speed = config.ship.speed;
@@ -75,6 +79,7 @@ function animate() {
   });
 
   updateCamera();
+  radar.update( client, camera );
 
   renderer.render( scene, camera );
   requestAnimationFrame( animate );
