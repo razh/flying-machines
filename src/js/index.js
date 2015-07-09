@@ -79,6 +79,11 @@ function animate() {
   });
 
   updateCamera();
+
+  radar.position.set( -1, -1, -2 )
+    .applyQuaternion( camera.quaternion )
+    .add( camera.position );
+
   radar.update( client, camera );
 
   renderer.render( scene, camera );

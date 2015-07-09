@@ -6,10 +6,12 @@ geometry.applyMatrix( new THREE.Matrix4().makeRotationZ( Math.PI / 4 ) );
 
 const material = new THREE.MeshBasicMaterial();
 
+const vector = new THREE.Vector3();
+
 class RadarPoint extends THREE.Mesh {
   constructor() {
     super( geometry, material );
-    this.scale.setLength( 1 / 64 );
+    this.scale.setLength( 1 / 32 );
   }
 }
 
@@ -44,16 +46,24 @@ export default class Radar extends THREE.Group {
       }
     });
 
+    // Reset group and pool.
+    while ( this.children.length ) {
+      this.remove( this.children[0] );
+    }
+
     pool.reset();
+
+    this.worldToLocal( vector.copy( camera.position ) );
 
     positions.forEach( position => {
       const point = pool.get();
+      this.add( point );
 
       point.position
         .subVectors( position, target.position )
         .multiplyScalar( this.radarScale );
 
-      point.lookAt( camera.position );
+      point.lookAt( vector );
     });
   }
 }
