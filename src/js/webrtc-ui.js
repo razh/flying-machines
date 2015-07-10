@@ -6,11 +6,13 @@ export default function createWebRTCInterface( client, server ) {
 
   const textarea = document.createElement( 'textarea' );
   textarea.className = 'webrtc-textarea';
+  textarea.spellcheck = false;
   group.appendChild( textarea );
 
   textarea.addEventListener( 'click', event => event.stopPropagation() );
 
   const serverButton = document.createElement( 'button' );
+  serverButton.className = 'webrtc-button';
   serverButton.textContent = 'Create Server';
   group.appendChild( serverButton );
 
