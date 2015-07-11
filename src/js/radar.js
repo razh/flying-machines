@@ -8,22 +8,30 @@ const material = new THREE.MeshBasicMaterial();
 
 const vector = new THREE.Vector3();
 
+const scales = {
+  ship: 1 / 16,
+  bullet: 1 / 64
+};
+
 class RadarPoint extends THREE.Mesh {
   constructor() {
     super( geometry, material );
-    this.scale.setLength( 1 / 32 );
   }
 }
 
 export default class Radar extends THREE.Group {
-  constructor( target ) {
+  constructor( target, radius = 4, scale = 0.25 ) {
     super();
 
+    this.blips = new THREE.Group();
+    this.add( this.blips );
+
     this.target = target;
+    this.radius = radius;
+    this.radiusSquared = this.radius * this.radius;
+    this.radarScale = scale;
+
     this.pool = createPool( this, RadarPoint );
-    this.distance = 4;
-    this.distanceSquared = this.distance * this.distance;
-    this.radarScale = 0.25;
   }
 
   update( scene, camera ) {
@@ -33,37 +41,34 @@ export default class Radar extends THREE.Group {
       return;
     }
 
-    const positions = [];
+    this.worldToLocal( vector.copy( camera.position ) );
 
     scene.traverse( object => {
       if ( object.type === 'ship' || object.type === 'bullet' ) {
         const distanceToSquared = object.position
           .distanceToSquared( target.position );
 
-        if ( distanceToSquared <= this.distanceSquared ) {
-          positions.push( object.position );
+        // Add radar blip if within range.
+        if ( distanceToSquared <= this.radiusSquared ) {
+          const point = this.pool.get();
+          point.scale.setLength( scales[ object.type ] );
+
+          this.blips.add( point );
+
+          point.position
+            .subVectors( object.position, target.position )
+            .multiplyScalar( this.radarScale );
+
+          point.lookAt( vector );
         }
       }
-    });
-
-    this.worldToLocal( vector.copy( camera.position ) );
-
-    positions.forEach( position => {
-      const point = this.pool.get();
-      this.add( point );
-
-      point.position
-        .subVectors( position, target.position )
-        .multiplyScalar( this.radarScale );
-
-      point.lookAt( vector );
     });
   }
 
   reset() {
-    // Reset group and pool.
-    while ( this.children.length ) {
-      this.remove( this.children[0] );
+    // Reset blip group and pool.
+    while ( this.blips.children.length ) {
+      this.blips.remove( this.blips.children[0] );
     }
 
     this.pool.reset();
