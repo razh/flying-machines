@@ -84,7 +84,9 @@ function animate() {
     .applyQuaternion( camera.quaternion )
     .add( camera.position );
 
+  radar.reset();
   radar.update( client, camera );
+  radar.update( server, camera );
 
   renderer.render( scene, camera );
   requestAnimationFrame( animate );

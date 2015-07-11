@@ -27,7 +27,7 @@ export default class Radar extends THREE.Group {
   }
 
   update( scene, camera ) {
-    const { target, pool } = this;
+    const { target } = this;
 
     if ( !target ) {
       return;
@@ -46,17 +46,10 @@ export default class Radar extends THREE.Group {
       }
     });
 
-    // Reset group and pool.
-    while ( this.children.length ) {
-      this.remove( this.children[0] );
-    }
-
-    pool.reset();
-
     this.worldToLocal( vector.copy( camera.position ) );
 
     positions.forEach( position => {
-      const point = pool.get();
+      const point = this.pool.get();
       this.add( point );
 
       point.position
@@ -65,5 +58,14 @@ export default class Radar extends THREE.Group {
 
       point.lookAt( vector );
     });
+  }
+
+  reset() {
+    // Reset group and pool.
+    while ( this.children.length ) {
+      this.remove( this.children[0] );
+    }
+
+    this.pool.reset();
   }
 }
