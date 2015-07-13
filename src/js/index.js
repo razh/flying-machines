@@ -72,11 +72,19 @@ function animate() {
   const delta = clock.getDelta();
   controls.update( delta );
 
+  const removed = [];
+
   update( scene, delta, object => {
     if ( object.type === 'bullet' ) {
       object.lookAt( camera.position );
+      if ( object.start &&
+           object.start.distanceTo( object.position ) > config.bullet.range ) {
+        removed.push( object );
+      }
     }
   });
+
+  removed.forEach( object => object.parent.remove( object ) );
 
   updateCamera();
 
@@ -85,8 +93,8 @@ function animate() {
     .add( camera.position );
 
   radar.reset();
-  radar.update( client, camera );
-  radar.update( server, camera );
+  radar.track( client, camera );
+  radar.track( server, camera );
 
   renderer.render( scene, camera );
   requestAnimationFrame( animate );
@@ -100,6 +108,7 @@ const fire = (() => {
   return () =>  {
     const bullet = new Bullet();
     bullet.position.copy( ship.position );
+    bullet.start = bullet.position.clone();
 
     // Calculate local ship velocity.
     velocity.copy( controls.movementVector )

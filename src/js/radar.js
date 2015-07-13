@@ -34,7 +34,7 @@ export default class Radar extends THREE.Group {
     this.pool = createPool( this, RadarPoint );
   }
 
-  update( scene, camera ) {
+  track( scene, camera ) {
     const { target } = this;
 
     if ( !target ) {
