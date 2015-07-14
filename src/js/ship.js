@@ -1,4 +1,5 @@
 import THREE from 'three';
+import Entity from './entity';
 import Shield from './shield';
 import { collisionMixin } from './collision';
 
@@ -16,7 +17,7 @@ const material = new THREE.MeshPhongMaterial({
 
 const sphere = new THREE.Sphere();
 
-export default class Ship extends THREE.Mesh {
+export default class Ship extends Entity {
   constructor() {
     super( geometry, material.clone() );
     collisionMixin( this );
