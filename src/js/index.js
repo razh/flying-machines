@@ -102,26 +102,18 @@ function animate() {
 
 animate();
 
-const fire = (() => {
-  const velocity = new THREE.Vector3();
+function fire() {
+  const bullet = new Bullet();
+  bullet.position.copy( ship.position );
+  bullet.start = bullet.position.clone();
 
-  return () =>  {
-    const bullet = new Bullet();
-    bullet.position.copy( ship.position );
-    bullet.start = bullet.position.clone();
+  // Fire in ship direction.
+  bullet.velocity.set( 0, 0, -config.bullet.speed )
+    .applyQuaternion( ship.quaternion )
+    .add( ship.velocity );
 
-    // Calculate local ship velocity.
-    velocity.copy( controls.movementVector )
-      .setLength( config.ship.speed );
-
-    // Fire in ship direction.
-    bullet.velocity.set( 0, 0, -config.bullet.speed )
-      .add( velocity )
-      .applyQuaternion( ship.quaternion );
-
-    client.add( bullet );
-  };
-})();
+  client.add( bullet );
+}
 
 document.addEventListener( 'mousedown', fire );
 

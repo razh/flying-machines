@@ -158,8 +158,9 @@ export default class FlyControls {
     object.quaternion.multiply( quaternion );
 
     // Translate.
-    const dv = this.speed * dt;
-    vector.copy( this.movementVector ).setLength( dv );
-    object.position.add( vector.applyQuaternion( object.quaternion ) );
+    object.velocity
+      .copy( this.movementVector )
+      .setLength( this.speed )
+      .applyQuaternion( object.quaternion );
   }
 }
