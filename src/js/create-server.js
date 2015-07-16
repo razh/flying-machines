@@ -9,6 +9,7 @@ export default function createServer() {
 
   server.on( 'connection', socket => {
     const id = state.length;
+    state[ id ] = null;
 
     const interval = setInterval(() => {
       try {
