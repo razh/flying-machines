@@ -17,6 +17,7 @@ export function createState( scene ) {
       const ship = shipPool.get();
       ship.position.copy( data.position );
       ship.quaternion.copy( data.quaternion );
+      ship.velocity.copy( data.velocity );
     });
 
     state.bullets.forEach( data => {

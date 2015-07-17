@@ -13,7 +13,10 @@ message Quaternion {
 
 message Ship {
   optional Vector3 position = 1;
-  optional Quaternion quaternion = 2;
+  optional Vector3 velocity = 2;
+
+  optional Quaternion quaternion = 3;
+  optional Vector3 angularVelocity = 4;
 }
 
 message Bullet {
