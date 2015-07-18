@@ -1,6 +1,7 @@
 {
   "ship": {
-    "speed": 1
+    "speed": 1,
+    "fireRate": 12
   },
   "bullet": {
     "speed": 2,

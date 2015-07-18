@@ -37,6 +37,7 @@ client.add( ship );
 const radar = new Radar( ship );
 client.add( radar );
 
+const keys = [];
 const controls = new FlyControls( ship, renderer.domElement );
 controls.speed = config.ship.speed;
 pointerLock( controls );
@@ -68,9 +69,40 @@ const updateCamera = ( object => {
   };
 })( ship );
 
+const canFire = (() => {
+  const period = 1 / config.ship.fireRate;
+  let previous = 0;
+
+  return time => {
+    if ( time - previous < period ) {
+      return false;
+    }
+
+    previous = time;
+    return true;
+  };
+})();
+
+function fire() {
+  const bullet = new Bullet();
+  bullet.position.copy( ship.position );
+  bullet.start = bullet.position.clone();
+
+  // Fire in ship direction.
+  bullet.velocity.set( 0, 0, -config.bullet.speed )
+    .applyQuaternion( ship.quaternion )
+    .add( ship.velocity );
+
+  client.add( bullet );
+}
+
 function animate() {
   const delta = clock.getDelta();
   controls.update( delta );
+
+  if ( keys[ 32 ] && canFire( clock.getElapsedTime() ) ) {
+    fire();
+  }
 
   const removed = [];
 
@@ -102,27 +134,11 @@ function animate() {
 
 animate();
 
-function fire() {
-  const bullet = new Bullet();
-  bullet.position.copy( ship.position );
-  bullet.start = bullet.position.clone();
-
-  // Fire in ship direction.
-  bullet.velocity.set( 0, 0, -config.bullet.speed )
-    .applyQuaternion( ship.quaternion )
-    .add( ship.velocity );
-
-  client.add( bullet );
-}
-
-document.addEventListener( 'mousedown', fire );
-
-document.addEventListener( 'keydown', event => {
-  // Space.
-  if ( event.keyCode === 32 ) {
-    fire();
-  }
-});
+// Space bar.
+document.addEventListener( 'mousedown', () => keys[ 32 ] = true );
+document.addEventListener( 'mouseup', () => keys[ 32 ] = false );
+document.addEventListener( 'keydown', event => keys[ event.keyCode ] = true );
+document.addEventListener( 'keyup', event => keys[ event.keyCode ] = false );
 
 window.addEventListener( 'resize', () => {
   renderer.setPixelRatio( window.devicePixelRatio );
