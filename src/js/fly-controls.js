@@ -1,7 +1,6 @@
 /* A heavily modified version of THREE.FlyControls. */
 import THREE from 'three';
 
-const vector = new THREE.Vector3();
 const quaternion = new THREE.Quaternion();
 
 export default class FlyControls {
@@ -148,19 +147,16 @@ export default class FlyControls {
     );
   }
 
-  update( dt ) {
-    const { object } = this;
-
+  update() {
     // Rotate.
-    const dr = this.turnRate * dt;
-    vector.copy( this.rotationVector ).setLength( dr );
-    quaternion.set( vector.x, vector.y, vector.z, 1 ).normalize();
-    object.quaternion.multiply( quaternion );
+    this.object.angularVelocity
+      .copy( this.rotationVector )
+      .setLength( this.turnRate );
 
     // Translate.
-    object.velocity
+    this.object.velocity
       .copy( this.movementVector )
       .setLength( this.speed )
-      .applyQuaternion( object.quaternion );
+      .applyQuaternion( this.object.quaternion );
   }
 }

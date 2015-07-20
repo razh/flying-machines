@@ -1,7 +1,7 @@
 import THREE from 'three';
-import Quaternion from './quaternion';
 
 const vector = new THREE.Vector3();
+const quaternion = new THREE.Quaternion();
 
 export default class Entity extends THREE.Mesh {
   constructor( ...args ) {
@@ -16,6 +16,7 @@ export default class Entity extends THREE.Mesh {
     this.position.add( vector );
 
     vector.copy( this.angularVelocity ).multiplyScalar( dt / 2 );
-    Quaternion.applyVector3( this.quaternion, vector );
+    quaternion.set( vector.x, vector.y, vector.z, 1 ).normalize();
+    this.quaternion.multiply( quaternion );
   }
 }

@@ -98,7 +98,7 @@ function fire() {
 
 function animate() {
   const delta = clock.getDelta();
-  controls.update( delta );
+  controls.update();
 
   if ( keys[ 32 ] && canFire( clock.getElapsedTime() ) ) {
     fire();
@@ -118,6 +118,7 @@ function animate() {
 
   removed.forEach( object => object.parent.remove( object ) );
 
+  // Update camera after ship update.
   updateCamera();
 
   radar.position.set( -1, -1, -2 )
