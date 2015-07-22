@@ -4,6 +4,7 @@ import pointerLock from './pointer-lock';
 import Ship from './ship';
 import Bullet from './bullet';
 import Radar from './radar';
+import Skybox from'./skybox';
 import createClient from './client';
 import update from './update';
 import config from './config';
@@ -36,6 +37,9 @@ client.add( ship );
 
 const radar = new Radar( ship );
 client.add( radar );
+
+const skybox = new Skybox( camera );
+createMap( skybox.scene, 'minimalSkybox' );
 
 const keys = [];
 const controls = new FlyControls( ship, renderer.domElement );
@@ -129,7 +133,11 @@ function animate() {
   radar.track( client, camera );
   radar.track( server, camera );
 
+  renderer.autoClear = false;
+  skybox.render( renderer, camera );
   renderer.render( scene, camera );
+  renderer.autoClear = true;
+
   requestAnimationFrame( animate );
 }
 

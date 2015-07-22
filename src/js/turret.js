@@ -60,9 +60,8 @@ const barrelsGeometry = (() => {
   leftBarrelGeometry.applyMatrix( matrix );
 
   matrix.makeTranslation( config.barrels.offset, 0, 0 );
-  rightBarrelGeometry.applyMatrix( matrix );
+  leftBarrelGeometry.merge( rightBarrelGeometry, matrix );
 
-  leftBarrelGeometry.merge( rightBarrelGeometry );
   return computeNormals( leftBarrelGeometry );
 })();
 
