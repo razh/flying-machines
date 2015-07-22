@@ -3,76 +3,101 @@ import THREE from 'three';
 const config = {
   base: {
     radiusTop: 0.05,
-    radiusBottom: 0.08,
-    height: 0.15
+    radiusBottom: 0.07,
+    height: 0.12
   },
-  gun: {
-    radiusTop: 0.02,
-    radiusBottom: 0.03,
-    height: 0.08
+  gunhouse: {
+    radiusTop: 0.04,
+    radiusBottom: 0.05,
+    height: 0.04
+  },
+  barrels: {
+    radiusTop: 0.008,
+    radiusBottom: 0.01,
+    height: 0.08,
+    offset: 0.012
   }
 };
 
 const rotationMatrix = new THREE.Matrix4().makeRotationY( Math.PI / 4 );
 const translationMatrix = new THREE.Matrix4();
 
-const baseGeometry = new THREE.CylinderGeometry(
-  config.base.radiusTop, config.base.radiusBottom, config.base.height,
-  4, 1, false
+function computeNormals( geometry ) {
+  geometry.computeFaceNormals();
+  geometry.computeVertexNormals();
+
+  return geometry;
+}
+
+// Converts CylinderGeometry to axis-aligned trapezoidal prisms.
+function turretTransform( geometry, height ) {
+  translationMatrix.makeTranslation( 0, height / 2, 0 );
+
+  geometry.applyMatrix( rotationMatrix );
+  geometry.applyMatrix( translationMatrix );
+
+  return geometry;
+}
+
+const baseGeometry = computeNormals(
+  turretTransform( new THREE.CylinderGeometry(
+    config.base.radiusTop, config.base.radiusBottom, config.base.height,
+    4, 1, false
+  ), config.base.height )
 );
 
-translationMatrix.makeTranslation( 0, config.base.height / 2, 0 );
+const barrelsGeometry = (() => {
+  const matrix = new THREE.Matrix4();
 
-baseGeometry.applyMatrix( rotationMatrix );
-baseGeometry.applyMatrix( translationMatrix );
+  const leftBarrelGeometry = turretTransform( new THREE.CylinderGeometry(
+    config.barrels.radiusTop, config.barrels.radiusBottom, config.barrels.height,
+    4, 1, false
+  ), config.barrels.height );
 
-baseGeometry.computeFaceNormals();
-baseGeometry.computeVertexNormals();
+  const rightBarrelGeometry = leftBarrelGeometry.clone();
 
-const gunGeometry = new THREE.CylinderGeometry(
-  config.gun.radiusTop, config.gun.radiusBottom, config.gun.height,
-  4, 1, false
+  matrix.makeTranslation( -config.barrels.offset, 0, 0 );
+  leftBarrelGeometry.applyMatrix( matrix );
+
+  matrix.makeTranslation( config.barrels.offset, 0, 0 );
+  rightBarrelGeometry.applyMatrix( matrix );
+
+  leftBarrelGeometry.merge( rightBarrelGeometry );
+  return computeNormals( leftBarrelGeometry );
+})();
+
+const gunhouseGeometry = computeNormals(
+  turretTransform( new THREE.CylinderGeometry(
+    config.gunhouse.radiusTop, config.gunhouse.radiusBottom, config.gunhouse.height,
+    4, 1, false
+  ), config.gunhouse.height )
 );
-
-translationMatrix.makeTranslation( 0, config.gun.height / 2, 0 );
-
-gunGeometry.applyMatrix( rotationMatrix );
-gunGeometry.applyMatrix( translationMatrix );
-
-gunGeometry.computeFaceNormals();
-gunGeometry.computeVertexNormals();
 
 const material = new THREE.MeshPhongMaterial({
   shading: THREE.FlatShading
 });
-
-class TurretBase extends THREE.Mesh {
-  constructor() {
-    super( baseGeometry, material.clone() );
-  }
-}
-
-class TurretGun extends THREE.Mesh {
-  constructor() {
-    super( gunGeometry, material.clone() );
-  }
-}
 
 const clock = new THREE.Clock();
 
 export default class Turret extends THREE.Group {
   constructor() {
     super();
-    this.base = new TurretBase();
-    this.gun = new TurretGun();
+
+    this.base = new THREE.Mesh( baseGeometry, material.clone() );
+    this.gunhouse = new THREE.Mesh( gunhouseGeometry, material.clone() );
+    this.barrels = new THREE.Mesh( barrelsGeometry, material.clone() );
+
+    this.gunhouse.position.y = config.base.height;
+    this.barrels.position.y = config.gunhouse.height / 2;
 
     this.add( this.base );
-    this.base.add( this.gun );
-    this.gun.position.y = config.base.height;
+    this.base.add( this.gunhouse );
+    this.gunhouse.add( this.barrels );
   }
 
   update() {
-    this.gun.rotation.x = Math.cos( clock.getElapsedTime() );
-    this.base.rotation.y = Math.sin( clock.getElapsedTime() );
+    const elapsedTime = clock.getElapsedTime();
+    this.gunhouse.rotation.y = Math.PI * Math.sin( elapsedTime / 2 );
+    this.barrels.rotation.x = Math.PI / 4 * ( Math.cos( elapsedTime ) + 1 );
   }
 }

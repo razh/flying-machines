@@ -1,6 +1,7 @@
 import THREE from 'three';
+import Turret from './turret';
 
-function createAsteroidMesh( x, y, z, radius ) {
+function createAsteroidMesh( x = 0, y = 0, z = 0, radius = 1 ) {
   const geometry = new THREE.IcosahedronGeometry( radius, 2 );
   const material = new THREE.MeshPhongMaterial({
     shading: THREE.FlatShading
@@ -29,6 +30,10 @@ const maps = {
     scene.add( light );
 
     scene.add( new THREE.HemisphereLight( '#f43', '#33a', 0.5 ) );
+
+    const turret = new Turret();
+    turret.position.set( 4, -0.02, -4 );
+    scene.add( turret );
   }
 };
 
