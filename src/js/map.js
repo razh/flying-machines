@@ -1,6 +1,10 @@
 import THREE from 'three';
 import Turret from './turret';
 
+function perturbVertex( vertex ) {
+  return vertex.multiplyScalar( THREE.Math.randFloat( 1, 1.5 ) );
+}
+
 function createAsteroidMesh( x = 0, y = 0, z = 0, radius = 1, detail = 2 ) {
   const geometry = new THREE.IcosahedronGeometry( radius, detail );
   const material = new THREE.MeshPhongMaterial({
@@ -16,6 +20,16 @@ function createAsteroidMeshes( asteroids ) {
   return asteroids.map( asteroid => createAsteroidMesh( ...asteroid ) );
 }
 
+const minimal = {
+  pointLight: (() => {
+    const light = new THREE.PointLight();
+    light.position.set( 8, 8, 8 );
+    return light;
+  })(),
+
+  hemisphereLight: new THREE.HemisphereLight( '#f43', '#33a', 0.5 ),
+}
+
 const maps = {
   minimal( scene ) {
     const meshes = createAsteroidMeshes([
@@ -25,11 +39,8 @@ const maps = {
 
     scene.add( ...meshes );
 
-    const light = new THREE.PointLight();
-    light.position.set( 8, 8, 8 );
-    scene.add( light );
-
-    scene.add( new THREE.HemisphereLight( '#f43', '#33a', 0.5 ) );
+    scene.add( minimal.pointLight.clone() );
+    scene.add( minimal.hemisphereLight.clone() );
 
     const turret = new Turret();
     turret.position.set( 4, -0.02, -4 );
@@ -45,10 +56,13 @@ const maps = {
     const scale = new THREE.Vector3();
 
     let count = 32;
-    const geometry = new THREE.IcosahedronGeometry( 1, 1 );
+    const asteroidGeometry = new THREE.IcosahedronGeometry( 1, 1 );
     const asteroidBeltGeometry = new THREE.Geometry();
 
     while ( count-- ) {
+      const geometry = asteroidGeometry.clone();
+      geometry.vertices.forEach( perturbVertex );
+
       const angle = Math.random() * 2 * Math.PI;
 
       position.set(
@@ -78,10 +92,11 @@ const maps = {
       color: '#655'
     });
 
-    scene.add( new THREE.DirectionalLight() );
+    scene.add( minimal.pointLight.clone() );
+    scene.add( minimal.hemisphereLight.clone() );
 
     const mesh = new THREE.Mesh( asteroidBeltGeometry, material );
-    mesh.rotation.x = -Math.PI / 3;
+    mesh.rotation.x = -2 * Math.PI / 3;
     mesh.rotation.y = Math.PI / 4;
     scene.add( mesh );
   }
