@@ -1,4 +1,5 @@
 import THREE from 'three';
+import Nebula from './nebula';
 import Turret from './turret';
 
 function perturbVertex( vertex ) {
@@ -27,8 +28,8 @@ const minimal = {
     return light;
   })(),
 
-  hemisphereLight: new THREE.HemisphereLight( '#f43', '#33a', 0.5 ),
-}
+  hemisphereLight: new THREE.HemisphereLight( '#f43', '#33a', 0.5 )
+};
 
 const maps = {
   minimal( scene ) {
@@ -99,6 +100,24 @@ const maps = {
     mesh.rotation.x = -2 * Math.PI / 3;
     mesh.rotation.y = Math.PI / 4;
     scene.add( mesh );
+
+    const nebulaGeometry = new Nebula(
+      {
+        fromColor: new THREE.Color( '#08040f' ),
+        toColor: new THREE.Color( '#000' )
+      },
+      64, 4
+    );
+
+    const nebulaMesh = new THREE.Mesh(
+      nebulaGeometry,
+      new THREE.MeshBasicMaterial({
+        side: THREE.BackSide,
+        vertexColors: THREE.VertexColors
+      })
+    );
+
+    scene.add( nebulaMesh );
   }
 };
 
