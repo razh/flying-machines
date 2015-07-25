@@ -23,12 +23,12 @@ function createAsteroidMeshes( asteroids ) {
 
 const minimal = {
   pointLight: (() => {
-    const light = new THREE.PointLight();
+    const light = new THREE.PointLight( '#aaf' );
     light.position.set( 8, 8, 8 );
     return light;
   })(),
 
-  hemisphereLight: new THREE.HemisphereLight( '#f43', '#33a', 0.5 )
+  hemisphereLight: new THREE.HemisphereLight( '#d43', '#33a', 0.5 )
 };
 
 const maps = {
@@ -60,6 +60,15 @@ const maps = {
     const asteroidGeometry = new THREE.IcosahedronGeometry( 1, 1 );
     const asteroidBeltGeometry = new THREE.Geometry();
 
+    const positionSpread = 8;
+    const scaleSpread = 0.5;
+
+    scene.fog = new THREE.Fog(
+      '#000',
+      radius - positionSpread,
+      radius + positionSpread
+    );
+
     while ( count-- ) {
       const geometry = asteroidGeometry.clone();
       geometry.vertices.forEach( perturbVertex );
@@ -67,18 +76,18 @@ const maps = {
       const angle = Math.random() * 2 * Math.PI;
 
       position.set(
-        radius * Math.cos( angle ) + THREE.Math.randFloatSpread( 8 ),
-        radius * Math.sin( angle ) + THREE.Math.randFloatSpread( 8 ),
-        THREE.Math.randFloatSpread( 8 )
+        radius * Math.cos( angle ) + THREE.Math.randFloatSpread( positionSpread ),
+        radius * Math.sin( angle ) + THREE.Math.randFloatSpread( positionSpread ),
+        THREE.Math.randFloatSpread( positionSpread )
       );
 
       quaternion.set( Math.random(), Math.random(), Math.random(), 1 )
         .normalize();
 
       scale.set(
-        1 + THREE.Math.randFloatSpread( 0.5 ),
-        1 + THREE.Math.randFloatSpread( 0.5 ),
-        1 + THREE.Math.randFloatSpread( 0.5 )
+        1 + THREE.Math.randFloatSpread( scaleSpread ),
+        1 + THREE.Math.randFloatSpread( scaleSpread ),
+        1 + THREE.Math.randFloatSpread( scaleSpread )
       );
 
       matrix.compose( position, quaternion, scale );
@@ -103,15 +112,16 @@ const maps = {
 
     const nebulaGeometry = new Nebula(
       {
-        fromColor: new THREE.Color( '#08040f' ),
+        fromColor: new THREE.Color( '#223' ),
         toColor: new THREE.Color( '#000' )
       },
-      64, 4
+      64, 3
     );
 
     const nebulaMesh = new THREE.Mesh(
       nebulaGeometry,
       new THREE.MeshBasicMaterial({
+        fog: false,
         side: THREE.BackSide,
         vertexColors: THREE.VertexColors
       })
