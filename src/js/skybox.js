@@ -10,4 +10,9 @@ export default class Skybox {
     this.camera.rotation.copy( camera.rotation );
     renderer.render( this.scene, this.camera );
   }
+
+  resize( width, height ) {
+    this.camera.aspect = width / height;
+    this.camera.updateProjectionMatrix();
+  }
 }
