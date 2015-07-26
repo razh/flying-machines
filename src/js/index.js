@@ -47,6 +47,7 @@ controls.speed = config.ship.speed;
 pointerLock( controls );
 
 const clock = new THREE.Clock();
+let running = true;
 
 const updateCamera = ( object => {
   const offset = new THREE.Vector3( 0, 0.3, 1 );
@@ -101,7 +102,7 @@ function fire() {
 }
 
 function animate() {
-  const delta = clock.getDelta();
+  const delta = Math.min( clock.getDelta(), 0.1 );
   controls.update();
 
   if ( keys[ 32 ] && canFire( clock.getElapsedTime() ) ) {
@@ -138,7 +139,9 @@ function animate() {
   renderer.render( scene, camera );
   renderer.autoClear = true;
 
-  requestAnimationFrame( animate );
+  if ( running ) {
+    requestAnimationFrame( animate );
+  }
 }
 
 animate();
@@ -148,6 +151,16 @@ document.addEventListener( 'mousedown', () => keys[ 32 ] = true );
 document.addEventListener( 'mouseup', () => keys[ 32 ] = false );
 document.addEventListener( 'keydown', event => keys[ event.keyCode ] = true );
 document.addEventListener( 'keyup', event => keys[ event.keyCode ] = false );
+
+document.addEventListener( 'keydown', event => {
+  // P. Pause/play.
+  if ( event.keyCode === 80 ) {
+    running = !running;
+    if ( running ) {
+      animate();
+    }
+  }
+});
 
 window.addEventListener( 'resize', () => {
   renderer.setPixelRatio( window.devicePixelRatio );
