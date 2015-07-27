@@ -48,7 +48,9 @@ export function findNearest( scene, target, callback ) {
       return;
     }
 
-    const distanceSquared = object.position.distanceToSquared( target.position );
+    const distanceSquared = object.position
+      .distanceToSquared( target.position );
+
     if ( distanceSquared < minDistanceSquared ) {
       minDistanceSquared = distanceSquared;
       min = object;

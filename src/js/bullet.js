@@ -2,13 +2,14 @@ import THREE from 'three';
 import Entity from './entity';
 import { collisionMixin } from './collision';
 
-const radius = 64;
+const diameter = 128;
+const radius = diameter / 2;
 
 const canvas = document.createElement( 'canvas' );
 const ctx = canvas.getContext( '2d' );
 
-canvas.width = 2 * radius;
-canvas.height = 2 * radius;
+canvas.width = diameter;
+canvas.height = diameter;
 
 const gradient = ctx.createRadialGradient(
   radius, radius, 0,

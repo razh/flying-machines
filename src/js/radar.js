@@ -1,11 +1,6 @@
 import THREE from 'three';
 import createPool from './pool';
 
-const geometry = new THREE.PlaneBufferGeometry( 1, 1 );
-geometry.applyMatrix( new THREE.Matrix4().makeRotationZ( Math.PI / 4 ) );
-
-const material = new THREE.MeshBasicMaterial();
-
 const vector = new THREE.Vector3();
 
 const scales = {
@@ -13,9 +8,14 @@ const scales = {
   bullet: 1 / 64
 };
 
-class RadarPoint extends THREE.Mesh {
+const material = new THREE.SpriteMaterial({
+  depthTest: false,
+  rotation: Math.PI / 4
+});
+
+class RadarPoint extends THREE.Sprite {
   constructor() {
-    super( geometry, material );
+    super( material );
   }
 }
 
