@@ -1,8 +1,9 @@
 import THREE from 'three';
 
-export function collisionMixin( object ) {
-  object.collisionFilterGroup = 1;
-  object.collisionFilterMask = 1;
+export function collisionMixin( body ) {
+  body.collisionFilterGroup = 1;
+  body.collisionFilterMask = 1;
+  return body;
 }
 
 export const intersectLineSphere = (() => {
@@ -33,3 +34,26 @@ export const intersectLineSphere = (() => {
     }
   };
 })();
+
+export function findNearest( scene, target, callback ) {
+  let minDistanceSquared = Infinity;
+  let min;
+
+  scene.traverse( object => {
+    if ( object === target ) {
+      return;
+    }
+
+    if ( callback && !callback( object ) ) {
+      return;
+    }
+
+    const distanceSquared = object.position.distanceToSquared( target.position );
+    if ( distanceSquared < minDistanceSquared ) {
+      minDistanceSquared = distanceSquared;
+      min = object;
+    }
+  });
+
+  return min;
+}
