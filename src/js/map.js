@@ -1,5 +1,6 @@
 import THREE from 'three';
 import Nebula from './nebula';
+import Starfield from './starfield';
 import Turret from './turret';
 
 function perturbVertex( vertex ) {
@@ -73,7 +74,7 @@ const maps = {
       const geometry = asteroidGeometry.clone();
       geometry.vertices.forEach( perturbVertex );
 
-      const angle = Math.random() * 2 * Math.PI;
+      const angle = 2 * Math.PI * Math.random();
 
       position.set(
         radius * Math.cos( angle ) + THREE.Math.randFloatSpread( positionSpread ),
@@ -128,6 +129,19 @@ const maps = {
     );
 
     scene.add( nebulaMesh );
+
+    const starfieldGeometry = new Starfield( 512 );
+    const starfield = new THREE.PointCloud(
+      starfieldGeometry,
+      new THREE.PointCloudMaterial({
+        color: '#777',
+        fog: false,
+        sizeAttenuation: false
+      })
+    );
+
+    starfield.scale.setLength( 63 );
+    scene.add( starfield );
   }
 };
 
