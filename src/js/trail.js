@@ -13,7 +13,7 @@ const material = new THREE.LineBasicMaterial({
 export default class Trail extends THREE.Line {
   constructor( count = 64 ) {
     const geometry = new THREE.BufferGeometry();
-    const vertices = new Float32Array( count * 3 );
+    const vertices = new Float32Array( 3 * count );
     const attribute = new THREE.BufferAttribute( vertices, 3 );
     geometry.addAttribute( 'position', attribute );
 
