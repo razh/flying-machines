@@ -50,27 +50,18 @@ const clock = new THREE.Clock();
 let running = true;
 
 const updateCamera = ( object => {
+  const stiffness = 0.1;
   const offset = new THREE.Vector3( 0, 0.3, 1 );
   const vector = new THREE.Vector3();
 
   return () => {
-    // Camera position.
+    // Ideal camera position.
     vector.copy( offset )
       .applyQuaternion( object.quaternion )
       .add( object.position );
 
-    camera.position.copy( vector );
-
-    // Camera up.
-    vector.set( 0, 1, 0 ).applyQuaternion( object.quaternion );
-    camera.up.copy( vector );
-
-    // Camera lookAt target.
-    vector.set( 0, 0, -1 )
-      .applyQuaternion( object.quaternion )
-      .add( camera.position );
-
-    camera.lookAt( vector );
+    camera.position.lerp( vector, stiffness );
+    camera.quaternion.slerp( object.quaternion, stiffness );
   };
 })( ship );
 
