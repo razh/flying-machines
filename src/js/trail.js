@@ -19,36 +19,36 @@ export default class Trail extends THREE.Line {
 
     super( geometry, material );
 
+    // Offset from target.
+    this.offset = new THREE.Vector3();
+    // Circular array of previous positions.
     this.positions = times( count, () => new THREE.Vector3() );
-    this.offset = 0;
+    // Current index of position array start.
+    this.start = 0;
 
     this.frustumCulled = false;
   }
 
   track( target ) {
+    const { position } = this.geometry.attributes;
     let index = 0;
 
-    for ( let i = this.offset; i < this.positions.length; i++ ) {
-      this.positions[i].toArray(
-        this.geometry.attributes.position.array,
-        3 * index
-      );
-
+    for ( let i = this.start; i < this.positions.length; i++ ) {
+      this.positions[i].toArray( position.array, 3 * index );
       index++;
     }
 
-    for ( let i = 0; i < this.offset; i++ ) {
-      this.positions[i].toArray(
-        this.geometry.attributes.position.array,
-        3 * index
-      );
-
+    for ( let i = 0; i < this.start; i++ ) {
+      this.positions[i].toArray( position.array, 3 * index );
       index++;
     }
 
-    this.positions[ this.offset ].copy( target.position );
-    this.offset = ( this.offset + 1 ) % this.positions.length;
+    this.positions[ this.start ].copy( this.offset )
+      .applyQuaternion( target.quaternion )
+      .add( target.position );
 
-    this.geometry.attributes.position.needsUpdate = true;
+    this.start = ( this.start + 1 ) % this.positions.length;
+
+    position.needsUpdate = true;
   }
 }

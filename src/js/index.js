@@ -49,7 +49,7 @@ pointerLock( controls );
 const clock = new THREE.Clock();
 let running = true;
 
-const updateCamera = ( object => {
+const updateCamera = ( target => {
   const stiffness = 0.1;
   const offset = new THREE.Vector3( 0, 0.3, 1 );
   const vector = new THREE.Vector3();
@@ -57,11 +57,11 @@ const updateCamera = ( object => {
   return () => {
     // Ideal camera position.
     vector.copy( offset )
-      .applyQuaternion( object.quaternion )
-      .add( object.position );
+      .applyQuaternion( target.quaternion )
+      .add( target.position );
 
     camera.position.lerp( vector, stiffness );
-    camera.quaternion.slerp( object.quaternion, stiffness );
+    camera.quaternion.slerp( target.quaternion, stiffness );
   };
 })( ship );
 
