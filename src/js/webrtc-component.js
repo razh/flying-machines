@@ -1,6 +1,11 @@
+import Peer from 'simple-peer';
 import { createPeer } from './webrtc';
 
 export default function createWebRTCInterface( client, server ) {
+  if ( !Peer.WEBRTC_SUPPORT ) {
+    return;
+  }
+
   const group = document.createElement( 'div' );
   group.className = 'webrtc-group';
 

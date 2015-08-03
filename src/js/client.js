@@ -28,8 +28,23 @@ export function createState( scene ) {
   };
 }
 
-export default function createClient( client, server ) {
+function createSocket() {
+  // Check for WebSocket binary support.
+  if ( !( 'WebSocket' in window ) ) {
+    return;
+  }
+
   const socket = new WebSocket( 'ws://' + window.location.hostname + ':8080' );
+  if ( !socket.binaryType ) {
+    socket.close();
+    return;
+  }
+
+  return socket;
+}
+
+export default function createClient( client, server ) {
+  const socket = createSocket();
   socket.binaryType = 'arraybuffer';
 
   socket.addEventListener( 'open', () => {
