@@ -39,9 +39,6 @@ export default class FlyControls {
     document.addEventListener( 'mousemove', this.onMouseMove.bind( this ) );
     document.addEventListener( 'keydown', this.onKeyDown.bind( this ) );
     document.addEventListener( 'keyup', this.onKeyUp.bind( this ) );
-
-    this.updateMovementVector();
-    this.updateRotationVector();
   }
 
   onKeyDown( event ) {
@@ -151,12 +148,12 @@ export default class FlyControls {
     // Rotate.
     this.object.angularVelocity
       .copy( this.rotationVector )
-      .setLength( this.turnRate );
+      .multiplyScalar( this.turnRate );
 
     // Translate.
     this.object.velocity
       .copy( this.movementVector )
-      .setLength( this.speed )
+      .multiplyScalar( this.speed )
       .applyQuaternion( this.object.quaternion );
   }
 }

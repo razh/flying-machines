@@ -7,11 +7,12 @@ export default function pointerLock( controls, element = document.body ) {
     'webkitPointerLockElement' in document
   );
 
-  if ( !hasPointerLock ) {
-    return;
-  }
-
   const dispatcher = new THREE.EventDispatcher();
+
+  if ( !hasPointerLock ) {
+    controls.enabled = true;
+    return dispatcher;
+  }
 
   function onPointerLockChange() {
     controls.enabled = (
