@@ -9,7 +9,7 @@ function copyTouch( touch ) {
   };
 }
 
-export default class FlyTouchControls extends FlyControls {
+export default class FlyControlsTouch extends FlyControls {
   constructor( ...args ) {
     super( ...args );
 

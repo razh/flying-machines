@@ -1,5 +1,5 @@
 import THREE from 'three';
-import FlyControls from './fly-controls';
+import FlyControlsTouch from './touch';
 import pointerLock from './pointer-lock';
 import Ship from './ship';
 import Bullet from './bullet';
@@ -42,7 +42,7 @@ const skybox = new Skybox( camera );
 createMap( skybox.scene, 'minimalSkybox' );
 
 const keys = [];
-const controls = new FlyControls( ship, renderer.domElement );
+const controls = new FlyControlsTouch( ship, renderer.domElement );
 controls.speed = config.ship.speed;
 pointerLock( controls );
 
