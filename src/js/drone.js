@@ -1,5 +1,6 @@
 import THREE from 'three';
 import Entity from './entity';
+import traverse from './traverse';
 
 const TorusKnot = THREE.Curve.create(
   function TorusKnot( scale = 10 ) {
@@ -26,9 +27,12 @@ const material = new THREE.MeshPhongMaterial({
   shading: THREE.FlatShading
 });
 
+const vector = new THREE.Vector3();
+
 export default class Drone extends Entity {
   constructor() {
     super( geometry, material.clone() );
+    this.geometry.computeBoundingSphere();
 
     this.path = new TorusKnot( 2 );
 
@@ -39,8 +43,19 @@ export default class Drone extends Entity {
     this.clock = new THREE.Clock();
   }
 
-  update() {
+  update( dt, scene ) {
     const t = ( this.clock.getElapsedTime() / this.duration ) % 1;
     this.position.copy( this.path.getPointAt( t ) );
+
+    this.material.color.setRGB( 1, 1, 1 );
+    traverse( scene, object => {
+      if ( object.type === 'bullet' ) {
+        this.worldToLocal( object.getWorldPosition( vector ) );
+        if ( this.geometry.boundingSphere.containsPoint( vector ) ) {
+          this.material.color.setRGB( 1, 0, 0 );
+          return false;
+        }
+      }
+    });
   }
 }
