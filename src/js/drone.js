@@ -1,4 +1,5 @@
 import THREE from 'three';
+import TWEEN from 'tween.js';
 import Entity from './entity';
 import traverse from './traverse';
 
@@ -41,18 +42,36 @@ export default class Drone extends Entity {
     this.duration = this.length / this.speed;
 
     this.clock = new THREE.Clock();
+
+    const { color } = this.material;
+    this.colorArray = material.color.toArray();
+
+    this.tween = new TWEEN.Tween( this.colorArray )
+      .onUpdate(function() {
+        color.setRGB( ...this );
+      })
+      .start();
   }
+
+  hit() {
+    this.material.color.setRGB( 1, 0, 0 )
+      .toArray( this.colorArray );
+
+    this.tween.stop()
+      .to( [ 1, 1, 1 ], 100 )
+      .start();
+    }
 
   update( dt, scene ) {
     const t = ( this.clock.getElapsedTime() / this.duration ) % 1;
     this.position.copy( this.path.getPointAt( t ) );
+    TWEEN.update();
 
-    this.material.color.setRGB( 1, 1, 1 );
     traverse( scene, object => {
       if ( object.type === 'bullet' ) {
         this.worldToLocal( object.getWorldPosition( vector ) );
         if ( this.geometry.boundingSphere.containsPoint( vector ) ) {
-          this.material.color.setRGB( 1, 0, 0 );
+          this.hit();
           return false;
         }
       }
