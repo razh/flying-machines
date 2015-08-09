@@ -5,7 +5,8 @@ const vector = new THREE.Vector3();
 
 const scales = {
   ship: 1 / 16,
-  bullet: 1 / 64
+  bullet: 1 / 64,
+  drone: 1 / 32
 };
 
 const material = new THREE.SpriteMaterial({
@@ -44,24 +45,27 @@ export default class Radar extends THREE.Group {
     this.worldToLocal( vector.copy( camera.position ) );
 
     scene.traverse( object => {
-      if ( object.type === 'ship' || object.type === 'bullet' ) {
-        const distanceToSquared = object.position
-          .distanceToSquared( target.position );
-
-        // Add radar blip if within range.
-        if ( distanceToSquared <= this.radiusSquared ) {
-          const point = this.pool.get();
-          point.scale.setLength( scales[ object.type ] );
-
-          this.blips.add( point );
-
-          point.position
-            .subVectors( object.position, target.position )
-            .multiplyScalar( this.radarScale );
-
-          point.lookAt( vector );
-        }
+      const scale = scales[ object.type ];
+      if ( !scale ) {
+        return;
       }
+
+      const distanceToSquared = object.position
+        .distanceToSquared( target.position );
+
+      // Add radar blip if within range.
+      if ( distanceToSquared > this.radiusSquared ) {
+        return;
+      }
+
+      const point = this.pool.get();
+      point.scale.setLength( scale );
+
+      point.position
+        .subVectors( object.position, target.position )
+        .multiplyScalar( this.radarScale );
+
+      this.blips.add( point );
     });
   }
 

@@ -35,8 +35,9 @@ export default class Drone extends Entity {
     super( geometry, material.clone() );
     this.geometry.computeBoundingSphere();
 
-    this.path = new TorusKnot( 2 );
+    this.type = 'drone';
 
+    this.path = new TorusKnot( 2 );
     this.length = this.path.getLength();
     this.speed = 2;
     this.duration = this.length / this.speed;
