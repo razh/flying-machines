@@ -64,9 +64,16 @@ export default class Drone extends Entity {
     }
 
   update( dt, scene ) {
-    const t = ( this.clock.getElapsedTime() / this.duration ) % 1;
-    this.position.copy( this.path.getPointAt( t ) );
     TWEEN.update();
+
+    const t = ( this.clock.getElapsedTime() / this.duration ) % 1;
+    const point = this.path.getPointAt( t );
+
+    this.velocity
+      .subVectors( point, this.position )
+      .divideScalar( dt );
+
+    this.position.copy( point );
 
     traverse( scene, object => {
       if ( object.type === 'bullet' ) {

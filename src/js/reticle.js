@@ -80,3 +80,18 @@ export default class Reticle extends THREE.Sprite {
     this.position.lerp( vector, this.stiffness );
   }
 }
+
+export class Prediction extends THREE.Sprite  {
+  constructor( ship ) {
+    super( material );
+
+    this.ship = ship;
+    this.stiffness = 0.2;
+    this.scale.setLength( 1 / 2 );
+  }
+
+  track( target ) {
+    vector.addVectors( target.position, target.velocity );
+    this.position.lerp( vector, this.stiffness );
+  }
+}
