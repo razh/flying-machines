@@ -67,12 +67,13 @@ export default class Reticle extends THREE.Sprite {
   constructor() {
     super( material );
 
+    this.lookahead = 1;
     this.stiffness = 0.2;
     this.scale.setLength( 1 / 2 );
   }
 
   track( ship ) {
-    vector.set( 0, 0, -config.bullet.speed )
+    vector.set( 0, 0, -config.bullet.speed * this.lookahead )
       .applyQuaternion( ship.quaternion )
       .add( ship.velocity )
       .add( ship.position );
@@ -86,12 +87,17 @@ export class Prediction extends THREE.Sprite  {
     super( material );
 
     this.ship = ship;
+
+    this.lookahead = 1;
     this.stiffness = 0.2;
     this.scale.setLength( 1 / 2 );
   }
 
   track( target ) {
-    vector.addVectors( target.position, target.velocity );
+    vector.copy( target.velocity )
+      .multiplyScalar( this.lookahead )
+      .add( target.position );
+
     this.position.lerp( vector, this.stiffness );
   }
 }
