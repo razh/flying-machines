@@ -1,5 +1,4 @@
 import THREE from 'three';
-import TWEEN from 'tween.js';
 import Entity from './entity';
 import traverse from './traverse';
 
@@ -30,6 +29,10 @@ const material = new THREE.MeshPhongMaterial({
 
 const vector = new THREE.Vector3();
 
+const REGENERATION_RATE = 1000 / 50;
+const RED = new THREE.Color( 1, 0, 0 );
+const WHITE = new THREE.Color( 1, 1, 1 );
+
 export default class Drone extends Entity {
   constructor() {
     super( geometry, material.clone() );
@@ -39,32 +42,18 @@ export default class Drone extends Entity {
 
     this.path = new TorusKnot( 2 );
     this.length = this.path.getLength();
-    this.speed = 2;
+    this.speed = 1;
     this.duration = this.length / this.speed;
 
     this.clock = new THREE.Clock();
-
-    const { color } = this.material;
-    this.colorArray = material.color.toArray();
-
-    this.tween = new TWEEN.Tween( this.colorArray )
-      .onUpdate(function() {
-        color.setRGB( ...this );
-      })
-      .start();
   }
 
   hit() {
-    this.material.color.setRGB( 1, 0, 0 )
-      .toArray( this.colorArray );
-
-    this.tween.stop()
-      .to( [ 1, 1, 1 ], 100 )
-      .start();
-    }
+    this.material.color.copy( RED );
+  }
 
   update( dt, scene ) {
-    TWEEN.update();
+    this.material.color.lerp( WHITE, dt * REGENERATION_RATE );
 
     const t = ( this.clock.getElapsedTime() / this.duration ) % 1;
     const point = this.path.getPointAt( t );
