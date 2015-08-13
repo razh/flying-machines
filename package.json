@@ -23,7 +23,6 @@
     "simple-peer": "^5.11.5",
     "simplex-noise": "^2.2.0",
     "three": "^0.71.0",
-    "tween.js": "^15.0.0",
     "ws": "^0.7.2"
   },
   "devDependencies": {
@@ -32,7 +31,7 @@
     "brfs": "^1.4.0",
     "browser-sync": "^2.8.2",
     "browserify": "^11.0.1",
-    "del": "^1.2.0",
+    "del": "^1.2.1",
     "gulp": "^3.9.0",
     "gulp-load-plugins": "^0.10.0",
     "gulp-util": "^3.0.6",
