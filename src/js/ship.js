@@ -33,6 +33,7 @@ export default class Ship extends Entity {
     this.type = 'ship';
 
     this.shield = new Shield();
+    this.shield.visible = false;
     this.add( this.shield );
   }
 

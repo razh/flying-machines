@@ -3,8 +3,11 @@ import FlyControlsTouch from './touch';
 import pointerLock from './pointer-lock';
 import Ship from './ship';
 import Bullet from './bullet';
+import Drone from './drone';
 import Radar from './radar';
+import Reticle, { Prediction } from './reticle';
 import Skybox from'./skybox';
+import Trail from './trail';
 import createClient from './client';
 import update from './update';
 import config from './config';
@@ -37,6 +40,19 @@ client.add( ship );
 
 const radar = new Radar( ship );
 client.add( radar );
+
+const trail = new Trail();
+trail.offset.set( 0, 0, 0.3 );
+client.add( trail );
+
+const reticle = new Reticle();
+scene.add( reticle );
+
+const prediction = new Prediction();
+scene.add( prediction );
+
+const drone = new Drone();
+client.add( drone );
 
 const skybox = new Skybox( camera );
 createMap( skybox.scene, 'minimalSkybox' );
@@ -124,6 +140,9 @@ function animate() {
   radar.reset();
   radar.track( client, camera );
   radar.track( server, camera );
+  trail.track( ship );
+  reticle.track( ship );
+  prediction.track( drone );
 
   renderer.autoClear = false;
   skybox.render( renderer, camera );
@@ -162,3 +181,5 @@ window.addEventListener( 'resize', () => {
 
   skybox.resize( window.innerWidth, window.innerHeight );
 });
+
+require( './webrtc-component' )( client, server );
