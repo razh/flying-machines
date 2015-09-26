@@ -23,7 +23,7 @@ function onError(error) {
   this.emit('end');
 }
 
-gulp.task('browser-sync', function() {
+gulp.task('browser-sync', () => {
   return browserSync.init({
     browser: [],
     port: PORT,
@@ -33,7 +33,7 @@ gulp.task('browser-sync', function() {
   });
 });
 
-gulp.task('js', function() {
+gulp.task('js', () => {
   const bundler = watchify(browserify(SOURCE_DIR + '/js/index.js',
     _.assign({
       debug: true
@@ -58,19 +58,17 @@ gulp.task('js', function() {
   return rebundle();
 });
 
-gulp.task('html', function() {
+gulp.task('html', () => {
   return gulp.src(SOURCE_DIR + '/*.html')
     .pipe(gulp.dest(BUILD_DIR))
     .pipe(browserSync.reload({stream: true}));
 });
 
-gulp.task('watch', function() {
-  gulp.watch([SOURCE_DIR + '/*.html'], ['html']);
-});
+gulp.task('clean', () => del([BUILD_DIR]));
 
-gulp.task('clean', del.bind(null, [BUILD_DIR]));
+gulp.task('watch', () => gulp.watch([SOURCE_DIR + '/*.html'], ['html']));
 
-gulp.task('default', ['clean'], function(cb) {
+gulp.task('default', ['clean'], cb => {
   return runSequence(
     ['html', 'js'],
     ['browser-sync', 'watch'],
