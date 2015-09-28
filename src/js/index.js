@@ -170,6 +170,16 @@ document.addEventListener( 'keydown', event => {
       animate();
     }
   }
+
+  if ( event.keyCode === 16 ) {
+    controls.speed = 4 * config.ship.speed;
+  }
+});
+
+document.addEventListener( 'keyup', event => {
+  if ( event.keyCode === 16 ) {
+    controls.speed = config.ship.speed;
+  }
 });
 
 window.addEventListener( 'resize', () => {
