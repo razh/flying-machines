@@ -5,11 +5,9 @@ import { collisionMixin } from './collision';
 
 const geometries = {
   basic: (() => {
-    const rotationMatrix = new THREE.Matrix4()
-      .makeRotationFromEuler( new THREE.Euler( -Math.PI / 2, 0, 0 ) );
-
     const geometry = new THREE.CylinderGeometry( 0, 0.1, 0.5, 3 );
-    geometry.applyMatrix( rotationMatrix );
+
+    geometry.rotateX( -Math.PI / 2 );
     geometry.computeFaceNormals();
     geometry.computeVertexNormals();
 

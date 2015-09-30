@@ -19,9 +19,6 @@ const config = {
   }
 };
 
-const rotationMatrix = new THREE.Matrix4().makeRotationY( Math.PI / 4 );
-const translationMatrix = new THREE.Matrix4();
-
 function computeNormals( geometry ) {
   geometry.computeFaceNormals();
   geometry.computeVertexNormals();
@@ -31,12 +28,9 @@ function computeNormals( geometry ) {
 
 // Converts CylinderGeometry to axis-aligned trapezoidal prisms.
 function turretTransform( geometry, height ) {
-  translationMatrix.makeTranslation( 0, height / 2, 0 );
-
-  geometry.applyMatrix( rotationMatrix );
-  geometry.applyMatrix( translationMatrix );
-
-  return geometry;
+  return geometry
+    .rotateY( Math.PI / 4 )
+    .translate( 0, height / 2, 0 );
 }
 
 const baseGeometry = computeNormals(
@@ -47,22 +41,26 @@ const baseGeometry = computeNormals(
 );
 
 const barrelsGeometry = (() => {
-  const matrix = new THREE.Matrix4();
+  const geometry = new THREE.Geometry();
 
-  const leftBarrelGeometry = turretTransform( new THREE.CylinderGeometry(
+  const leftBarrelGeometry = new THREE.CylinderGeometry(
     config.barrels.radiusTop, config.barrels.radiusBottom, config.barrels.height,
     4, 1, false
-  ), config.barrels.height );
+  );
 
   const rightBarrelGeometry = leftBarrelGeometry.clone();
 
-  matrix.makeTranslation( -config.barrels.offset, 0, 0 );
-  leftBarrelGeometry.applyMatrix( matrix );
+  geometry.merge(
+    turretTransform( leftBarrelGeometry, config.barrels.height )
+      .translate( -config.barrels.offset, 0, 0 )
+  );
 
-  matrix.makeTranslation( config.barrels.offset, 0, 0 );
-  leftBarrelGeometry.merge( rightBarrelGeometry, matrix );
+  geometry.merge(
+    turretTransform( rightBarrelGeometry, config.barrels.height )
+      .translate( config.barrels.offset, 0, 0 )
+  );
 
-  return computeNormals( leftBarrelGeometry );
+  return computeNormals( geometry );
 })();
 
 const gunhouseGeometry = computeNormals(
