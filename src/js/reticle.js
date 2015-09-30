@@ -94,9 +94,8 @@ export class Prediction extends THREE.Sprite  {
   }
 
   track( target ) {
-    vector.copy( target.velocity )
-      .multiplyScalar( this.lookahead )
-      .add( target.position );
+    vector.copy( target.position )
+      .addScaledVector( target.velocity, this.lookahead );
 
     this.position.lerp( vector, this.stiffness );
   }

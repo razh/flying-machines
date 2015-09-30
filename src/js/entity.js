@@ -12,8 +12,7 @@ export default class Entity extends THREE.Mesh {
   }
 
   update( dt ) {
-    vector.copy( this.velocity ).multiplyScalar( dt );
-    this.position.add( vector );
+    this.position.addScaledVector( this.velocity, dt );
 
     vector.copy( this.angularVelocity ).multiplyScalar( dt / 2 );
     quaternion.set( vector.x, vector.y, vector.z, 1 ).normalize();

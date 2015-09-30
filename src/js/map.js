@@ -131,9 +131,9 @@ const maps = {
     scene.add( nebulaMesh );
 
     const starfieldGeometry = new Starfield( 512 );
-    const starfield = new THREE.PointCloud(
+    const starfield = new THREE.Points(
       starfieldGeometry,
-      new THREE.PointCloudMaterial({
+      new THREE.PointsMaterial({
         color: '#777',
         fog: false,
         sizeAttenuation: false
