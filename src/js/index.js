@@ -8,6 +8,7 @@ import Radar from './radar';
 import Reticle, { Prediction } from './reticle';
 import Skybox from'./skybox';
 import Trail from './trail';
+import Explosion from './explosion';
 import createClient from './client';
 import update from './update';
 import config from './config';
@@ -53,6 +54,9 @@ scene.add( prediction );
 
 const drone = new Drone();
 client.add( drone );
+
+const explosion = new Explosion();
+scene.add( explosion );
 
 const skybox = new Skybox( camera );
 createMap( skybox.scene, 'minimalSkybox' );
