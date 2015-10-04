@@ -1,8 +1,7 @@
 import THREE from 'three';
 import times from 'lodash/utility/times';
 
-const size = 64;
-const border = 0.2;
+const size = 128;
 const scale = () => THREE.Math.randFloat( 0.1, 0.5 );
 
 const canvas = document.createElement( 'canvas' );
@@ -11,16 +10,30 @@ const ctx = canvas.getContext( '2d' );
 canvas.width = size;
 canvas.height = size;
 
-ctx.fillStyle = '#f85';
-ctx.fillRect( 0, 0, size, size );
+/*
+      ratio
+      |----|
+    +--------+
+    | +----+ |
+    | |    | |
+    | +----+ |
+    +--------+
+ */
+function drawShadowRect( ctx, color, ratio, blur ) {
+  ctx.shadowColor = color;
+  ctx.shadowBlur = blur * size;
 
-ctx.fillStyle = '#fff';
-ctx.fillRect(
-  border * size,
-  border * size,
-  ( 1 - 2 * border ) * size,
-  ( 1 - 2 * border ) * size
-);
+  ctx.fillStyle = color;
+  ctx.fillRect(
+    size * ( 1 - ratio ) / 2,
+    size * ( 1 - ratio ) / 2,
+    size * ratio,
+    size * ratio
+  );
+}
+
+drawShadowRect( ctx, '#f85', 0.8, 0.2 );
+drawShadowRect( ctx, '#fff', 0.4, 0.2 );
 
 const texture = new THREE.Texture( canvas );
 texture.needsUpdate = true;
