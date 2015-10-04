@@ -56,6 +56,7 @@ const drone = new Drone();
 client.add( drone );
 
 const explosion = new Explosion();
+explosion.position.set( 0, -1, -4 );
 scene.add( explosion );
 
 const skybox = new Skybox( camera );

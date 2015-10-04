@@ -4,7 +4,7 @@
     "fireRate": 8
   },
   "bullet": {
-    "speed": 4,
+    "speed": 6,
     "range": 16
   }
 }
