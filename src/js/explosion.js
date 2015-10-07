@@ -1,5 +1,6 @@
 import THREE from 'three';
 import times from 'lodash/utility/times';
+import { randomPointOnSphere } from './math';
 
 const size = 128;
 const scale = () => THREE.Math.randFloat( 0.1, 0.5 );
@@ -70,9 +71,7 @@ export default class Explosion extends THREE.Group {
       this.velocities.push( new THREE.Vector3() );
     }
 
-    this.reset( radius );
-
-    setInterval( () => this.reset( radius ), 1000 );
+    this.reset();
   }
 
   update( dt ) {
@@ -84,23 +83,16 @@ export default class Explosion extends THREE.Group {
     });
   }
 
-  reset( radius ) {
+  reset() {
     this.children.map( sprite => {
-      sprite.position.set(
-        THREE.Math.randFloatSpread( radius ),
-        THREE.Math.randFloatSpread( radius ),
-        THREE.Math.randFloatSpread( radius )
-      );
+      randomPointOnSphere( sprite.position )
+        .multiplyScalar( THREE.Math.randFloatSpread( this.radius ) );
 
       sprite.scale.setLength( scale() );
     });
 
-    this.velocities.forEach( velocity => {
-      velocity.set(
-        THREE.Math.randFloatSpread( 1 ),
-        THREE.Math.randFloatSpread( 1 ),
-        THREE.Math.randFloatSpread( 1 )
-      ).setLength( speed );
+    this.velocities.map( velocity => {
+      randomPointOnSphere( velocity ).setLength( speed );
     });
   }
 }

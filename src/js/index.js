@@ -59,6 +59,8 @@ const explosion = new Explosion();
 explosion.position.set( 0, -1, -4 );
 scene.add( explosion );
 
+setInterval( () => explosion.reset(), 1000 );
+
 const skybox = new Skybox( camera );
 createMap( skybox.scene, 'minimalSkybox' );
 
