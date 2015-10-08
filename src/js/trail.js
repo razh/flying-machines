@@ -21,8 +21,10 @@ export default class Trail extends THREE.Line {
 
     // Offset from target.
     this.offset = new THREE.Vector3();
+
     // Circular array of previous positions.
     this.positions = times( count, () => new THREE.Vector3() );
+
     // Current index of position array start.
     this.start = 0;
 
@@ -150,5 +152,50 @@ export class SpriteTrail extends THREE.Group {
     this.children.map( sprite => {
       sprite.scale.addScalar( ds ).clampScalar( 0 )
     });
+  }
+}
+
+
+export class ScreenSpaceTrail extends THREE.Mesh {
+  constructor( count = 32, radius = 0.05 ) {
+    const geometry = new THREE.TubeGeometry(
+      new THREE.LineCurve(
+        new THREE.Vector3(),
+        new THREE.Vector3().setZ( 1 )
+      ),
+      count - 1, radius, 2
+    );
+
+    const material = new THREE.MeshBasicMaterial({
+      blending: THREE.AdditiveBlending,
+      color: '#f43',
+      opacity: 0.25,
+      transparent: true,
+      wireframe: true
+    });
+
+    super( geometry, material );
+
+    // Offset from target.
+    this.offset = new THREE.Vector3();
+
+    // Circular array of previous positions.
+    this.positions = times( count, () => new THREE.Vector3() );
+
+    // Current index of position array start.
+    this.start = 0;
+  }
+
+  track( target ) {
+    this.positions[ this.start ].copy( this.offset )
+      .applyQuaternion( target.quaternion )
+      .add( target.position );
+
+    this.start = ( this.start + 1 ) % this.positions.length;
+  }
+
+  // Update to face camera in screenspace.
+  willRender( camera ) {
+
   }
 }
