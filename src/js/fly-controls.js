@@ -36,9 +36,13 @@ export default class FlyControls {
     this.movementVector = new THREE.Vector3();
     this.rotationVector = new THREE.Vector3();
 
-    document.addEventListener( 'mousemove', this.onMouseMove.bind( this ) );
-    document.addEventListener( 'keydown', this.onKeyDown.bind( this ) );
-    document.addEventListener( 'keyup', this.onKeyUp.bind( this ) );
+    this.onMouseMove = this.onMouseMove.bind( this );
+    this.onKeyDown = this.onKeyDown.bind( this );
+    this.onKeyUp = this.onKeyUp.bind( this );
+
+    document.addEventListener( 'mousemove', this.onMouseMove );
+    document.addEventListener( 'keydown', this.onKeyDown );
+    document.addEventListener( 'keyup', this.onKeyUp );
   }
 
   onKeyDown( event ) {
@@ -155,5 +159,11 @@ export default class FlyControls {
       .copy( this.movementVector )
       .multiplyScalar( this.speed )
       .applyQuaternion( this.object.quaternion );
+  }
+
+  dispose() {
+    document.removeEventListener( 'mousemove', this.onMouseMove );
+    document.removeEventListener( 'keydown', this.onKeyDown );
+    document.removeEventListener( 'keyup', this.onKeyUp );
   }
 }

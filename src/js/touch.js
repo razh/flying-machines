@@ -25,9 +25,13 @@ export default class FlyControlsTouch extends FlyControls {
       right: null
     };
 
-    document.addEventListener( 'touchstart', this.onTouchStart.bind( this ) );
-    document.addEventListener( 'touchmove', this.onTouchMove.bind( this ) );
-    document.addEventListener( 'touchend', this.onTouchEnd.bind( this ) );
+    this.onTouchStart = this.onTouchStart.bind( this );
+    this.onTouchMove = this.onTouchMove.bind( this );
+    this.onTouchEnd = this.onTouchEnd.bind( this );
+
+    document.addEventListener( 'touchstart', this.onTouchStart );
+    document.addEventListener( 'touchmove', this.onTouchMove );
+    document.addEventListener( 'touchend', this.onTouchEnd );
   }
 
   onTouchStart( event ) {
@@ -106,5 +110,13 @@ export default class FlyControlsTouch extends FlyControls {
         this.rotationVector.y = 0;
       }
     });
+  }
+
+  dispose() {
+    super.dispose();
+
+    document.removeEventListener( 'touchstart', this.onTouchStart );
+    document.removeEventListener( 'touchmove', this.onTouchMove );
+    document.removeEventListener( 'touchend', this.onTouchEnd );
   }
 }
