@@ -1,5 +1,4 @@
 import THREE from 'three';
-import times from 'lodash/utility/times';
 import { randomPointOnSphere } from './math';
 
 const size = 128;
