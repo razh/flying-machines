@@ -49,7 +49,10 @@ const material = new THREE.SpriteMaterial({
 export class ExplosionSprite extends THREE.Sprite {
   constructor() {
     super( material );
+    this.reset();
+  }
 
+  reset()  {
     this.scale.setLength( scale() );
   }
 }
@@ -74,7 +77,7 @@ export default class Explosion extends THREE.Group {
   }
 
   update( dt ) {
-    this.children.map(( sprite, index ) => {
+    this.children.forEach(( sprite, index ) => {
       const velocity = this.velocities[ index ];
       sprite.position.addScaledVector( velocity, dt );
       velocity.multiplyScalar( drag );
@@ -83,14 +86,14 @@ export default class Explosion extends THREE.Group {
   }
 
   reset() {
-    this.children.map( sprite => {
+    this.children.forEach( sprite => {
       randomPointOnSphere( sprite.position )
         .multiplyScalar( THREE.Math.randFloatSpread( this.radius ) );
 
-      sprite.scale.setLength( scale() );
+      sprite.reset();
     });
 
-    this.velocities.map( velocity => {
+    this.velocities.forEach( velocity => {
       randomPointOnSphere( velocity ).setLength( speed );
     });
   }

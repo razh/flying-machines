@@ -8,6 +8,7 @@ import Radar from './radar';
 import Reticle, { Prediction } from './reticle';
 import Skybox from'./skybox';
 import Trail from './trail';
+import Debris from './debris';
 import Explosion from './explosion';
 import createClient from './client';
 import update from './update';
@@ -54,6 +55,9 @@ scene.add( prediction );
 
 const drone = new Drone();
 client.add( drone );
+
+const debris = new Debris();
+scene.add( debris );
 
 const explosion = new Explosion();
 explosion.position.set( 0, -1, -4 );
@@ -150,6 +154,7 @@ function animate() {
   trail.track( ship );
   reticle.track( ship );
   prediction.track( drone );
+  debris.track( ship );
 
   renderer.autoClear = false;
   skybox.render( renderer, camera );

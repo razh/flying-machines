@@ -149,7 +149,7 @@ export class SpriteTrail extends THREE.Group {
   update( dt ) {
     const ds = ( this.endScale - this.startScale ) / this.time * dt;
 
-    this.children.map( sprite => {
+    this.children.forEach( sprite => {
       sprite.scale.addScalar( ds ).clampScalar( 0 )
     });
   }
