@@ -40,12 +40,11 @@ export default class Drone extends Entity {
 
     this.type = 'drone';
 
+    this.time = 0;
     this.path = new TorusKnot( 2 );
     this.length = this.path.getLength();
     this.speed = 1;
     this.duration = this.length / this.speed;
-
-    this.clock = new THREE.Clock();
   }
 
   hit() {
@@ -55,7 +54,8 @@ export default class Drone extends Entity {
   update( dt, scene ) {
     this.material.color.lerp( WHITE, dt * REGENERATION_RATE );
 
-    const t = ( this.clock.getElapsedTime() / this.duration ) % 1;
+    this.time += dt;
+    const t = ( this.time / this.duration ) % 1;
     const point = this.path.getPointAt( t );
 
     this.velocity
