@@ -47,14 +47,16 @@ const trail = new Trail();
 trail.offset.set( 0, 0, 0.3 );
 client.add( trail );
 
-const reticle = new Reticle();
-scene.add( reticle );
+client.add( new ScreenSpaceTrail() );
 
-const prediction = new Prediction();
-scene.add( prediction );
+const reticle = new Reticle( ship );
+scene.add( reticle );
 
 const drone = new Drone();
 client.add( drone );
+
+const prediction = new Prediction( drone );
+scene.add( prediction );
 
 const debris = new Debris();
 scene.add( debris );
@@ -152,8 +154,6 @@ function animate() {
   radar.track( client, camera );
   radar.track( server, camera );
   trail.track( ship );
-  reticle.track( ship );
-  prediction.track( drone );
   debris.track( ship );
 
   renderer.autoClear = false;

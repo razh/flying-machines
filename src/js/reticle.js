@@ -64,39 +64,49 @@ const material = new THREE.SpriteMaterial({
 const vector = new THREE.Vector3();
 
 export default class Reticle extends THREE.Sprite {
-  constructor() {
+  constructor( target ) {
     super( material );
 
+    this.target = target;
+
     this.lookahead = 1;
-    this.stiffness = 0.2;
+    this.stiffness = 12;
     this.scale.setLength( 1 / 2 );
   }
 
-  track( ship ) {
-    vector.set( 0, 0, -config.bullet.speed * this.lookahead )
-      .applyQuaternion( ship.quaternion )
-      .add( ship.velocity )
-      .add( ship.position );
+  update( dt ) {
+    if ( !this.target ) {
+      return;
+    }
 
-    this.position.lerp( vector, this.stiffness );
+    vector.set( 0, 0, -config.bullet.speed * this.lookahead )
+      .applyQuaternion( this.target.quaternion )
+      .add( this.target.position )
+      .addScaledVector( this.target.velocity, this.lookahead )
+
+    this.position.lerp( vector, this.stiffness * dt );
   }
 }
 
 export class Prediction extends THREE.Sprite  {
-  constructor( ship ) {
+  constructor( target ) {
     super( material );
 
-    this.ship = ship;
+    this.target = target;
 
     this.lookahead = 1;
-    this.stiffness = 0.2;
+    this.stiffness = 12;
     this.scale.setLength( 1 / 2 );
   }
 
-  track( target ) {
-    vector.copy( target.position )
-      .addScaledVector( target.velocity, this.lookahead );
+  update( dt ) {
+    if ( !this.target ) {
+      return;
+    }
 
-    this.position.lerp( vector, this.stiffness );
+    vector.copy( this.target.position )
+      .addScaledVector( this.target.velocity, this.lookahead );
+
+    this.position.lerp( vector, this.stiffness * dt );
   }
 }
