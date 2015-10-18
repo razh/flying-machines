@@ -7,7 +7,7 @@ import Drone from './drone';
 import Radar from './radar';
 import Reticle, { Prediction } from './reticle';
 import Skybox from'./skybox';
-import Trail from './trail';
+import Trail, { ScreenSpaceTrail } from './trail';
 import Debris from './debris';
 import Explosion from './explosion';
 import createClient from './client';
@@ -46,8 +46,6 @@ client.add( radar );
 const trail = new Trail();
 trail.offset.set( 0, 0, 0.3 );
 client.add( trail );
-
-client.add( new ScreenSpaceTrail() );
 
 const reticle = new Reticle( ship );
 scene.add( reticle );
@@ -144,7 +142,7 @@ function animate() {
   removed.forEach( object => object.parent.remove( object ) );
 
   // Update camera after ship update.
-  updateCamera( dt );
+  updateCamera( delta );
 
   radar.position.set( -1, -1, -2 )
     .applyQuaternion( camera.quaternion )
