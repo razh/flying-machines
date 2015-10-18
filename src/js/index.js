@@ -76,6 +76,9 @@ pointerLock( controls );
 const clock = new THREE.Clock();
 let running = true;
 
+const dt = 1 / 60;
+let accumulatedTime = 0;
+
 const updateCamera = ( target => {
   const stiffness = 6;
   const offset = new THREE.Vector3( 0, 0.3, 1 );
@@ -123,26 +126,32 @@ function animate() {
   const delta = Math.min( clock.getDelta(), 0.1 );
   controls.update();
 
-  if ( keys[ 32 ] && canFire( clock.getElapsedTime() ) ) {
-    fire();
-  }
+  accumulatedTime += delta;
 
-  const removed = [];
-
-  update( scene, delta, object => {
-    if ( object.type === 'bullet' ) {
-      object.lookAt( camera.position );
-      if ( object.start &&
-           object.start.distanceTo( object.position ) > config.bullet.range ) {
-        removed.push( object );
-      }
+  while ( accumulatedTime >= dt ) {
+    if ( keys[ 32 ] && canFire( clock.getElapsedTime() ) ) {
+      fire();
     }
-  });
 
-  removed.forEach( object => object.parent.remove( object ) );
+    const removed = [];
 
-  // Update camera after ship update.
-  updateCamera( delta );
+    update( scene, dt, object => {
+      if ( object.type === 'bullet' ) {
+        object.lookAt( camera.position );
+        if ( object.start &&
+             object.start.distanceTo( object.position ) > config.bullet.range ) {
+          removed.push( object );
+        }
+      }
+    });
+
+    removed.forEach( object => object.parent.remove( object ) );
+
+    // Update camera after ship update.
+    updateCamera( dt );
+
+    accumulatedTime -= dt;
+  }
 
   radar.position.set( -1, -1, -2 )
     .applyQuaternion( camera.quaternion )
