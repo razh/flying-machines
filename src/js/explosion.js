@@ -58,7 +58,7 @@ export class ExplosionSprite extends THREE.Sprite {
 }
 
 const speed = 2;
-const drag = 0.95;
+const decay = 6;
 
 export default class Explosion extends THREE.Group {
   constructor( radius = 0.2, count = 24 ) {
@@ -77,6 +77,8 @@ export default class Explosion extends THREE.Group {
   }
 
   update( dt ) {
+    const drag = Math.exp( -decay * dt );
+
     this.children.forEach(( sprite, index ) => {
       const velocity = this.velocities[ index ];
       sprite.position.addScaledVector( velocity, dt );
