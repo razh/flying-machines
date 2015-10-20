@@ -74,8 +74,6 @@ const material = new THREE.MeshPhongMaterial({
   shading: THREE.FlatShading
 });
 
-const clock = new THREE.Clock();
-
 export default class Turret extends THREE.Group {
   constructor() {
     super();
@@ -90,11 +88,16 @@ export default class Turret extends THREE.Group {
     this.add( this.base );
     this.base.add( this.gunhouse );
     this.gunhouse.add( this.barrels );
+
+    this.time = 0;
+    this.type = 'turret';
   }
 
-  update() {
-    const elapsedTime = clock.getElapsedTime();
-    this.gunhouse.rotation.y = Math.PI * Math.sin( elapsedTime / 2 );
-    this.barrels.rotation.x = Math.PI / 4 * ( Math.cos( elapsedTime ) + 1 );
+  update( dt ) {
+    this.time += dt;
+    this.time %= 2 * Math.PI;
+
+    this.gunhouse.rotation.y = Math.PI * Math.sin( this.time / 2 );
+    this.barrels.rotation.x = Math.PI / 4 * ( Math.cos( this.time ) + 1 );
   }
 }
