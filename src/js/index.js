@@ -1,4 +1,4 @@
-import THREE from 'three';
+import THREE from 'three.js';
 import FlyControlsTouch from './touch';
 import pointerLock from './pointer-lock';
 import Ship from './ship';

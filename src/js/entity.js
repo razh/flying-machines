@@ -1,4 +1,4 @@
-import THREE from 'three';
+import THREE from 'three.js';
 
 const vector = new THREE.Vector3();
 const quaternion = new THREE.Quaternion();

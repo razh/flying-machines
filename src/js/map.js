@@ -1,4 +1,4 @@
-import THREE from 'three';
+import THREE from 'three.js';
 import Nebula from './nebula';
 import Starfield from './starfield';
 import Turret from './turret';

@@ -1,4 +1,4 @@
-import THREE from 'three';
+import THREE from 'three.js';
 import times from 'lodash/utility/times';
 
 const lineMaterial = new THREE.LineBasicMaterial({

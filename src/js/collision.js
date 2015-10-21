@@ -1,4 +1,4 @@
-import THREE from 'three';
+import THREE from 'three.js';
 
 export function collisionMixin( body ) {
   body.collisionFilterGroup = 1;

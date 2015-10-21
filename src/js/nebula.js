@@ -1,4 +1,4 @@
-import THREE from 'three';
+import THREE from 'three.js';
 import SimplexNoise from 'simplex-noise';
 import assign from 'lodash/object/assign';
 

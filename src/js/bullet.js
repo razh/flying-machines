@@ -1,4 +1,4 @@
-import THREE from 'three';
+import THREE from 'three.js';
 import Entity from './entity';
 import { collisionMixin } from './collision';
 

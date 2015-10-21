@@ -1,4 +1,4 @@
-import THREE from 'three';
+import THREE from 'three.js';
 import config from './config';
 
 const size = 128;

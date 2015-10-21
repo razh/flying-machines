@@ -1,4 +1,4 @@
-import THREE from 'three';
+import THREE from 'three.js';
 
 export default function pointerLock( controls, element = document.body ) {
   const hasPointerLock = (
