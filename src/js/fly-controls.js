@@ -122,10 +122,8 @@ export default class FlyControls {
     const pitch = -movementY * this.mouseSensitivity;
     const yaw   = -movementX * this.mouseSensitivity;
 
-    const { object } = this;
-
     quaternion.set( pitch, yaw, 0, 1 ).normalize();
-    object.quaternion.multiply( quaternion );
+    this.object.quaternion.multiply( quaternion );
   }
 
   updateMovementVector() {

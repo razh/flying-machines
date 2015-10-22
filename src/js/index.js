@@ -175,9 +175,15 @@ function animate() {
 
 animate();
 
+
+const startFiring = () => keys[ 32 ] = true;
+const stopFiring = () => keys[ 32 ] = false;
+
 // Space bar.
-document.addEventListener( 'mousedown', () => keys[ 32 ] = true );
-document.addEventListener( 'mouseup', () => keys[ 32 ] = false );
+document.addEventListener( 'mousedown', startFiring );
+document.addEventListener( 'mouseup', stopFiring );
+document.addEventListener( 'touchstart', startFiring );
+document.addEventListener( 'touchend', stopFiring );
 document.addEventListener( 'keydown', event => keys[ event.keyCode ] = true );
 document.addEventListener( 'keyup', event => keys[ event.keyCode ] = false );
 
