@@ -14,10 +14,11 @@ export default function createServer() {
     const interval = setInterval(() => {
       try {
         socket.send( encodeServerState( state ), { binary: true } );
-       } catch ( error ) {
-         console.error( error );
-         clearInterval( interval );
-       }
+      } catch ( error ) {
+        /* eslint-disable no-console */
+        console.error( error );
+        clearInterval( interval );
+      }
     }, INTERVAL );
 
     socket.on( 'message', message =>

@@ -175,11 +175,10 @@ function animate() {
 
 animate();
 
-
+// Space bar.
 const startFiring = () => keys[ 32 ] = true;
 const stopFiring = () => keys[ 32 ] = false;
 
-// Space bar.
 document.addEventListener( 'mousedown', startFiring );
 document.addEventListener( 'mouseup', stopFiring );
 document.addEventListener( 'touchstart', startFiring );
@@ -196,6 +195,7 @@ document.addEventListener( 'keydown', event => {
     }
   }
 
+  // Shift key.
   if ( event.keyCode === 16 ) {
     controls.speed = 4 * config.ship.speed;
   }

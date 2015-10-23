@@ -26,7 +26,7 @@ export default function createWebRTCInterface( client, server ) {
   function createOffer() {
     peer = createPeer( client, server, { initiator: true, trickle: false } )
       .on( 'signal', offer => textarea.value = JSON.stringify( offer ) );
-    }
+  }
 
   function createAnswer() {
     createPeer( client, server, { trickle: false } )

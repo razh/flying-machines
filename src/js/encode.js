@@ -34,20 +34,21 @@ export function decodeClientMessage( message ) {
   return messages.ClientState.decode( message );
 }
 
+function createInitalState() {
+  return {
+    ships: [],
+    bullets: []
+  };
+}
+
 export function serializeServerState( state ) {
   return state
     .filter( Boolean )
-    .reduce(
-      ( object, value ) => {
-        object.ships.push( value.ship );
-        object.bullets.push( ...value.bullets );
-        return object;
-      },
-      {
-        ships: [],
-        bullets: []
-      }
-    );
+    .reduce(( object, value ) => {
+      object.ships.push( value.ship );
+      object.bullets.push( ...value.bullets );
+      return object;
+    }, createInitalState() );
 }
 
 export function encodeServerState( state ) {

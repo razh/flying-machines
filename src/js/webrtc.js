@@ -28,6 +28,7 @@ export const createPeer = (() => {
             serverState: serializeServerState( state )
           }));
         } catch ( error ) {
+          /* eslint-disable no-console */
           console.error( error );
           clearInterval( interval );
         }
