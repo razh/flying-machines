@@ -8,10 +8,12 @@ export default class Entity extends THREE.Mesh {
     super( ...args );
 
     this.velocity = new THREE.Vector3();
+    this.acceleration = new THREE.Vector3();
     this.angularVelocity = new THREE.Vector3();
   }
 
   update( dt ) {
+    this.velocity.addScaledVector( this.acceleration, dt );
     this.position.addScaledVector( this.velocity, dt );
 
     vector.copy( this.angularVelocity ).multiplyScalar( dt / 2 );
