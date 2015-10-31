@@ -57,11 +57,8 @@ export default class Nebula extends THREE.BufferGeometry {
 
       color
         .copy( fromColor )
-        .lerp( toColor, alpha );
-
-      colors[ i     ] = color.r;
-      colors[ i + 1 ] = color.g;
-      colors[ i + 2 ] = color.b;
+        .lerp( toColor, alpha )
+        .toArray( colors, i );
     }
   }
 }

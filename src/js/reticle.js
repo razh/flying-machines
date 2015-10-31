@@ -88,7 +88,7 @@ export default class Reticle extends THREE.Sprite {
   }
 }
 
-export class Prediction extends THREE.Sprite  {
+export class Prediction extends THREE.Sprite {
   constructor( target ) {
     super( material );
 

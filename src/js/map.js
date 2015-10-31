@@ -50,6 +50,7 @@ const maps = {
   },
 
   minimalSkybox( scene ) {
+    // Create asteroid belt.
     const matrix = new THREE.Matrix4();
 
     const radius = 32;
@@ -103,13 +104,13 @@ const maps = {
       color: '#655'
     });
 
-    scene.add( minimal.pointLight.clone() );
-    scene.add( minimal.hemisphereLight.clone() );
-
     const mesh = new THREE.Mesh( asteroidBeltGeometry, material );
     mesh.rotation.x = -2 * Math.PI / 3;
     mesh.rotation.y = Math.PI / 4;
     scene.add( mesh );
+
+    scene.add( minimal.pointLight.clone() );
+    scene.add( minimal.hemisphereLight.clone() );
 
     const nebulaGeometry = new Nebula(
       {
