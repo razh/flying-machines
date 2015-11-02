@@ -5,7 +5,7 @@ import Ship from './ship';
 import Bullet from './bullet';
 import Drone from './drone';
 import Radar from './radar';
-import Reticle, { Prediction } from './reticle';
+import { TargetingComputer } from './reticle';
 import Skybox from'./skybox';
 import Trail, { ScreenSpaceTrail } from './trail';
 import Debris from './debris';
@@ -47,14 +47,12 @@ const trail = new Trail();
 trail.offset.set( 0, 0, 0.3 );
 client.add( trail );
 
-const reticle = new Reticle( ship );
-scene.add( reticle );
 
 const drone = new Drone();
 client.add( drone );
 
-const prediction = new Prediction( drone );
-scene.add( prediction );
+const targetingComputer = new TargetingComputer( ship, drone );
+scene.add( targetingComputer );
 
 const debris = new Debris();
 scene.add( debris );
