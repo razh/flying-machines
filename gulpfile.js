@@ -5,6 +5,9 @@ const PORT = process.env.PORT || 3000;
 const SOURCE_DIR = './src';
 const BUILD_DIR = 'dist';
 
+const html = SOURCE_DIR + '/*.html';
+const css = SOURCE_DIR + '/css/*.css';
+
 const _ = require('lodash');
 const babelify = require('babelify');
 const brfs = require( 'brfs' );
@@ -59,18 +62,27 @@ gulp.task('js', () => {
 });
 
 gulp.task('html', () => {
-  return gulp.src(SOURCE_DIR + '/*.html')
+  return gulp.src(html)
+    .pipe(gulp.dest(BUILD_DIR))
+    .pipe(browserSync.reload({stream: true}));
+});
+
+gulp.task('css', () => {
+  return gulp.src(css)
     .pipe(gulp.dest(BUILD_DIR))
     .pipe(browserSync.reload({stream: true}));
 });
 
 gulp.task('clean', () => del([BUILD_DIR]));
 
-gulp.task('watch', () => gulp.watch([SOURCE_DIR + '/*.html'], ['html']));
+gulp.task('watch', () => {
+  gulp.watch([html], ['html']);
+  gulp.watch([css], ['css']);
+});
 
 gulp.task('default', ['clean'], cb => {
   return runSequence(
-    ['html', 'js'],
+    ['html', 'css', 'js'],
     ['browser-sync', 'watch'],
     cb
   );
