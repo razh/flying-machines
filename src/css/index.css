@@ -12,6 +12,24 @@ body {
   color: #000;
 }
 
+.console {
+  position: fixed;
+  top: 0;
+  left: 0;
+
+  color: #fff;
+  font-family: Menlo, Monaco, monospace;
+  font-size: 12px;
+
+  pointer-events: none;
+}
+
+.console ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
 .webrtc-group {
   display: flex;
   flex-direction: column;
