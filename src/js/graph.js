@@ -1,4 +1,4 @@
-import { map } from './math';
+import THREE from 'three.js';
 
 /*
   Simple full-width graph.
@@ -27,7 +27,11 @@ export default function createGraph( height = 64 ) {
 
       d.values.forEach(( value, i ) => {
         const x = canvas.width - i;
-        const y = map( value, d.range[0], d.range[1], canvas.height, 0 );
+        const y = THREE.Math.mapLinear(
+          value,
+          d.range[0], d.range[1],
+          canvas.height, 0
+        );
 
         if ( !i ) {
           ctx.moveTo( x, y );

@@ -19,7 +19,3 @@ export function lerp( a, b, t ) {
 export function inverseLerp( a, b, x ) {
   return ( x - a ) / ( b - a );
 }
-
-export function map( x, a, b, c, d ) {
-  return lerp( c, d, inverseLerp( a, b, x ) );
-}
