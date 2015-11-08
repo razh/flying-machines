@@ -1,24 +1,13 @@
 import THREE from 'three.js';
 
+const triangle = new THREE.Triangle();
+
 /**
  * Copies of various utility functions from THREE.GeometryUtils.
  */
-const triangleArea = (() => {
-  const ab = new THREE.Vector3();
-  const ac = new THREE.Vector3();
-
-  return ( vA, vB, vC ) => {
-    ab.subVectors( vB, vA ),
-    ac.subVectors( vC, vA )
-    ab.cross( ac );
-
-    return 0.5 * ab.length();
-  };
-})();
-
 function randomPointInTriangle( vA, vB, vC ) {
-  const a = THREE.Math.random16();
-  const b = THREE.Math.random16();
+  let a = THREE.Math.random16();
+  let b = THREE.Math.random16();
 
   if ( ( a + b ) > 1 ) {
     a = 1 - a;
@@ -60,11 +49,10 @@ function randomPointsNormalsInGeometry( geometry, count ) {
   for ( let i = 0, il = faces.length; i < il; i++ ) {
     const face = faces[i];
 
-    const vA = vertices[ face.a ];
-    const vB = vertices[ face.b ];
-    const vC = vertices[ face.c ];
+    totalArea += triangle
+      .setFromPointsAndIndices( vertices, face.a, face.b, face.c )
+      .area();
 
-    totalArea += triangleArea( vA, vB, vC );
     cumulativeAreas[i] = totalArea;
   }
 
