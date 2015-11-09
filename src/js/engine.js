@@ -1,14 +1,15 @@
 import THREE from 'three.js';
 
-const geometry = new THREE.CylinderGeometry( 0, 0.05, 0.3, 3 );
+const geometry = new THREE.CylinderGeometry( 0, 0.04, 0.25, 5 );
 
 geometry.rotateX( Math.PI / 2 );
 geometry.computeFaceNormals();
 geometry.computeVertexNormals();
 
-const material = new THREE.MeshBasicMaterial({
+const material = new THREE.MeshLambertMaterial({
   blending: THREE.AdditiveBlending,
-  color: '#aaf',
+  color: '#fff',
+  emissive: '#f43',
   transparent: true,
   opacity: 0.4
 })
@@ -16,14 +17,11 @@ const material = new THREE.MeshBasicMaterial({
 export class Flame extends THREE.Mesh {
   constructor() {
     super( geometry, material );
-
-    this.scale.setLength( THREE.Math.randFloat( 0.5, 1 ) );
-    this.rotation.z = 2 * Math.PI * Math.random();
   }
 }
 
 export default class Engine extends THREE.Group {
-  constructor( source, count = 12 ) {
+  constructor( source, count = 3 ) {
     super();
 
     this.source = source;
@@ -37,10 +35,13 @@ export default class Engine extends THREE.Group {
   update() {
     this.children.forEach( flame => {
       flame.position.set(
-        THREE.Math.randFloatSpread( 0.03 ),
-        THREE.Math.randFloatSpread( 0.03 ),
+        THREE.Math.randFloatSpread( 0.005 ),
+        THREE.Math.randFloatSpread( 0.005 ),
         THREE.Math.randFloatSpread( 0.03 )
       );
+
+      flame.rotation.z = 2 * Math.PI * Math.random();
+      flame.scale.setLength( THREE.Math.randFloat( 0.5, 1 ) );
     })
   }
 }
