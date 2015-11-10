@@ -7,7 +7,7 @@ import Drone from './drone';
 import Radar from './radar';
 import { TargetingComputer } from './reticle';
 import Skybox from'./skybox';
-import Trail, { ScreenSpaceTrail } from './trail';
+import Engine from './engine';
 import Debris from './debris';
 import Explosion from './explosion';
 import createClient from './client';
@@ -43,16 +43,15 @@ client.add( ship );
 const radar = new Radar( ship );
 client.add( radar );
 
-const trail = new Trail();
-trail.offset.set( 0, 0, 0.3 );
-client.add( trail );
-
-
 const drone = new Drone();
 client.add( drone );
 
 const targetingComputer = new TargetingComputer( ship, drone );
 scene.add( targetingComputer );
+
+const engine = new Engine( ship );
+engine.position.set( 0, 0, 0.3 );
+ship.add( engine );
 
 const debris = new Debris();
 scene.add( debris );
@@ -158,7 +157,6 @@ function animate() {
   radar.reset();
   radar.track( client, camera );
   radar.track( server, camera );
-  trail.track( ship );
   debris.track( ship );
 
   renderer.autoClear = false;
