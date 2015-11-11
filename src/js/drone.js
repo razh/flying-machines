@@ -1,6 +1,7 @@
 import THREE from 'three.js';
 import Entity from './entity';
 import traverse from './traverse';
+import { collisionMixin } from './collision';
 
 const TorusKnot = THREE.Curve.create(
   function TorusKnot( scale = 10 ) {
@@ -37,6 +38,7 @@ export default class Drone extends Entity {
   constructor() {
     super( geometry, material.clone() );
     this.geometry.computeBoundingSphere();
+    collisionMixin( this );
 
     this.type = 'drone';
 

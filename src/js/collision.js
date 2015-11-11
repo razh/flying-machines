@@ -1,6 +1,7 @@
 import THREE from 'three.js';
 
 export function collisionMixin( body ) {
+  body.collides = true;
   body.collisionFilterGroup = 1;
   body.collisionFilterMask = 1;
   return body;
@@ -58,4 +59,30 @@ export function findNearest( scene, target, callback ) {
   });
 
   return min;
+}
+
+export function collide( scene, callback ) {
+  const colliders = [];
+
+  scene.traverse( object => {
+    if ( object.collides ) {
+      colliders.push( object );
+    }
+  });
+
+  for ( let i = 0; i < colliders.length; i++ ) {
+    const a = colliders[i];
+
+    for ( let j = i; j < colliders.length; j++ ) {
+      const b = colliders[j];
+
+      if ( a.type === 'bullet' && b.type === 'bullet') {
+        continue;
+      }
+
+      if ( a.type === 'bullet' || b.type === 'bullet' ) {
+        callback( a, b );
+      }
+    }
+  }
 }
