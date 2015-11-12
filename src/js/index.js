@@ -9,9 +9,10 @@ import { TargetingComputer } from './reticle';
 import Skybox from'./skybox';
 import Engine from './engine';
 import Debris from './debris';
-import Explosion from './explosion';
+import Explosion, { ExplosionPool } from './explosion';
 import createClient from './client';
 import update from './update';
+import { collide } from './collision';
 import config from './config';
 import createMap from './map';
 
@@ -61,6 +62,9 @@ explosion.position.set( 0, -1, -4 );
 scene.add( explosion );
 
 setInterval( () => explosion.reset(), 1000 );
+
+const explosionPool = new ExplosionPool();
+scene.add( explosionPool );
 
 const skybox = new Skybox( camera );
 createMap( skybox.scene, 'minimalSkybox' );
@@ -119,6 +123,35 @@ function fire() {
   client.add( bullet );
 }
 
+const onCollide = (() => {
+  const vector = new THREE.Vector3();
+
+  return ( a, b ) => {
+    let bullet;
+    let object;
+
+    if ( a.type === 'bullet' ) {
+      bullet = a;
+      object = b;
+    } else {
+      bullet = b;
+      object = a;
+    }
+
+    if ( object.type !== 'drone' ) {
+      return;
+    }
+
+    object.worldToLocal( bullet.getWorldPosition( vector ) );
+
+    if ( object.geometry.boundingSphere.containsPoint( vector ) ) {
+      const explosion = explosionPool.get();
+      explosion.position.copy( bullet.position );
+      return bullet;
+    }
+  };
+})();
+
 function animate() {
   const delta = Math.min( clock.getDelta(), 0.1 );
   controls.update();
@@ -141,6 +174,8 @@ function animate() {
         }
       }
     });
+
+    removed.push( ...collide( scene, onCollide ) );
 
     removed.forEach( object => object.parent.remove( object ) );
 

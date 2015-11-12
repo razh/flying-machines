@@ -70,6 +70,8 @@ export function collide( scene, callback ) {
     }
   });
 
+  const removed = [];
+
   for ( let i = 0; i < colliders.length; i++ ) {
     const a = colliders[i];
 
@@ -81,8 +83,13 @@ export function collide( scene, callback ) {
       }
 
       if ( a.type === 'bullet' || b.type === 'bullet' ) {
-        callback( a, b );
+        const object = callback( a, b );
+        if ( object ) {
+          removed.push( object );
+        }
       }
     }
   }
+
+  return removed;
 }
