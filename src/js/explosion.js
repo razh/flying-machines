@@ -99,4 +99,46 @@ export default class Explosion extends THREE.Group {
       randomPointOnSphere( velocity ).setLength( speed );
     });
   }
+
+  magnitude() {
+    return this.children.reduce(( magnitude, sprite ) => {
+      return magnitude + sprite.scale.length();
+    }, 0 );
+  }
+}
+
+export class ExplosionPool extends THREE.Group {
+  constructor( ...args ) {
+    super( ...args );
+
+    this.pool = [];
+    this.limit = 1e-2;
+  }
+
+  get() {
+    let explosion;
+
+    if ( this.pool.length ) {
+      explosion = this.pool.pop();
+      explosion.reset();
+    } else {
+      explosion = new Explosion();
+    }
+
+    this.add( explosion );
+    return explosion;
+  }
+
+  update() {
+    const inactive = [];
+
+    this.children.forEach( explosion => {
+      if ( explosion.magnitude() < this.limit ) {
+        inactive.push( explosion );
+      }
+    });
+
+    inactive.forEach( explosion => explosion.parent.remove( explosion ) );
+    this.pool.push( ...inactive );
+  }
 }
