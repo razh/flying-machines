@@ -3,7 +3,7 @@ import THREE from 'three.js';
 export function collisionMixin( body ) {
   body.collides = true;
   body.collisionFilterGroup = 1;
-  body.collisionFilterMask = 1;
+  body.collisionFilterMask = 0xFFFF;
   return body;
 }
 
@@ -77,6 +77,11 @@ export function collide( scene, callback ) {
 
     for ( let j = i; j < colliders.length; j++ ) {
       const b = colliders[j];
+
+      if ( ( a.collisionFilterGroup & b.collisionFilterMask ) === 0 ||
+           ( b.collisionFilterGroup & a.collisionFilterMask ) === 0 ) {
+        continue;
+      }
 
       if ( a.type === 'bullet' && b.type === 'bullet') {
         continue;
