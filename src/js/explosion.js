@@ -1,5 +1,6 @@
 import THREE from 'three.js';
 import { randomPointOnSphere } from './math';
+import { remove } from './utils';
 
 const size = 128;
 const scale = () => THREE.Math.randFloat( 0.1, 0.5 );
@@ -138,7 +139,7 @@ export class ExplosionPool extends THREE.Group {
       }
     });
 
-    inactive.forEach( explosion => explosion.parent.remove( explosion ) );
+    inactive.forEach( remove );
     this.pool.push( ...inactive );
   }
 }

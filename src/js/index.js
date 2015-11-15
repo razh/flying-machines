@@ -15,6 +15,7 @@ import update from './update';
 import { collide } from './collision';
 import config from './config';
 import createMap from './map';
+import { remove } from './utils';
 
 const container = document.createElement( 'div' );
 document.body.appendChild( container );
@@ -177,7 +178,7 @@ function animate() {
 
     removed.push( ...collide( scene, onCollide ) );
 
-    removed.forEach( object => object.parent.remove( object ) );
+    removed.forEach( remove );
 
     // Update camera after ship update.
     updateCamera( dt );
