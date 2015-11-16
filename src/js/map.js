@@ -2,6 +2,7 @@ import THREE from 'three.js';
 import Nebula from './nebula';
 import Starfield from './starfield';
 import Turret from './turret';
+import { collisionMixin } from './collision';
 
 function perturbVertex( vertex ) {
   return vertex.multiplyScalar( THREE.Math.randFloat( 1, 1.5 ) );
@@ -15,6 +16,8 @@ function createAsteroidMesh( x = 0, y = 0, z = 0, radius = 1, detail = 2 ) {
 
   const mesh = new THREE.Mesh( geometry, material );
   mesh.position.set( x, y, z );
+  mesh.type = 'asteroid';
+  collisionMixin( mesh );
   return mesh;
 }
 

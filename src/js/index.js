@@ -139,7 +139,7 @@ const onCollide = (() => {
       object = a;
     }
 
-    if ( object.type !== 'drone' ) {
+    if ( object.type !== 'asteroid' && object.type !== 'drone' ) {
       return;
     }
 
