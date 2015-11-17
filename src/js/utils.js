@@ -1,1 +1,5 @@
-export const remove = object => object.parent.remove( object );
+export function remove( object ) {
+  if ( object.parent ) {
+    object.parent.remove( object );
+  }
+}
