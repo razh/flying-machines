@@ -58,12 +58,6 @@ ship.add( engine );
 const debris = new Debris();
 scene.add( debris );
 
-const explosion = new Explosion();
-explosion.position.set( 0, -1, -4 );
-scene.add( explosion );
-
-setInterval( () => explosion.reset(), 1000 );
-
 const explosionPool = new ExplosionPool();
 scene.add( explosionPool );
 
@@ -249,4 +243,6 @@ window.addEventListener( 'resize', () => {
   skybox.resize( window.innerWidth, window.innerHeight );
 });
 
-require( './webrtc-component' )( client, server );
+if ( /rtc/.test( window.location.href ) ) {
+  require( './webrtc-component' )( client, server );
+}
