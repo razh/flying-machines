@@ -1,5 +1,10 @@
 import THREE from 'three.js';
 
+export const CollisionTypes = {
+  PARTICLE: 1,
+  SPHERE: 2
+};
+
 export function collisionMixin( body ) {
   body.collides = true;
   body.collisionFilterGroup = 1;
@@ -60,6 +65,17 @@ export function findNearest( scene, target, callback ) {
 
   return min;
 }
+
+export const collisions = (() => {
+  const vector = new THREE.Vector3();
+
+  return {
+    [ CollisionTypes.PARTICLE | CollisionTypes.SPHERE ]( particle, sphere ) {
+      sphere.worldToLocal( particle.getWorldPosition( vector ) );
+      return sphere.geometry.boundingSphere.containsPoint( vector );
+    }
+  };
+})();
 
 export function collide( scene, callback ) {
   const colliders = [];
