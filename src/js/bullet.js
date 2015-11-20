@@ -1,6 +1,6 @@
 import THREE from 'three.js';
 import Entity from './entity';
-import { collisionMixin } from './collision';
+import { collisionMixin, CollisionShapes } from './collision';
 
 const diameter = 128;
 const radius = diameter / 2;
@@ -43,6 +43,8 @@ export default class Bullet extends Entity {
     collisionMixin( this );
 
     this.type = 'bullet';
+    this.shape = CollisionShapes.PARTICLE;
+
     this.scale.setLength( 1 / 16 );
   }
 }

@@ -1,6 +1,6 @@
 import THREE from 'three.js';
 
-export const CollisionTypes = {
+export const CollisionShapes = {
   PARTICLE: 1,
   SPHERE: 2
 };
@@ -70,7 +70,7 @@ export const collisions = (() => {
   const vector = new THREE.Vector3();
 
   return {
-    [ CollisionTypes.PARTICLE | CollisionTypes.SPHERE ]( particle, sphere ) {
+    [ CollisionShapes.PARTICLE | CollisionShapes.SPHERE ]( particle, sphere ) {
       sphere.worldToLocal( particle.getWorldPosition( vector ) );
       return sphere.geometry.boundingSphere.containsPoint( vector );
     }

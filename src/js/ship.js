@@ -1,7 +1,7 @@
 import THREE from 'three.js';
 import Entity from './entity';
 import Shield from './shield';
-import { collisionMixin } from './collision';
+import { collisionMixin, CollisionShapes } from './collision';
 
 const geometries = {
   basic: (() => {
@@ -21,27 +21,16 @@ const material = new THREE.MeshPhongMaterial({
   shading: THREE.FlatShading
 });
 
-const sphere = new THREE.Sphere();
-
 export default class Ship extends Entity {
   constructor() {
     super( geometries.basic, material.clone() );
     collisionMixin( this );
 
     this.type = 'ship';
+    this.shape = CollisionShapes.SPHERE;
 
     this.shield = new Shield();
     this.shield.visible = false;
     this.add( this.shield );
-  }
-
-  containsPoint( point ) {
-    if ( !this.geometry.boundingSphere ) {
-      this.geometry.computeBoundingSphere();
-    }
-
-    return sphere.copy( this.geometry.boundingSphere )
-      .applyMatrix( this.matrixWorld )
-      .containsPoint( point );
   }
 }
