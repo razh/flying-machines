@@ -1,5 +1,6 @@
 import THREE from 'three.js';
-import Entity from './Entity';
+import Entity from './entity';
+import Engine from './engine';
 import { collisionMixin, CollisionShapes } from './collision';
 
 const geometry = new THREE.CylinderGeometry( 0, 0.05, 0.2, 3 );
@@ -20,5 +21,9 @@ export default class Missile extends Entity {
 
     this.type = 'missile';
     this.shape = CollisionShapes.SPHERE;
+
+    this.engine = new Engine( this );
+    this.engine.position.set( 0, 0, 0.16 );
+    this.add( this.engine );
   }
 }

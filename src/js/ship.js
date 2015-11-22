@@ -1,6 +1,7 @@
 import THREE from 'three.js';
 import Entity from './entity';
 import Shield from './shield';
+import Engine from './engine';
 import { collisionMixin, CollisionShapes } from './collision';
 
 const geometries = {
@@ -32,5 +33,9 @@ export default class Ship extends Entity {
     this.shield = new Shield();
     this.shield.visible = false;
     this.add( this.shield );
+
+    this.engine = new Engine( this );
+    this.engine.position.set( 0, 0, 0.3 );
+    this.add( this.engine );
   }
 }

@@ -7,9 +7,8 @@ import Drone from './drone';
 import Radar from './radar';
 import { TargetingComputer } from './reticle';
 import Skybox from'./skybox';
-import Engine from './engine';
 import Debris from './debris';
-import Explosion, { ExplosionPool } from './explosion';
+import { ExplosionPool } from './explosion';
 import createClient from './client';
 import update from './update';
 import { collide } from './collision';
@@ -50,10 +49,6 @@ client.add( drone );
 
 const targetingComputer = new TargetingComputer( ship, drone );
 scene.add( targetingComputer );
-
-const engine = new Engine( ship );
-engine.position.set( 0, 0, 0.3 );
-ship.add( engine );
 
 const debris = new Debris();
 scene.add( debris );
