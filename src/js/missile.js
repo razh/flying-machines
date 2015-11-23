@@ -22,8 +22,11 @@ export default class Missile extends Entity {
     this.type = 'missile';
     this.shape = CollisionShapes.SPHERE;
 
-    this.engine = new Engine( this );
-    this.engine.position.set( 0, 0, 0.16 );
+    this.engine = new Engine( this, {
+      radius: 0.03,
+      height: 0.5
+    });
+    this.engine.position.set( 0, 0, 0.2 );
     this.add( this.engine );
   }
 }
