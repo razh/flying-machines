@@ -87,7 +87,7 @@ const updateCamera = ( target => {
 })( ship );
 
 const canFire = (() => {
-  const period = 1 / config.ship.fireRate;
+  const period = 1 / config.bullet.rate;
   let previous = 0;
 
   return time => {
@@ -100,18 +100,26 @@ const canFire = (() => {
   };
 })();
 
-function fire() {
-  const bullet = new Bullet();
-  bullet.position.copy( ship.position );
-  bullet.start = bullet.position.clone();
+const fire = (() => {
+  const offset = new THREE.Vector3( 0, 0, -0.25 );
 
-  // Fire in ship direction.
-  bullet.velocity.set( 0, 0, -config.bullet.speed )
-    .applyQuaternion( ship.quaternion )
-    .add( ship.velocity );
+  return () => {
+    const bullet = new Bullet();
 
-  client.add( bullet );
-}
+    bullet.position.copy( offset )
+      .applyQuaternion( ship.quaternion )
+      .add( ship.position );
+
+    bullet.start = bullet.position.clone();
+
+    // Fire in ship direction.
+    bullet.velocity.set( 0, 0, -config.bullet.speed )
+      .applyQuaternion( ship.quaternion )
+      .add( ship.velocity );
+
+    client.add( bullet );
+  }
+})();
 
 const onCollide = (() => {
   const vector = new THREE.Vector3();
@@ -128,7 +136,9 @@ const onCollide = (() => {
       object = a;
     }
 
-    if ( object.type !== 'asteroid' && object.type !== 'drone' ) {
+    if ( object.type !== 'asteroid' &&
+         object.type !== 'drone' &&
+         object.type !== 'ship' ) {
       return;
     }
 
