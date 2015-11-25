@@ -2,7 +2,7 @@ import THREE from 'three.js';
 import Entity from './entity';
 import Shield from './shield';
 import Engine from './engine';
-import { collisionMixin, CollisionShapes } from './collision';
+import { collisionMixin, CollisionShapes, CollisionGroups } from './collision';
 
 const geometries = {
   basic: (() => {
@@ -29,6 +29,7 @@ export default class Ship extends Entity {
 
     this.type = 'ship';
     this.shape = CollisionShapes.SPHERE;
+    this.collisionFilterGroup = CollisionGroups.SHIP;
 
     this.shield = new Shield();
     this.shield.visible = false;

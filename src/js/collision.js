@@ -5,6 +5,13 @@ export const CollisionShapes = {
   SPHERE: 2
 };
 
+export const CollisionGroups = {
+  WORLD: 1,
+  BULLET: 2,
+  SHIP: 4,
+  MISSILE: 8
+};
+
 export function collisionMixin( body ) {
   body.collides = true;
   body.collisionFilterGroup = 1;

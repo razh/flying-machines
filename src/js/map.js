@@ -2,7 +2,7 @@ import THREE from 'three.js';
 import Nebula from './nebula';
 import Starfield from './starfield';
 import Turret from './turret';
-import { collisionMixin, CollisionShapes } from './collision';
+import { collisionMixin, CollisionShapes, CollisionGroups } from './collision';
 
 function perturbVertex( vertex ) {
   return vertex.multiplyScalar( THREE.Math.randFloat( 1, 1.5 ) );
@@ -20,6 +20,7 @@ function createAsteroidMesh( x = 0, y = 0, z = 0, radius = 1, detail = 2 ) {
   collisionMixin( mesh );
   mesh.type = 'asteroid';
   mesh.shape = CollisionShapes.SPHERE;
+  mesh.collisionFilterGroup = CollisionGroups.WORLD;
 
   return mesh;
 }

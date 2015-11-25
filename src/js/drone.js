@@ -1,7 +1,7 @@
 import THREE from 'three.js';
 import Entity from './entity';
 import traverse from './traverse';
-import { collisionMixin, CollisionShapes } from './collision';
+import { collisionMixin, CollisionShapes, CollisionGroups } from './collision';
 
 const TorusKnot = THREE.Curve.create(
   function TorusKnot( scale = 10 ) {
@@ -42,6 +42,7 @@ export default class Drone extends Entity {
 
     this.type = 'drone';
     this.shape = CollisionShapes.SPHERE;
+    this.collisionFilterGroup = CollisionGroups.SHIP;
 
     this.time = 0;
     this.path = new TorusKnot( 2 );
