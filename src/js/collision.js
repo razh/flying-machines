@@ -9,7 +9,8 @@ export const CollisionGroups = {
   WORLD: 1,
   BULLET: 2,
   SHIP: 4,
-  MISSILE: 8
+  MISSILE: 8,
+  ALL: 0xFFFF
 };
 
 export function collisionMixin( body ) {
@@ -79,7 +80,9 @@ export const collisions = (() => {
   return {
     [ CollisionShapes.PARTICLE | CollisionShapes.SPHERE ]( particle, sphere ) {
       sphere.worldToLocal( particle.getWorldPosition( vector ) );
-      return sphere.geometry.boundingSphere.containsPoint( vector );
+      if ( sphere.geometry.boundingSphere.containsPoint( vector ) ) {
+        return particle.position;
+      }
     }
   };
 })();
@@ -93,8 +96,6 @@ export function collide( scene, callback ) {
     }
   });
 
-  const removed = [];
-
   for ( let i = 0; i < colliders.length; i++ ) {
     const a = colliders[i];
 
@@ -106,18 +107,7 @@ export function collide( scene, callback ) {
         continue;
       }
 
-      if ( a.type === 'bullet' && b.type === 'bullet') {
-        continue;
-      }
-
-      if ( a.type === 'bullet' || b.type === 'bullet' ) {
-        const object = callback( a, b );
-        if ( object ) {
-          removed.push( object );
-        }
-      }
+      callback( a, b );
     }
   }
-
-  return removed;
 }

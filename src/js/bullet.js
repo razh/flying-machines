@@ -45,6 +45,7 @@ export default class Bullet extends Entity {
     this.type = 'bullet';
     this.shape = CollisionShapes.PARTICLE;
     this.collisionFilterGroup = CollisionGroups.BULLET;
+    this.collisionFilterMask = CollisionGroups.ALL ^ CollisionGroups.BULLET;
 
     this.scale.setLength( 1 / 16 );
   }

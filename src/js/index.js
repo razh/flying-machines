@@ -11,7 +11,7 @@ import Debris from './debris';
 import { ExplosionPool } from './explosion';
 import createClient from './client';
 import update from './update';
-import { collide } from './collision';
+import { collide, collisions } from './collision';
 import config from './config';
 import createMap from './map';
 import { remove } from './utils';
@@ -121,36 +121,32 @@ const fire = (() => {
   }
 })();
 
-const onCollide = (() => {
-  const vector = new THREE.Vector3();
+let collided = [];
 
-  return ( a, b ) => {
-    let bullet;
-    let object;
+function onCollide( a, b ) {
+  if ( a.type !== 'bullet' && b.type !== 'bullet' ) {
+    return;
+  }
 
-    if ( a.type === 'bullet' ) {
-      bullet = a;
-      object = b;
-    } else {
-      bullet = b;
-      object = a;
-    }
+  const handler = collisions[ a.shape | b.shape ];
 
-    if ( object.type !== 'asteroid' &&
-         object.type !== 'drone' &&
-         object.type !== 'ship' ) {
-      return;
-    }
+  let collision;
+  let bullet;
 
-    object.worldToLocal( bullet.getWorldPosition( vector ) );
+  if ( a.shape < b.shape ) {
+    collision = handler( a, b );
+    bullet = a;
+  } else {
+    collision = handler( b, a );
+    bullet = b;
+  }
 
-    if ( object.geometry.boundingSphere.containsPoint( vector ) ) {
-      const explosion = explosionPool.get();
-      explosion.position.copy( bullet.position );
-      return bullet;
-    }
-  };
-})();
+  if ( collision ) {
+    const explosion = explosionPool.get();
+    explosion.position.copy( collision );
+    collided.push( bullet );
+  }
+}
 
 function animate() {
   const delta = Math.min( clock.getDelta(), 0.1 );
@@ -175,7 +171,9 @@ function animate() {
       }
     });
 
-    removed.push( ...collide( scene, onCollide ) );
+    collided = [];
+    collide( scene, onCollide );
+    collided.forEach( remove );
 
     removed.forEach( remove );
 
