@@ -1,71 +1,75 @@
 import THREE from 'three.js';
 import config from './config';
 
-const size = 128;
-
-// Segment length.
-const length = 32;
-
-const lineWidth = 8;
-const halfLineWidth = lineWidth / 2;
-
 const canvas = document.createElement( 'canvas' );
 const ctx = canvas.getContext( '2d' );
 
-canvas.width = size;
-canvas.height = size;
+export const reticles = {
+  diamond: (() => {
+    const size = 128;
 
-/*
-  Counter-clockwise from top-left:
+    // Segment length.
+    const length = 32;
 
-    +--   --+
-    |       |
+    const lineWidth = 8;
+    const halfLineWidth = lineWidth / 2;
 
-    |       |
-    +--   --+
- */
+    canvas.width = size;
+    canvas.height = size;
 
-ctx.beginPath();
+    /*
+      Counter-clockwise from top-left:
 
-// Top left.
-ctx.moveTo( halfLineWidth + length, halfLineWidth );
-ctx.lineTo( halfLineWidth,          halfLineWidth );
-ctx.lineTo( halfLineWidth,          halfLineWidth + length );
+        +--   --+
+        |       |
 
-// Bottom left.
-ctx.moveTo( halfLineWidth,          size - halfLineWidth - length );
-ctx.lineTo( halfLineWidth,          size - halfLineWidth );
-ctx.lineTo( halfLineWidth + length, size - halfLineWidth );
+        |       |
+        +--   --+
+     */
 
-// Bottom right.
-ctx.moveTo( size - halfLineWidth - length, size - halfLineWidth );
-ctx.lineTo( size - halfLineWidth,          size - halfLineWidth );
-ctx.lineTo( size - halfLineWidth,          size - halfLineWidth - length );
+    ctx.beginPath();
 
-// Top right.
-ctx.moveTo( size - halfLineWidth,          halfLineWidth + length );
-ctx.lineTo( size - halfLineWidth,          halfLineWidth );
-ctx.lineTo( size - halfLineWidth - length, halfLineWidth );
+    // Top left.
+    ctx.moveTo( halfLineWidth + length, halfLineWidth );
+    ctx.lineTo( halfLineWidth,          halfLineWidth );
+    ctx.lineTo( halfLineWidth,          halfLineWidth + length );
 
-ctx.lineWidth = lineWidth;
-ctx.strokeStyle = '#fff';
-ctx.stroke();
+    // Bottom left.
+    ctx.moveTo( halfLineWidth,          size - halfLineWidth - length );
+    ctx.lineTo( halfLineWidth,          size - halfLineWidth );
+    ctx.lineTo( halfLineWidth + length, size - halfLineWidth );
 
-const texture = new THREE.Texture( canvas );
-texture.needsUpdate = true;
+    // Bottom right.
+    ctx.moveTo( size - halfLineWidth - length, size - halfLineWidth );
+    ctx.lineTo( size - halfLineWidth,          size - halfLineWidth );
+    ctx.lineTo( size - halfLineWidth,          size - halfLineWidth - length );
 
-const material = new THREE.SpriteMaterial({
-  depthTest: false,
-  map: texture,
-  rotation: Math.PI / 4,
-  transparent: true
-});
+    // Top right.
+    ctx.moveTo( size - halfLineWidth,          halfLineWidth + length );
+    ctx.lineTo( size - halfLineWidth,          halfLineWidth );
+    ctx.lineTo( size - halfLineWidth - length, halfLineWidth );
+
+    ctx.lineWidth = lineWidth;
+    ctx.strokeStyle = '#fff';
+    ctx.stroke();
+
+    const texture = new THREE.Texture( canvas );
+    texture.needsUpdate = true;
+
+    return new THREE.SpriteMaterial({
+      depthTest: false,
+      map: texture,
+      rotation: Math.PI / 4,
+      transparent: true
+    });
+  })()
+};
 
 const vector = new THREE.Vector3();
 
 export default class Reticle extends THREE.Sprite {
   constructor( target ) {
-    super( material );
+    super( reticles.diamond );
 
     this.target = target;
 
@@ -90,7 +94,7 @@ export default class Reticle extends THREE.Sprite {
 
 export class Prediction extends THREE.Sprite {
   constructor( target ) {
-    super( material );
+    super( reticles.diamond );
 
     this.target = target;
 
@@ -121,8 +125,8 @@ export class TargetingComputer extends THREE.Group {
     this.speed = config.bullet.speed;
     this.stiffness = 12;
 
-    this.reticle = new THREE.Sprite( material );
-    this.prediction = new THREE.Sprite( material );
+    this.reticle = new THREE.Sprite( reticles.diamond );
+    this.prediction = new THREE.Sprite( reticles.diamond );
 
     const scale = 1 / 2;
     this.reticle.scale.setLength( scale );
