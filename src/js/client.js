@@ -1,5 +1,6 @@
 import Ship from './ship';
 import Bullet from './bullet';
+import Missile from './missile';
 import { encodeClientState, decodeServerMessage } from './encode';
 import createPool from './pool';
 
@@ -8,22 +9,31 @@ const INTERVAL = 16;
 export function createState( scene ) {
   const shipPool = createPool( scene, Ship );
   const bulletPool = createPool( scene, Bullet );
+  const missilePool = createPool( scene, Missile );
 
   return state => {
     shipPool.reset();
     bulletPool.reset();
+    missilePool.reset();
 
     state.ships.forEach( data => {
       const ship = shipPool.get();
       ship.position.copy( data.position );
-      ship.quaternion.copy( data.quaternion );
       ship.velocity.copy( data.velocity );
+      ship.quaternion.copy( data.quaternion );
     });
 
     state.bullets.forEach( data => {
       const bullet = bulletPool.get();
       bullet.position.copy( data.position );
       bullet.velocity.copy( data.velocity );
+    });
+
+    state.missiles.forEach( data => {
+      const missile = missilePool.get();
+      missile.position.copy( data.position );
+      missile.velocity.copy( data.velocity );
+      missile.quaternion.copy( data.quaternion );
     });
   };
 }

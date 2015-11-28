@@ -12,7 +12,8 @@ function toBuffer( arrayBuffer ) {
 
 export function serializeClientState( scene ) {
   const state = {
-    bullets: []
+    bullets: [],
+    missiles: []
   };
 
   scene.traverse( object => {
@@ -20,6 +21,8 @@ export function serializeClientState( scene ) {
       state.ship = object;
     } else if ( object.type === 'bullet' ) {
       state.bullets.push( object );
+    } else if ( object.type === 'missile' ) {
+      state.missiles.push( object );
     }
   });
 
@@ -37,7 +40,8 @@ export function decodeClientMessage( message ) {
 function createInitalState() {
   return {
     ships: [],
-    bullets: []
+    bullets: [],
+    missiles: []
   };
 }
 
@@ -47,6 +51,7 @@ export function serializeServerState( state ) {
     .reduce(( object, value ) => {
       object.ships.push( value.ship );
       object.bullets.push( ...value.bullets );
+      object.missiles.push( ...value.missiles );
       return object;
     }, createInitalState() );
 }

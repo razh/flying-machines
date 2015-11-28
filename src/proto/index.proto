@@ -24,14 +24,22 @@ message Bullet {
   optional Vector3 velocity = 2;
 }
 
+message Missile {
+  optional Vector3 position = 1;
+  optional Vector3 velocity = 2;
+  optional Quaternion quaternion = 3;
+}
+
 message ClientState {
   optional Ship ship = 1;
   repeated Bullet bullets = 2;
+  repeated Missile missiles = 3;
 }
 
 message ServerState {
   repeated Ship ships = 1;
   repeated Bullet bullets = 2;
+  repeated Missile missiles = 3;
 }
 
 message RTCMessage {
