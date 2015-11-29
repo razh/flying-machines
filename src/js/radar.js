@@ -5,8 +5,9 @@ const vector = new THREE.Vector3();
 
 const scales = {
   ship: 1 / 16,
-  bullet: 1 / 64,
-  drone: 1 / 32
+  bullet: 1 / 96,
+  drone: 1 / 32,
+  missile: 1 / 48
 };
 
 const material = new THREE.SpriteMaterial({
@@ -21,7 +22,7 @@ class RadarPoint extends THREE.Sprite {
 }
 
 export default class Radar extends THREE.Group {
-  constructor( target, radius = 4, scale = 0.25 ) {
+  constructor( target, radius = 16, scale = 0.05 ) {
     super();
 
     this.blips = new THREE.Group();
