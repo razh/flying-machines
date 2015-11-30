@@ -10,6 +10,7 @@ import Skybox from'./skybox';
 import Debris from './debris';
 import { ExplosionPool } from './explosion';
 import createClient from './client';
+import traverse from './traverse';
 import update from './update';
 import { collide, collisions } from './collision';
 import config from './config';
@@ -44,10 +45,14 @@ client.add( ship );
 const radar = new Radar( ship );
 client.add( radar );
 
-const drone = new Drone();
-client.add( drone );
+const droneA = new Drone();
+client.add( droneA );
 
-const targetingComputer = new TargetingComputer( ship, drone );
+const droneB = new Drone();
+droneB.time = droneB.duration / 2;
+client.add( droneB );
+
+const targetingComputer = new TargetingComputer( ship, droneA );
 scene.add( targetingComputer );
 
 const debris = new Debris();
@@ -215,6 +220,30 @@ document.addEventListener( 'touchend', stopFiring );
 document.addEventListener( 'keydown', event => keys[ event.keyCode ] = true );
 document.addEventListener( 'keyup', event => keys[ event.keyCode ] = false );
 
+function switchTarget( direction = 1 ) {
+  const MAX_TARGET_RADIUS = 12;
+  const targets = [];
+
+  traverse( client, object => {
+    if ( object.type === 'drone' || object.type === 'missile' ) {
+      const distanceToSquared = ship.position
+        .distanceToSquared( object.position );
+
+      if ( distanceToSquared < MAX_TARGET_RADIUS * MAX_TARGET_RADIUS ) {
+        targets.push( object );
+      }
+    }
+  });
+
+  const index = targets.indexOf( targetingComputer.target );
+  const newIndex = THREE.Math.euclideanModulo( index + direction, targets.length );
+  const newTarget = targets[ newIndex ];
+
+  if ( newTarget ) {
+    targetingComputer.target = newTarget;
+  }
+}
+
 document.addEventListener( 'keydown', event => {
   // P. Pause/play.
   if ( event.keyCode === 80 ) {
@@ -227,6 +256,11 @@ document.addEventListener( 'keydown', event => {
   // Shift key.
   if ( event.keyCode === 16 ) {
     controls.speed = 4 * config.ship.speed;
+  }
+
+  // T. Switch targets. Shift for reverse direction.
+  if ( event.keyCode === 84 ) {
+    switchTarget( event.shiftKey ? -1 : 1 );
   }
 });
 

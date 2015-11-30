@@ -58,8 +58,7 @@ export const reticles = {
       blending: THREE.AdditiveBlending,
       depthTest: false,
       map: texture,
-      rotation: Math.PI / 4,
-      transparent: true
+      rotation: Math.PI / 4
     });
   })(),
 
@@ -96,9 +95,7 @@ export const reticles = {
     return new THREE.SpriteMaterial({
       blending: THREE.AdditiveBlending,
       depthTest: false,
-      map: texture,
-      rotation: -Math.PI / 3,
-      transparent: true
+      map: texture
     });
   })()
 };
