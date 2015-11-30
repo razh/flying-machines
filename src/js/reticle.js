@@ -1,11 +1,11 @@
 import THREE from 'three.js';
 import config from './config';
 
-const canvas = document.createElement( 'canvas' );
-const ctx = canvas.getContext( '2d' );
-
 export const reticles = {
   diamond: (() => {
+    const canvas = document.createElement( 'canvas' );
+    const ctx = canvas.getContext( '2d' );
+
     const size = 128;
 
     // Segment length.
@@ -26,8 +26,6 @@ export const reticles = {
         |       |
         +--   --+
      */
-
-    ctx.beginPath();
 
     // Top left.
     ctx.moveTo( halfLineWidth + length, halfLineWidth );
@@ -57,9 +55,49 @@ export const reticles = {
     texture.needsUpdate = true;
 
     return new THREE.SpriteMaterial({
+      blending: THREE.AdditiveBlending,
       depthTest: false,
       map: texture,
       rotation: Math.PI / 4,
+      transparent: true
+    });
+  })(),
+
+  arc: (() => {
+    const canvas = document.createElement( 'canvas' );
+    const ctx = canvas.getContext( '2d' );
+
+    const size = 128;
+    const halfSize = size / 2;
+    const lineWidth = 8;
+    const radius = ( size - lineWidth ) / 2;
+
+    canvas.width = size;
+    canvas.height = size;
+
+    const arcCount = 3;
+    const padAngle = Math.PI / 3;
+    const arcAngle = 2 * Math.PI / arcCount - padAngle;
+
+    ctx.lineWidth = lineWidth;
+    ctx.strokeStyle = '#fff';
+
+    for ( let i = 0; i < arcCount; i++ ) {
+      const startAngle = i * ( arcAngle + padAngle );
+
+      ctx.beginPath();
+      ctx.arc( halfSize, halfSize, radius, startAngle, startAngle + arcAngle );
+      ctx.stroke();
+    }
+
+    const texture = new THREE.Texture( canvas );
+    texture.needsUpdate = true;
+
+    return new THREE.SpriteMaterial({
+      blending: THREE.AdditiveBlending,
+      depthTest: false,
+      map: texture,
+      rotation: -Math.PI / 3,
       transparent: true
     });
   })()
