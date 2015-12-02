@@ -1,4 +1,4 @@
 'use strict';
 
-require( 'babel/register' );
-require( './create-server' )();
+require( 'babel-register' );
+require( './create-server' ).default();
