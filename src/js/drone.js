@@ -1,6 +1,5 @@
 import THREE from 'three.js';
 import Entity from './entity';
-import traverse from './traverse';
 import { collisionMixin, CollisionShapes, CollisionGroups } from './collision';
 
 const TorusKnot = THREE.Curve.create(
@@ -28,12 +27,6 @@ const material = new THREE.MeshPhongMaterial({
   shading: THREE.FlatShading
 });
 
-const vector = new THREE.Vector3();
-
-const REGENERATION_RATE = 1000 / 50;
-const RED = new THREE.Color( 1, 0, 0 );
-const WHITE = new THREE.Color( 1, 1, 1 );
-
 export default class Drone extends Entity {
   constructor() {
     super( geometry, material.clone() );
@@ -51,13 +44,7 @@ export default class Drone extends Entity {
     this.duration = this.length / this.speed;
   }
 
-  hit() {
-    this.material.color.copy( RED );
-  }
-
-  update( dt, scene ) {
-    this.material.color.lerp( WHITE, dt * REGENERATION_RATE );
-
+  update( dt ) {
     this.time += dt;
     const t = ( this.time / this.duration ) % 1;
     const point = this.path.getPointAt( t );
@@ -67,15 +54,5 @@ export default class Drone extends Entity {
       .divideScalar( dt );
 
     this.position.copy( point );
-
-    traverse( scene, object => {
-      if ( object.type === 'bullet' ) {
-        this.worldToLocal( object.getWorldPosition( vector ) );
-        if ( this.geometry.boundingSphere.containsPoint( vector ) ) {
-          this.hit();
-          return false;
-        }
-      }
-    });
   }
 }
