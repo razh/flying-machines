@@ -40,6 +40,7 @@ const camera = new THREE.PerspectiveCamera( 60, window.innerWidth / window.inner
 scene.add( camera );
 
 const ship = new Ship();
+ship.geometry.computeBoundingSphere();
 client.add( ship );
 
 const radar = new Radar( ship );
@@ -106,7 +107,7 @@ const canFire = (() => {
 })();
 
 const fire = (() => {
-  const offset = new THREE.Vector3( 0, 0, -0.25 );
+  const offset = new THREE.Vector3( 0, 0, -ship.geometry.boundingSphere.radius );
 
   return () => {
     const bullet = new Bullet();
