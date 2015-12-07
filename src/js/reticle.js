@@ -210,3 +210,37 @@ export class TargetingComputer extends THREE.Group {
     this.prediction.position.lerp( vector, this.stiffness * dt );
   }
 }
+
+
+const triangle = (() => {
+  const canvas = document.createElement( 'canvas' );
+  const ctx = canvas.getContext( '2d' );
+
+  const size = 64;
+
+  canvas.width = size;
+  canvas.height = size;
+
+  const radius = size / 2;
+  const angle = 2 * Math.PI / 3;
+  const x = radius * Math.cos( angle );
+  const y = radius * Math.sin( angle );
+
+  ctx.translate( radius, radius );
+  ctx.moveTo( radius, 0 );
+  ctx.lineTo( x, y );
+  ctx.lineTo( x, -y );
+  ctx.closePath();
+
+  ctx.fillStyle = '#f43';
+  ctx.fill();
+
+  const texture = new THREE.Texture( canvas );
+  texture.needsUpdate = true;
+
+  return new THREE.SpriteMaterial({
+    blending: THREE.AdditiveBlending,
+    depthTest: false,
+    map: texture
+  });
+})();
