@@ -154,6 +154,13 @@ function onCollide( a, b ) {
   }
 }
 
+function render() {
+  renderer.autoClear = false;
+  skybox.render( renderer, camera );
+  renderer.render( scene, camera );
+  renderer.autoClear = true;
+}
+
 function animate() {
   const delta = Math.min( clock.getDelta(), 0.1 );
   controls.update();
@@ -198,10 +205,7 @@ function animate() {
   radar.track( server, camera );
   debris.track( ship );
 
-  renderer.autoClear = false;
-  skybox.render( renderer, camera );
-  renderer.render( scene, camera );
-  renderer.autoClear = true;
+  render();
 
   if ( running ) {
     requestAnimationFrame( animate );
@@ -279,6 +283,8 @@ window.addEventListener( 'resize', () => {
   camera.updateProjectionMatrix();
 
   skybox.resize( window.innerWidth, window.innerHeight );
+
+  render();
 });
 
 if ( /rtc/.test( window.location.href ) ) {
