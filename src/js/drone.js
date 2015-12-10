@@ -40,7 +40,7 @@ export default class Drone extends Entity {
     this.time = 0;
     this.path = new TorusKnot( 2 );
     this.length = this.path.getLength();
-    this.speed = 1;
+    this.speed = 0;
     this.duration = this.length / this.speed;
   }
 

@@ -244,3 +244,49 @@ const triangle = (() => {
     map: texture
   });
 })();
+
+export class Offscreen extends THREE.Sprite {
+  constructor( camera ) {
+    super( triangle.clone() );
+
+    this.camera = camera;
+    this.target = null;
+
+    this.limit = 0.9;
+    this.scale.set( 1 / 16, 1 / 16, 0 );
+  }
+
+  update() {
+    if ( !this.target ) {
+      return;
+    }
+
+    // Check if target is outside of camera.
+    vector.copy( this.target.position ).project( this.camera );
+
+    const visible = (
+      -1 <= vector.x && vector.x <= 1 &&
+      -1 <= vector.y && vector.y <= 1
+    );
+
+    this.visible = !visible;
+    if ( visible ) {
+      return;
+    }
+
+    if ( vector.z > 1 ) {
+      this.visible = false;
+      return;
+    }
+
+    const angle = Math.atan2( vector.y, vector.x / this.camera.aspect );
+    this.material.rotation = angle;
+
+    vector.z = 0;
+    vector.clampLength( 0, this.limit );
+    vector.z = this.limit;
+
+    vector.unproject( this.camera );
+    this.position.copy( vector );
+  }
+}
