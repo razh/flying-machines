@@ -2,6 +2,7 @@ import THREE from 'three.js';
 import Nebula from './nebula';
 import Starfield from './starfield';
 import Turret from './turret';
+import greeble from './greeble';
 import { collisionMixin, CollisionShapes } from './collision';
 
 function perturbVertex( vertex ) {
@@ -53,6 +54,29 @@ const maps = {
     const turret = new Turret();
     turret.position.set( 4, -0.02, -4 );
     scene.add( turret );
+  },
+
+  artifacts( scene ) {
+    const artifactGeometry = greeble( new THREE.BoxGeometry( 16, 1, 1 ), {
+      count: 100,
+      greeble() {
+        return new THREE.BoxGeometry(
+          THREE.Math.randFloat( 0.5, 2 ),
+          THREE.Math.randFloat( 0.5, 2 ),
+          THREE.Math.randFloat( 0.5, 2 )
+        );
+      }
+    });
+
+    const artifact = new THREE.Mesh( artifactGeometry, new THREE.MeshPhongMaterial({
+      color: '#333',
+      shininess: 10
+    }));
+
+    artifact.position.set( -4, 4, -4 );
+    artifact.rotation.z = Math.PI / 4;
+
+    scene.add( artifact );
   },
 
   minimalSkybox( scene ) {
