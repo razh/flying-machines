@@ -226,7 +226,8 @@ document.addEventListener( 'keydown', event => keys[ event.keyCode ] = true );
 document.addEventListener( 'keyup', event => keys[ event.keyCode ] = false );
 
 function switchTarget( direction = 1 ) {
-  const MAX_TARGET_RADIUS = 12;
+  const radius = config.bullet.range;
+  const radiusSquared = radius * radius;
   const targets = [];
 
   traverse( client, object => {
@@ -234,7 +235,7 @@ function switchTarget( direction = 1 ) {
       const distanceToSquared = ship.position
         .distanceToSquared( object.position );
 
-      if ( distanceToSquared < MAX_TARGET_RADIUS * MAX_TARGET_RADIUS ) {
+      if ( distanceToSquared <= radiusSquared ) {
         targets.push( object );
       }
     }
