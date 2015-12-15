@@ -10,7 +10,7 @@ const lineMaterial = new THREE.LineBasicMaterial({
   transparent: true
 });
 
-export default class Trail extends THREE.Line {
+export class LineTrail extends THREE.Line {
   constructor( count = 64 ) {
     const geometry = new THREE.BufferGeometry();
     const vertices = new Float32Array( 3 * count );
@@ -157,14 +157,8 @@ export class SpriteTrail extends THREE.Group {
 
 
 export class ScreenSpaceTrail extends THREE.Mesh {
-  constructor( count = 32, radius = 0.05 ) {
-    const geometry = new THREE.TubeGeometry(
-      new THREE.LineCurve(
-        new THREE.Vector3(),
-        new THREE.Vector3().setZ( 1 )
-      ),
-      count - 1, radius, 2
-    );
+  constructor( count = 128 ) {
+    const geometry = new THREE.PlaneBufferGeometry( 1, 1, count, 1 );
 
     const material = new THREE.MeshBasicMaterial({
       blending: THREE.AdditiveBlending,
