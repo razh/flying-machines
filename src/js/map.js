@@ -143,11 +143,12 @@ const maps = {
     scene.add( minimal.hemisphereLight.clone() );
 
     const nebulaGeometry = new Nebula(
+      new THREE.IcosahedronGeometry( 64, 3 ),
       {
+        period: 64,
         fromColor: new THREE.Color( '#223' ),
         toColor: new THREE.Color( '#000' )
-      },
-      64, 3
+      }
     );
 
     const nebulaMesh = new THREE.Mesh(

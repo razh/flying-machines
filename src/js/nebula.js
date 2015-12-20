@@ -1,6 +1,5 @@
 import THREE from 'three.js';
 import SimplexNoise from 'simplex-noise';
-import assign from 'lodash/object/assign';
 
 const color = new THREE.Color();
 const simplex = new SimplexNoise();
@@ -32,21 +31,21 @@ function fbm3d( {
 }
 
 export default class Nebula extends THREE.BufferGeometry {
-  constructor( settings, ...args ) {
+  constructor( geometry, settings ) {
     super();
 
-    const sphere = new THREE.IcosahedronGeometry( ...args );
-    this.fromGeometry( sphere, assign( {}, settings ) );
-
-    const { fromColor, toColor } = settings;
+    if ( geometry instanceof THREE.BufferGeometry ) {
+      this.copy( geometry );
+    } else if ( geometry instanceof THREE.Geometry ) {
+      this.fromGeometry( geometry );
+    }
 
     const positions = this.attributes.position.array;
     const colors = new Float32Array( positions.length );
     this.addAttribute( 'color', new THREE.BufferAttribute( colors, 3 ) );
 
-    const fbm = fbm3d({
-      period: sphere.parameters.radius
-    });
+    const fbm = fbm3d( settings );
+    const { fromColor, toColor } = settings;
 
     for ( let i = 0; i < positions.length; i += 3 ) {
       const x = positions[ i     ];
