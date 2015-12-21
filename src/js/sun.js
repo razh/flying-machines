@@ -32,8 +32,6 @@ const textures = {
   })(),
 
   lensFlare: (() => {
-    const sides = 6;
-
     const diameter = 256;
     const radius = diameter / 2;
 
@@ -58,6 +56,48 @@ const textures = {
     const texture = new THREE.Texture( canvas );
     texture.needsUpdate = true;
     return texture;
+  })(),
+
+  anamorphicFlare: (() => {
+    const diameter = 256;
+    const radius = diameter / 2;
+    const scaleY = 0.02;
+
+    const canvas = document.createElement( 'canvas' );
+    const ctx = canvas.getContext( '2d' );
+
+    canvas.width = diameter;
+    canvas.height = diameter;
+
+    const gradient = ctx.createRadialGradient(
+      radius, radius, 0,
+      radius, radius, radius
+    );
+
+    gradient.addColorStop( 0, '#77f' );
+    gradient.addColorStop( 1, 'transparent' );
+
+    /*
+        +--------------+
+        |              |
+        +--------------+                      -+-
+        |   ellipse    |                       |
+        |   bounding   | - canvas.height / 2   | canvas.height * scaleY
+        |     box      |                       |
+        +--------------+                      -+-
+        |              |
+        +--------------+
+     */
+    const y = canvas.height * ( 1 - scaleY ) / 2;
+
+    ctx.translate( 0, y );
+    ctx.scale( 1, scaleY );
+    ctx.fillStyle = gradient;
+    ctx.fillRect( 0, 0, canvas.width, canvas.height / scaleY );
+
+    const texture = new THREE.Texture( canvas );
+    texture.needsUpdate = true;
+    return texture;
   })()
 };
 
@@ -68,10 +108,18 @@ export default class Sun extends THREE.Group {
     const lensFlare = new THREE.LensFlare();
 
     lensFlare.add( textures.core, 64, 0, THREE.AdditiveBlending );
+
+    lensFlare.add( textures.anamorphicFlare, 1024, 0, THREE.AdditiveBlending, undefined, 0.5 );
+
     lensFlare.add( textures.lensFlare, 64, 0.5, THREE.AdditiveBlending, undefined, 0.1 );
     lensFlare.add( textures.lensFlare, 96, 0.7, THREE.AdditiveBlending, undefined, 0.1 );
     lensFlare.add( textures.lensFlare, 128, 0.9, THREE.AdditiveBlending, undefined, 0.1 );
     lensFlare.add( textures.lensFlare, 96, 1, THREE.AdditiveBlending, undefined, 0.1 );
+
+    lensFlare.customUpdateCallback = () => {
+      THREE.LensFlare.prototype.updateLensFlares.call( lensFlare );
+      lensFlare.lensFlares[1].rotation = 0;
+    };
 
     this.add( lensFlare );
   }
