@@ -18,6 +18,7 @@
   },
   "homepage": "https://github.com/razh/flying-machines#readme",
   "dependencies": {
+    "color": "^0.10.1",
     "lodash": "^3.10.1",
     "protocol-buffers": "^3.1.4",
     "simple-peer": "^5.11.6",
@@ -30,7 +31,7 @@
     "babel-register": "^6.3.13",
     "babelify": "^7.2.0",
     "brfs": "^1.4.1",
-    "browser-sync": "^2.10.0",
+    "browser-sync": "^2.10.1",
     "browserify": "^12.0.1",
     "del": "^2.2.0",
     "gulp": "^3.9.0",

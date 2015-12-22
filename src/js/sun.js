@@ -1,4 +1,5 @@
 import THREE from 'three.js';
+import color from 'color';
 
 const textures = {
   core: (() => {
@@ -18,9 +19,8 @@ const textures = {
 
     gradient.addColorStop( 0, '#fff' );
     gradient.addColorStop( 0.1, '#fff' );
-    gradient.addColorStop( 0.3, '#ffd' );
-    // rgba(#f83, 0.2).
-    gradient.addColorStop( 0.7, 'rgba(255, 136, 51, 0.2)' );
+    gradient.addColorStop( 0.3, '#ddf' );
+    gradient.addColorStop( 0.7, color( '#77f' ).alpha( 0.2 ).hslString() );
     gradient.addColorStop( 1, 'transparent' );
 
     ctx.fillStyle = gradient;
@@ -74,7 +74,7 @@ const textures = {
       radius, radius, radius
     );
 
-    gradient.addColorStop( 0, '#77f' );
+    gradient.addColorStop( 0, '#fff' );
     gradient.addColorStop( 1, 'transparent' );
 
     /*
@@ -106,15 +106,14 @@ export default class Sun extends THREE.Group {
     super( ...args );
 
     const lensFlare = new THREE.LensFlare();
+    lensFlare.add( textures.core, 128, 0, THREE.AdditiveBlending );
 
-    lensFlare.add( textures.core, 64, 0, THREE.AdditiveBlending );
-
-    lensFlare.add( textures.anamorphicFlare, 1024, 0, THREE.AdditiveBlending, undefined, 0.5 );
-
-    lensFlare.add( textures.lensFlare, 64, 0.5, THREE.AdditiveBlending, undefined, 0.1 );
-    lensFlare.add( textures.lensFlare, 96, 0.7, THREE.AdditiveBlending, undefined, 0.1 );
-    lensFlare.add( textures.lensFlare, 128, 0.9, THREE.AdditiveBlending, undefined, 0.1 );
-    lensFlare.add( textures.lensFlare, 96, 1, THREE.AdditiveBlending, undefined, 0.1 );
+    const color = new THREE.Color( '#77f' );
+    lensFlare.add( textures.anamorphicFlare, 1024, 0, THREE.AdditiveBlending, color, 0.5 );
+    lensFlare.add( textures.lensFlare, 64, 0.5, THREE.AdditiveBlending, color, 0.1 );
+    lensFlare.add( textures.lensFlare, 96, 0.7, THREE.AdditiveBlending, color, 0.1 );
+    lensFlare.add( textures.lensFlare, 128, 0.9, THREE.AdditiveBlending, color, 0.1 );
+    lensFlare.add( textures.lensFlare, 96, 1, THREE.AdditiveBlending, color, 0.1 );
 
     lensFlare.customUpdateCallback = () => {
       THREE.LensFlare.prototype.updateLensFlares.call( lensFlare );
