@@ -1,6 +1,7 @@
 import THREE from 'three.js';
 import Nebula from './nebula';
 import Starfield from './starfield';
+import Sun from './sun';
 import Turret from './turret';
 import greeble from './greeble';
 import { collisionMixin, CollisionShapes } from './collision';
@@ -54,6 +55,12 @@ const maps = {
     const turret = new Turret();
     turret.position.set( 4, -0.02, -4 );
     scene.add( turret );
+  },
+
+  sun( scene ) {
+    const sun = new Sun();
+    sun.position.copy( minimal.pointLight.position );
+    scene.add( sun );
   },
 
   artifacts( scene ) {
@@ -156,7 +163,8 @@ const maps = {
       new THREE.MeshBasicMaterial({
         fog: false,
         side: THREE.BackSide,
-        vertexColors: THREE.VertexColors
+        vertexColors: THREE.VertexColors,
+        depthWrite: false
       })
     );
 
