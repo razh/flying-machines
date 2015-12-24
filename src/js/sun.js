@@ -1,7 +1,7 @@
 import THREE from 'three.js';
 import color from 'color';
 
-const textures = {
+export const textures = {
   core: (() => {
     const diameter = 512;
     const radius = diameter / 2;
@@ -20,6 +20,7 @@ const textures = {
     gradient.addColorStop( 0, '#fff' );
     gradient.addColorStop( 0.1, '#fff' );
     gradient.addColorStop( 0.3, '#ddf' );
+    gradient.addColorStop( 0.35, color( '#ddf' ).alpha( 0.8 ).hslString() );
     gradient.addColorStop( 0.7, color( '#77f' ).alpha( 0.2 ).hslString() );
     gradient.addColorStop( 1, 'transparent' );
 

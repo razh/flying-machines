@@ -1,7 +1,7 @@
 import THREE from 'three.js';
 import Nebula from './nebula';
 import Starfield from './starfield';
-import Sun from './sun';
+import Sun, { textures as sunTextures } from './sun';
 import Turret from './turret';
 import greeble from './greeble';
 import { collisionMixin, CollisionShapes } from './collision';
@@ -57,10 +57,23 @@ const maps = {
     scene.add( turret );
   },
 
-  sun( scene ) {
+  sunLensFlare( scene ) {
     const sun = new Sun();
-    sun.position.copy( minimal.pointLight.position );
+    sun.position.copy( minimal.pointLight.position ).setLength( 64 );
     scene.add( sun );
+  },
+
+  sunSprite( scene ) {
+    const coreMaterial = new THREE.SpriteMaterial({
+      blending: THREE.AdditiveBlending,
+      map: sunTextures.core
+    });
+
+    const core = new THREE.Sprite( coreMaterial );
+    core.position.copy( minimal.pointLight.position ).setLength( 64 );
+    core.scale.setLength( 16 );
+
+    scene.add( core );
   },
 
   artifacts( scene ) {
@@ -87,18 +100,11 @@ const maps = {
   },
 
   minimalSkybox( scene ) {
-    // Create asteroid belt.
-    const matrix = new THREE.Matrix4();
+    scene.add( minimal.pointLight.clone() );
+    scene.add( minimal.hemisphereLight.clone() );
 
+    // Asteroid belt.
     const radius = 32;
-    const position = new THREE.Vector3();
-    const quaternion = new THREE.Quaternion();
-    const scale = new THREE.Vector3();
-
-    let count = 32;
-    const asteroidGeometry = new THREE.IcosahedronGeometry( 1, 1 );
-    const asteroidBeltGeometry = new THREE.Geometry();
-
     const positionSpread = 8;
     const scaleSpread = 0.5;
 
@@ -107,6 +113,15 @@ const maps = {
       radius - positionSpread,
       radius + positionSpread
     );
+
+    let count = 32;
+    const asteroidGeometry = new THREE.IcosahedronGeometry( 1, 1 );
+    const asteroidBeltGeometry = new THREE.Geometry();
+
+    const position = new THREE.Vector3();
+    const quaternion = new THREE.Quaternion();
+    const scale = new THREE.Vector3();
+    const matrix = new THREE.Matrix4();
 
     while ( count-- ) {
       const geometry = asteroidGeometry.clone();
@@ -146,9 +161,7 @@ const maps = {
     mesh.rotation.y = Math.PI / 4;
     scene.add( mesh );
 
-    scene.add( minimal.pointLight.clone() );
-    scene.add( minimal.hemisphereLight.clone() );
-
+    // Nebula.
     const nebulaGeometry = new Nebula(
       new THREE.IcosahedronGeometry( 64, 3 ),
       {
@@ -170,6 +183,7 @@ const maps = {
 
     scene.add( nebulaMesh );
 
+    // Starfield.
     const starfieldGeometry = new Starfield( 512 );
     const starfield = new THREE.Points(
       starfieldGeometry,
