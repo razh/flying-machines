@@ -1,8 +1,9 @@
 import THREE from 'three.js';
 import color from 'color';
+import { defineLazyGetters } from './lazy';
 
-export const textures = {
-  core: (() => {
+export const textures = defineLazyGetters( {}, {
+  core() {
     const diameter = 512;
     const radius = diameter / 2;
 
@@ -30,9 +31,9 @@ export const textures = {
     const texture = new THREE.Texture( canvas );
     texture.needsUpdate = true;
     return texture;
-  })(),
+  },
 
-  lensFlare: (() => {
+  lensFlare() {
     const diameter = 256;
     const radius = diameter / 2;
 
@@ -57,9 +58,9 @@ export const textures = {
     const texture = new THREE.Texture( canvas );
     texture.needsUpdate = true;
     return texture;
-  })(),
+  },
 
-  anamorphicFlare: (() => {
+  anamorphicFlare() {
     const diameter = 256;
     const radius = diameter / 2;
     const scaleY = 0.02;
@@ -99,8 +100,8 @@ export const textures = {
     const texture = new THREE.Texture( canvas );
     texture.needsUpdate = true;
     return texture;
-  })()
-};
+  }
+});
 
 export default class Sun extends THREE.Group {
   constructor( ...args ) {
