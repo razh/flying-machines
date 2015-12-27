@@ -1,8 +1,9 @@
 import THREE from 'three.js';
 import config from './config';
+import { defineLazyGetters } from './lazy';
 
-export const reticles = {
-  diamond: (() => {
+export const reticles = defineLazyGetters( {}, {
+  diamond() {
     const canvas = document.createElement( 'canvas' );
     const ctx = canvas.getContext( '2d' );
 
@@ -60,9 +61,9 @@ export const reticles = {
       map: texture,
       rotation: Math.PI / 4
     });
-  })(),
+  },
 
-  arc: (() => {
+  arc() {
     const canvas = document.createElement( 'canvas' );
     const ctx = canvas.getContext( '2d' );
 
@@ -97,8 +98,8 @@ export const reticles = {
       depthTest: false,
       map: texture
     });
-  })()
-};
+  }
+});
 
 const vector = new THREE.Vector3();
 

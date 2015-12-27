@@ -1,55 +1,61 @@
 import THREE from 'three.js';
 import { randomPointOnSphere } from './math';
 import { remove } from './utils';
+import { defineLazyGetters } from './lazy';
 
-const size = 128;
 const scale = () => THREE.Math.randFloat( 0.1, 0.5 );
 
-const canvas = document.createElement( 'canvas' );
-const ctx = canvas.getContext( '2d' );
+const materials = defineLazyGetters( {}, {
+  explosion() {
+    const size = 128;
 
-canvas.width = size;
-canvas.height = size;
+    const canvas = document.createElement( 'canvas' );
+    const ctx = canvas.getContext( '2d' );
 
-/*
-      ratio
-      |----|
-    +--------+
-    | +----+ |
-    | |    | |
-    | +----+ |
-    +--------+
- */
-function drawShadowRect( ctx, color, ratio, blur ) {
-  ctx.shadowColor = color;
-  ctx.shadowBlur = blur * size;
+    canvas.width = size;
+    canvas.height = size;
 
-  ctx.fillStyle = color;
-  ctx.fillRect(
-    size * ( 1 - ratio ) / 2,
-    size * ( 1 - ratio ) / 2,
-    size * ratio,
-    size * ratio
-  );
-}
+    /*
+          ratio
+          |----|
+        +--------+
+        | +----+ |
+        | |    | |
+        | +----+ |
+        +--------+
+     */
+    function drawShadowRect( ctx, color, ratio, blur ) {
+      ctx.shadowColor = color;
+      ctx.shadowBlur = blur * size;
 
-drawShadowRect( ctx, '#f85', 0.8, 0.2 );
-drawShadowRect( ctx, '#fff', 0.4, 0.2 );
+      ctx.fillStyle = color;
+      ctx.fillRect(
+        size * ( 1 - ratio ) / 2,
+        size * ( 1 - ratio ) / 2,
+        size * ratio,
+        size * ratio
+      );
+    }
 
-const texture = new THREE.Texture( canvas );
-texture.needsUpdate = true;
+    drawShadowRect( ctx, '#f85', 0.8, 0.2 );
+    drawShadowRect( ctx, '#fff', 0.4, 0.2 );
 
-const material = new THREE.SpriteMaterial({
-  blending: THREE.AdditiveBlending,
-  map: texture,
-  rotation: Math.PI / 4,
-  transparent: true,
-  opacity: 0.9
+    const texture = new THREE.Texture( canvas );
+    texture.needsUpdate = true;
+
+    return new THREE.SpriteMaterial({
+      blending: THREE.AdditiveBlending,
+      map: texture,
+      rotation: Math.PI / 4,
+      transparent: true,
+      opacity: 0.9
+    });
+  }
 });
 
 export class ExplosionSprite extends THREE.Sprite {
   constructor() {
-    super( material );
+    super( materials.explosion );
     this.reset();
   }
 

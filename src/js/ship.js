@@ -2,10 +2,11 @@ import THREE from 'three.js';
 import Entity from './entity';
 import Shield from './shield';
 import Engine from './engine';
+import { defineLazyGetters } from './lazy';
 import { collisionMixin, CollisionShapes, CollisionGroups } from './collision';
 
-const geometries = {
-  basic: (() => {
+const geometries = defineLazyGetters( {}, {
+  basic() {
     const geometry = new THREE.CylinderGeometry( 0, 0.1, 0.5, 3 );
 
     geometry.rotateX( -Math.PI / 2 );
@@ -13,10 +14,12 @@ const geometries = {
     geometry.computeVertexNormals();
 
     return geometry;
-  })(),
+  },
 
-  sphere: new THREE.IcosahedronGeometry( 0.2, 2 )
-};
+  sphere() {
+    return new THREE.IcosahedronGeometry( 0.2, 1 );
+  }
+});
 
 const material = new THREE.MeshPhongMaterial({
   shading: THREE.FlatShading
