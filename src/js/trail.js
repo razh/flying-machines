@@ -32,24 +32,20 @@ export class LineTrail extends THREE.Line {
   }
 
   track( target ) {
-    const { position } = this.geometry.attributes;
-    let index = 0;
-
-    for ( let i = this.start; i < this.positions.length; i++ ) {
-      this.positions[i].toArray( position.array, 3 * index );
-      index++;
-    }
-
-    for ( let i = 0; i < this.start; i++ ) {
-      this.positions[i].toArray( position.array, 3 * index );
-      index++;
-    }
-
     this.positions[ this.start ].copy( this.offset )
       .applyQuaternion( target.quaternion )
       .add( target.position );
 
     this.start = ( this.start + 1 ) % this.positions.length;
+  }
+
+  generate() {
+    const { position } = this.geometry.attributes;
+
+    for ( let i = 0; i < this.positions.length; i++ ) {
+      const index = ( i + this.start ) % this.positions.length;
+      this.positions[ index ].toArray( position.array, 3 * i );
+    }
 
     position.needsUpdate = true;
   }
