@@ -25,7 +25,6 @@ export default class Debris extends THREE.Group {
     super();
 
     this.radius = radius;
-    this.radiusSquared = this.radius * this.radius;
 
     let i = count;
     while ( i-- ) {
@@ -40,13 +39,13 @@ export default class Debris extends THREE.Group {
   }
 
   track( target ) {
+    const radiusSquared = this.radius * this.radius;
+
     this.children.forEach( sprite => {
       const { position } = sprite;
 
-      const distanceToSquared = sprite.position
-        .distanceToSquared( target.position );
-
-      if ( distanceToSquared <= this.radiusSquared ) {
+      const distanceToSquared = position.distanceToSquared( target.position );
+      if ( distanceToSquared <= radiusSquared ) {
         return;
       }
 

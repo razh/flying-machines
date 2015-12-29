@@ -201,8 +201,8 @@ function animate() {
     .add( camera.position );
 
   radar.reset();
-  radar.track( client, camera );
-  radar.track( server, camera );
+  radar.track( client );
+  radar.track( server );
   debris.track( ship );
 
   render();

@@ -1,8 +1,6 @@
 import THREE from 'three.js';
 import createPool from './pool';
 
-const vector = new THREE.Vector3();
-
 const scales = {
   ship: 1 / 16,
   bullet: 1 / 96,
@@ -30,20 +28,17 @@ export default class Radar extends THREE.Group {
 
     this.target = target;
     this.radius = radius;
-    this.radiusSquared = this.radius * this.radius;
     this.radarScale = scale;
 
     this.pool = createPool( this, RadarPoint );
   }
 
-  track( scene, camera ) {
-    const { target } = this;
-
-    if ( !target ) {
+  track( scene ) {
+    if ( !this.target ) {
       return;
     }
 
-    this.worldToLocal( vector.copy( camera.position ) );
+    const radiusSquared = this.radius * this.radius;
 
     scene.traverse( object => {
       const scale = scales[ object.type ];
@@ -52,10 +47,10 @@ export default class Radar extends THREE.Group {
       }
 
       const distanceToSquared = object.position
-        .distanceToSquared( target.position );
+        .distanceToSquared( this.target.position );
 
       // Add radar blip if within range.
-      if ( distanceToSquared > this.radiusSquared ) {
+      if ( distanceToSquared > radiusSquared ) {
         return;
       }
 
@@ -63,7 +58,7 @@ export default class Radar extends THREE.Group {
       point.scale.setLength( scale );
 
       point.position
-        .subVectors( object.position, target.position )
+        .subVectors( object.position, this.target.position )
         .multiplyScalar( this.radarScale );
 
       this.blips.add( point );

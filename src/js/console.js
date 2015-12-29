@@ -31,6 +31,7 @@ export default function createConsole() {
     state.messages.push( [ ...args ] );
     render( element, state );
   };
+  /* eslint-enable no-console */
 
   document.addEventListener( 'keydown', event => {
     // Backtick.
