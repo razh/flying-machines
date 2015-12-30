@@ -55,6 +55,8 @@ const maps = {
     const turret = new Turret();
     turret.position.set( 4, -0.02, -4 );
     scene.add( turret );
+
+    maps.sunLensFlare( scene );
   },
 
   sunLensFlare( scene ) {
