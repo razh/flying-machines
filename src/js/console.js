@@ -1,34 +1,39 @@
-export default function createConsole() {
-  const element = document.createElement( 'div' );
-  element.className = 'console';
-  document.body.appendChild( element );
+function render( element, state ) {
+  element.style.display = state.show ? 'block' : 'none';
 
-  function render( element, state ) {
-    const { messages } = state;
-
-    while ( messages.length > state.limit ) {
-      messages.shift();
-    }
-
-    element.innerHTML = (
-      `<ul style="display: ${ state.show ? 'block' : 'none' }">
-        ${ messages.map( message => `<li>${ message }</li>` ).join('') }
-      </ul>`
-    );
+  if ( !state.show ) {
+    return;
   }
 
+  element.innerHTML = (
+    '<ul>' +
+      state.messages.map( message => `<li>${ message }</li>` ).join('') +
+    '</ul>'
+  );
+}
+
+export default function createConsole() {
   const state = {
     messages: [],
     limit: 20,
     show: false
   };
 
+  const element = document.createElement( 'div' );
+  element.className = 'console';
+  document.body.appendChild( element );
+
   /* eslint-disable no-console */
   const log = console.log.bind( console );
 
   console.log = ( ...args ) => {
     log( ...args );
+
     state.messages.push( [ ...args ] );
+    while ( state.messages.length > state.limit ) {
+      state.messages.shift();
+    }
+
     render( element, state );
   };
   /* eslint-enable no-console */
