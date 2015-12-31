@@ -64,14 +64,14 @@ export class ExplosionSprite extends THREE.Sprite {
   }
 }
 
-const speed = 2;
-const decay = 6;
-
 export default class Explosion extends THREE.Group {
   constructor( radius = 0.2, count = 24 ) {
     super();
 
     this.radius = radius;
+    this.speed = 2;
+    this.decay = 6;
+
     this.velocities = [];
 
     let i = count;
@@ -84,7 +84,7 @@ export default class Explosion extends THREE.Group {
   }
 
   update( dt ) {
-    const drag = Math.exp( -decay * dt );
+    const drag = Math.exp( -this.decay * dt );
 
     this.children.forEach(( sprite, index ) => {
       const velocity = this.velocities[ index ];
@@ -103,7 +103,7 @@ export default class Explosion extends THREE.Group {
     });
 
     this.velocities.forEach( velocity => {
-      randomPointOnSphere( velocity ).setLength( speed );
+      randomPointOnSphere( velocity ).setLength( this.speed );
     });
   }
 
