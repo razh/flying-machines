@@ -79,7 +79,12 @@ const maps = {
   },
 
   artifacts( scene ) {
-    const artifactGeometry = greeble( new THREE.BoxGeometry( 16, 1, 1 ), {
+    const baseGeometry = new THREE.BoxGeometry( 16, 1, 1 )
+      .translate( 0, 5, 0 );
+
+    baseGeometry.merge( new THREE.BoxGeometry( 12, 1, 1 ) );
+
+    const artifactGeometry = greeble( baseGeometry, {
       count: 100,
       greeble() {
         return new THREE.BoxGeometry(
@@ -90,7 +95,11 @@ const maps = {
       }
     });
 
+    artifactGeometry.computeFaceNormals();
+    artifactGeometry.computeVertexNormals();
+
     const artifact = new THREE.Mesh( artifactGeometry, new THREE.MeshPhongMaterial({
+      shading: THREE.FlatShading,
       color: '#333',
       shininess: 10
     }));

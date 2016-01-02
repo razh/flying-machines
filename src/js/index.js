@@ -27,6 +27,7 @@ container.appendChild( renderer.domElement );
 
 const scene = new THREE.Scene();
 createMap( scene, 'minimal' );
+createMap( scene, 'artifacts' );
 
 const client = new THREE.Group();
 scene.add( client );
