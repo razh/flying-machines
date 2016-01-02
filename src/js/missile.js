@@ -2,12 +2,40 @@ import THREE from 'three.js';
 import Entity from './entity';
 import Engine from './engine';
 import { collisionMixin, CollisionShapes, CollisionGroups } from './collision';
+import { defineLazyGetters } from './lazy';
 
-const geometry = new THREE.CylinderGeometry( 0, 0.05, 0.2, 3 );
+const geometries = defineLazyGetters( {}, {
+  basic() {
+    const geometry = new THREE.CylinderGeometry( 0, 0.05, 0.2, 3 );
 
-geometry.rotateX( -Math.PI / 2 );
-geometry.computeFaceNormals();
-geometry.computeVertexNormals();
+    geometry.rotateX( -Math.PI / 2 );
+    geometry.computeFaceNormals();
+    geometry.computeVertexNormals();
+
+    return geometry;
+  },
+
+  rpg() {
+    const points = [
+      [ 0, 0 ],
+      [ 0.017, 0 ],
+      [ 0.01, 0.02 ],
+      [ 0.01, 0.03 ],
+      [ 0.027, 0.08 ],
+      [ 0.007, 0.19 ],
+      [ 0, 0.2 ]
+    ].map( ([ x, z ]) => new THREE.Vector3( x, 0, z ) );
+
+    const geometry = new THREE.LatheGeometry( points );
+
+    geometry.rotateX( Math.PI );
+    geometry.translate( 0, 0, 0.05 );
+    geometry.computeFaceNormals();
+    geometry.computeVertexNormals();
+
+    return geometry;
+  }
+});
 
 const material = new THREE.MeshPhongMaterial({
   shading: THREE.FlatShading,
@@ -16,7 +44,7 @@ const material = new THREE.MeshPhongMaterial({
 
 export default class Missile extends Entity {
   constructor() {
-    super( geometry, material.clone() );
+    super( geometries.rpg, material.clone() );
     collisionMixin( this );
 
     this.type = 'missile';
