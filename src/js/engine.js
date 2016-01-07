@@ -26,9 +26,15 @@ export default class Engine extends THREE.Group {
     this.source = source;
     this.spread = spread;
 
-    this.geometry = new THREE.CylinderGeometry( 0, radius, height, 5 );
+    const points = [
+      [ 0, 0 ],
+      [ radius, height * 0.2 ],
+      [ 0, height ]
+    ].map( ([ x, z ]) => new THREE.Vector3( x, 0, z ) );
 
-    this.geometry.rotateX( Math.PI / 2 );
+    this.geometry = new THREE.LatheGeometry( points, 5 );
+
+    this.geometry.translate( 0, 0, -height / 2 );
     this.geometry.computeFaceNormals();
     this.geometry.computeVertexNormals();
 
