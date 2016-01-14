@@ -1,5 +1,5 @@
 import FlyControls from './fly-controls';
-import forEach from 'lodash/collection/forEach';
+import forEach from 'lodash/forEach';
 
 function copyTouch( touch ) {
   return {

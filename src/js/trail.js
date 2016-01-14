@@ -1,5 +1,5 @@
 import THREE from 'three.js';
-import times from 'lodash/utility/times';
+import times from 'lodash/times';
 
 const lineMaterial = new THREE.LineBasicMaterial({
   blending: THREE.AdditiveBlending,
