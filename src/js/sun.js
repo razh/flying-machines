@@ -1,4 +1,4 @@
-import THREE from 'three.js';
+import THREE from 'three';
 import color from 'color';
 import { defineLazyGetters } from './lazy';
 

@@ -1,4 +1,4 @@
-import THREE from 'three.js';
+import THREE from 'three';
 
 export function randomPointOnSphere( vector = new THREE.Vector3() ) {
   const theta = 2 * Math.PI * Math.random();

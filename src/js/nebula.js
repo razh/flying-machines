@@ -1,4 +1,4 @@
-import THREE from 'three.js';
+import THREE from 'three';
 import SimplexNoise from 'simplex-noise';
 
 const color = new THREE.Color();

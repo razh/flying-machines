@@ -1,5 +1,5 @@
 /* A heavily modified version of THREE.FlyControls. */
-import THREE from 'three.js';
+import THREE from 'three';
 
 const quaternion = new THREE.Quaternion();
 

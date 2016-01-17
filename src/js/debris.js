@@ -1,4 +1,4 @@
-import THREE from 'three.js';
+import THREE from 'three';
 import { randomPointOnSphere } from './math';
 
 const scale = () => THREE.Math.randFloat( 0.01, 0.03 );

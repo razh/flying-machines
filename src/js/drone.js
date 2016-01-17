@@ -1,4 +1,4 @@
-import THREE from 'three.js';
+import THREE from 'three';
 import Entity from './entity';
 import { collisionMixin, CollisionShapes, CollisionGroups } from './collision';
 
