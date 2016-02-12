@@ -6,8 +6,8 @@ const triangle = new THREE.Triangle();
  * Copies of various utility functions from THREE.GeometryUtils.
  */
 function randomPointInTriangle( vA, vB, vC ) {
-  let a = THREE.Math.random16();
-  let b = THREE.Math.random16();
+  let a = Math.random();
+  let b = Math.random();
 
   if ( ( a + b ) > 1 ) {
     a = 1 - a;
@@ -80,7 +80,7 @@ function randomPointsNormalsInGeometry( geometry, count ) {
   const normals = [];
 
   for ( let i = 0; i < count; i++ ) {
-    const r = THREE.Math.random16() * totalArea;
+    const r = Math.random() * totalArea;
     const index = binarySearchIndices( r );
 
     const face = faces[ index ];

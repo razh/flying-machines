@@ -24,12 +24,12 @@ const geometries = defineLazyGetters( {}, {
       [ 0.027, 0.08 ],
       [ 0.007, 0.19 ],
       [ 0, 0.2 ]
-    ].map( ([ x, z ]) => new THREE.Vector3( x, 0, z ) );
+    ].map( ([ x, y ]) => new THREE.Vector2( x, y ) );
 
-    const geometry = new THREE.LatheGeometry( points );
+    const geometry = new THREE.LatheGeometry( points )
+      .rotateX( Math.PI / 2 )
+      .translate( 0, 0, 0.05 );
 
-    geometry.rotateX( Math.PI );
-    geometry.translate( 0, 0, 0.05 );
     geometry.computeFaceNormals();
     geometry.computeVertexNormals();
 

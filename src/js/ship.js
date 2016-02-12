@@ -5,7 +5,7 @@ import Engine from './engine';
 import { defineLazyGetters } from './lazy';
 import { collisionMixin, CollisionShapes, CollisionGroups } from './collision';
 
-const createLathePoint = ([ x, z ]) => new THREE.Vector3( x, 0, z );
+const createLathePoint = ([ x, y ]) => new THREE.Vector2( x, y );
 
 const geometries = defineLazyGetters( {}, {
   basic() {
@@ -30,7 +30,7 @@ const geometries = defineLazyGetters( {}, {
     ].map( createLathePoint );
 
     const geometry = new THREE.LatheGeometry( points, 3 )
-      .rotateZ( Math.PI / 6 );
+      .rotateX( Math.PI / 2 );
 
     const boosterPoints = [
       [ 0, 0 ],
@@ -42,8 +42,13 @@ const geometries = defineLazyGetters( {}, {
     const leftBoosterGeometry = new THREE.LatheGeometry( boosterPoints, 4 );
     const rightBoosterGeometry = new THREE.LatheGeometry( boosterPoints, 4 );
 
-    leftBoosterGeometry.translate( -0.1, 0, 0 );
-    rightBoosterGeometry.translate( 0.1, 0, 0 );
+    leftBoosterGeometry
+      .rotateX( Math.PI / 2 )
+      .translate( -0.1, 0, 0 );
+
+    rightBoosterGeometry
+      .rotateX( Math.PI / 2 )
+      .translate( 0.1, 0, 0 );
 
     geometry.merge( leftBoosterGeometry );
     geometry.merge( rightBoosterGeometry );

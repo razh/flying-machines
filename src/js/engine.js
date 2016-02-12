@@ -30,11 +30,12 @@ export default class Engine extends THREE.Group {
       [ 0, 0 ],
       [ radius, height * 0.2 ],
       [ 0, height ]
-    ].map( ([ x, z ]) => new THREE.Vector3( x, 0, z ) );
+    ].map( ([ x, y ]) => new THREE.Vector2( x, y ) );
 
-    this.geometry = new THREE.LatheGeometry( points, 5 );
+    this.geometry = new THREE.LatheGeometry( points, 5 )
+      .rotateX( Math.PI / 2 )
+      .translate( 0, 0, -height / 2 );
 
-    this.geometry.translate( 0, 0, -height / 2 );
     this.geometry.computeFaceNormals();
     this.geometry.computeVertexNormals();
 
