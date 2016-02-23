@@ -53,8 +53,36 @@ const geometries = defineLazyGetters( {}, {
     geometry.merge( leftBoosterGeometry );
     geometry.merge( rightBoosterGeometry );
 
-    geometry.rotateX( Math.PI );
-    geometry.translate( 0, 0, 0.15 );
+    geometry
+      .rotateX( Math.PI )
+      .translate( 0, 0, 0.15 );
+
+    geometry.computeFaceNormals();
+    geometry.computeVertexNormals();
+
+    return geometry;
+  },
+
+  alpha() {
+    const enginePoints = [
+      [ 0.03, 0 ],
+      [ 0.03, 0.05 ],
+      [ 0.025, 0.16 ],
+      [ 0.015, 0.18 ],
+      [ 0, 0.18 ]
+    ].map( createLathePoint );
+
+    const engineGeometry = new THREE.LatheGeometry( enginePoints, 16 )
+      .rotateX( Math.PI / 2 )
+      .translate( 0, 0, 0.02 );
+
+    const leftEngineGeometry = engineGeometry.clone().translate( -0.1, 0, 0 );
+    const rightEngineGeometry = engineGeometry.clone().translate( 0.1, 0, 0 );
+
+    const geometry = new THREE.Geometry();
+
+    geometry.merge( leftEngineGeometry );
+    geometry.merge( rightEngineGeometry );
 
     geometry.computeFaceNormals();
     geometry.computeVertexNormals();
@@ -62,6 +90,26 @@ const geometries = defineLazyGetters( {}, {
     return geometry;
   }
 });
+
+// Engine attachment points.
+const engines = {
+  basic: [
+    [ 0, 0, 0.3 ]
+  ],
+
+  sphere: [
+    [ 0, 0, 0.3 ]
+  ],
+
+  diamonds: [
+    [ 0, 0, 0.3 ]
+  ],
+
+  alpha: [
+    [ -0.1, 0, 0.3 ],
+    [ 0.1, 0, 0.3 ]
+  ]
+};
 
 const material = new THREE.MeshPhongMaterial({
   shading: THREE.FlatShading
@@ -80,8 +128,13 @@ export default class Ship extends Entity {
     this.shield.visible = false;
     this.add( this.shield );
 
-    this.engine = new Engine( this );
-    this.engine.position.set( 0, 0, 0.3 );
-    this.add( this.engine );
+    this.engines = new THREE.Group();
+    this.add( this.engines );
+
+    engines.basic.map( position => {
+      const engine = new Engine( this );
+      engine.position.fromArray( position );
+      this.engines.add( engine );
+    });
   }
 }
