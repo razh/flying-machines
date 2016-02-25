@@ -27,7 +27,7 @@ const geometries = defineLazyGetters( {}, {
     ].map( ([ x, y ]) => new THREE.Vector2( x, y ) );
 
     const geometry = new THREE.LatheGeometry( points )
-      .rotateX( Math.PI / 2 )
+      .rotateX( -Math.PI / 2 )
       .translate( 0, 0, 0.05 );
 
     geometry.computeFaceNormals();
