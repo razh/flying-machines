@@ -125,17 +125,22 @@ const maps = {
       radius + positionSpread
     );
 
-    let count = 32;
+    const asteroidBelt = new THREE.Group();
     const asteroidGeometry = new THREE.IcosahedronGeometry( 1, 1 );
-    const asteroidBeltGeometry = new THREE.Geometry();
 
     const position = new THREE.Vector3();
     const quaternion = new THREE.Quaternion();
     const scale = new THREE.Vector3();
     const matrix = new THREE.Matrix4();
 
+    const material = new THREE.MeshPhongMaterial({
+      shading: THREE.FlatShading,
+      color: '#655'
+    });
+
+    let count = 32;
     while ( count-- ) {
-      const geometry = asteroidGeometry.clone();
+      const geometry = new THREE.Geometry().copy( asteroidGeometry );
       geometry.vertices.forEach( perturbVertex );
 
       const angle = 2 * Math.PI * Math.random();
@@ -156,21 +161,17 @@ const maps = {
       );
 
       matrix.compose( position, quaternion, scale );
-      asteroidBeltGeometry.merge( geometry, matrix );
+      geometry.applyMatrix( matrix );
+
+      geometry.computeFaceNormals();
+      geometry.computeVertexNormals();
+
+      asteroidBelt.add( new THREE.Mesh( geometry, material ) );
     }
 
-    asteroidBeltGeometry.computeFaceNormals();
-    asteroidBeltGeometry.computeVertexNormals();
-
-    const material = new THREE.MeshPhongMaterial({
-      shading: THREE.FlatShading,
-      color: '#655'
-    });
-
-    const mesh = new THREE.Mesh( asteroidBeltGeometry, material );
-    mesh.rotation.x = -2 * Math.PI / 3;
-    mesh.rotation.y = Math.PI / 4;
-    scene.add( mesh );
+    asteroidBelt.rotation.x = -2 * Math.PI / 3;
+    asteroidBelt.rotation.y = Math.PI / 4;
+    scene.add( asteroidBelt );
 
     // Nebula.
     const nebulaGeometry = new Nebula(
