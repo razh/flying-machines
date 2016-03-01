@@ -202,7 +202,8 @@ const maps = {
       new THREE.PointsMaterial({
         color: '#777',
         fog: false,
-        sizeAttenuation: false
+        sizeAttenuation: false,
+        vertexColors: THREE.VertexColors
       })
     );
 
