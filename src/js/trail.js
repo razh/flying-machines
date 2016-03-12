@@ -151,20 +151,22 @@ export class SpriteTrail extends THREE.Group {
   }
 }
 
+const cameraDirection = new THREE.Vector3();
+const normal = new THREE.Vector3();
+const vector = new THREE.Vector3();
 
 export class ScreenSpaceTrail extends THREE.Mesh {
-  constructor( count = 128 ) {
-    const geometry = new THREE.PlaneBufferGeometry( 1, 1, count, 1 );
+  constructor( count = 256 ) {
+    const geometry = new THREE.PlaneBufferGeometry( 1, 1, 1, count - 1 );
 
     const material = new THREE.MeshBasicMaterial({
       blending: THREE.AdditiveBlending,
-      color: '#f43',
-      opacity: 0.25,
-      transparent: true,
-      wireframe: true
+      color: '#f43'
     });
 
     super( geometry, material );
+
+    this.count = count;
 
     // Offset from target.
     this.offset = new THREE.Vector3();
@@ -174,6 +176,8 @@ export class ScreenSpaceTrail extends THREE.Mesh {
 
     // Current index of position array start.
     this.start = 0;
+
+    this.frustumCulled = false;
   }
 
   track( target ) {
@@ -185,7 +189,38 @@ export class ScreenSpaceTrail extends THREE.Mesh {
   }
 
   // Update to face camera in screenspace.
-  willRender( camera ) {
+  generate( camera ) {
+    const { position } = this.geometry.attributes;
+    const { length } = this.positions;
 
+    for ( let i = 0; i < length; i++ ) {
+      const index = ( i + this.start ) % length;
+      const next = ( index + 1 ) % length;
+
+      cameraDirection
+        .subVectors( camera.position, this.positions[ index ] );
+
+      normal
+        .subVectors( this.positions[ next ], this.positions[ index ] )
+        .normalize()
+        .cross( cameraDirection )
+        .normalize();
+
+      const width = 0.1 * ( i / length );
+
+      vector
+        .copy( this.positions[ index ] )
+        .addScaledVector( normal, width / 2 );
+
+      vector.toArray( position.array, 3 * ( 2 * i ) );
+
+      vector
+        .copy( this.positions[ index ] )
+        .addScaledVector( normal, -width / 2 );
+
+      vector.toArray( position.array, 3 * ( 2 * i + 1 ) );
+    }
+
+    position.needsUpdate = true;
   }
 }
