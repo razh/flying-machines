@@ -52,7 +52,6 @@ body {
   height: 120px;
   outline: 0;
   font-family: Menlo, Monaco, monospace;
-  white-space: pre;
 }
 
 .webrtc-button {

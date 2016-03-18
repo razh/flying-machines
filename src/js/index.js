@@ -16,6 +16,7 @@ import { collide, collisions } from './collision';
 import config from './config';
 import createMap from './map';
 import { remove } from './utils';
+import createWebRTCComponent from './webrtc-component';
 
 const container = document.createElement( 'div' );
 document.body.appendChild( container );
@@ -290,5 +291,5 @@ window.addEventListener( 'resize', () => {
 });
 
 if ( /rtc/.test( window.location.href ) ) {
-  require( './webrtc-component' )( client, server );
+  createWebRTCComponent( client, server );
 }
