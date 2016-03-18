@@ -5,7 +5,8 @@ const material = new THREE.MeshLambertMaterial({
   color: '#fff',
   emissive: '#f43',
   transparent: true,
-  opacity: 0.4
+  opacity: 0.4,
+  premultipliedAlpha: true
 })
 
 export class Flame extends THREE.Mesh {
