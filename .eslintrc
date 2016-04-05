@@ -1,12 +1,12 @@
 {
   "extends": "eslint:recommended",
-  "ecmaFeatures": {
-    "modules": true
-  },
   "env": {
     "browser": true,
     "es6": true,
     "node": true
+  },
+  parserOptions: {
+    "sourceType": "module"
   },
   "rules": {
     "comma-spacing": 0,

@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "start": "node ./src/js/server.js",
-    "watch": "gulp"
+    "watch": "gulp",
+    "lint": "eslint src"
   },
   "repository": {
     "type": "git",
@@ -21,9 +22,9 @@
   "dependencies": {
     "cannon": "0.6.2",
     "color": "0.11.1",
-    "lodash": "4.6.1",
+    "lodash": "4.8.2",
     "protocol-buffers": "3.1.6",
-    "simple-peer": "6.0.2",
+    "simple-peer": "6.0.3",
     "simplex-noise": "2.2.0",
     "three": "0.75.0",
     "ws": "1.0.1"
@@ -33,9 +34,10 @@
     "babel-register": "6.7.2",
     "babelify": "7.2.0",
     "brfs": "1.4.3",
-    "browser-sync": "2.11.1",
+    "browser-sync": "2.11.2",
     "browserify": "13.0.0",
     "del": "2.2.0",
+    "eslint": "2.7.0",
     "gulp": "3.9.1",
     "gulp-load-plugins": "1.2.0",
     "gulp-util": "3.0.7",
