@@ -30,9 +30,10 @@ export function inverseLerp( a, b, x ) {
 
   The callback is invoked with four arguments: (vector, xt, yt, zt).
  */
-export function operator( geometry, callback ) {
-  const box = geometry.computeBoundingBox();
-  const { min, max } = box;
+export function parametric( geometry, callback ) {
+  geometry.computeBoundingBox();
+
+  const { min, max } = geometry.boundingBox;
 
   return vector => {
     callback(
