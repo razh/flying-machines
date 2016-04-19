@@ -79,10 +79,19 @@ const geometries = defineLazyGetters( {}, {
     const leftEngineGeometry = engineGeometry.clone().translate( -0.1, 0, 0 );
     const rightEngineGeometry = engineGeometry.clone().translate( 0.1, 0, 0 );
 
+    const wing = [ 0.35, 0.012, 0.1 ];
+    const leftWingPosition = [ -wing[0] / 2, 0, 0.12 ];
+    const rightWingPosition = [ ...leftWingPosition ];
+    rightWingPosition[0] = -rightWingPosition[0];
+    const wingDihedralAngle = Math.PI / 24;
+
     const geometry = new THREE.Geometry();
 
     geometry.merge( leftEngineGeometry );
     geometry.merge( rightEngineGeometry );
+    geometry.merge( new THREE.BoxGeometry( ...wing ).translate( ...leftWingPosition ).rotateZ( wingDihedralAngle ) );
+    geometry.merge( new THREE.BoxGeometry( ...wing ).translate( ...rightWingPosition ).rotateZ( -wingDihedralAngle ) );
+    geometry.merge( new THREE.BoxGeometry( 0.12, 0.07, 0.2 ).translate( 0, 0, 0.1 ) );
 
     geometry.computeFaceNormals();
     geometry.computeVertexNormals();
@@ -111,7 +120,7 @@ const engines = {
   ]
 };
 
-const material = new THREE.MeshPhongMaterial({
+const material = new THREE.MeshStandardMaterial({
   shading: THREE.FlatShading
 });
 
