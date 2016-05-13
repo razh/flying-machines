@@ -64,9 +64,13 @@ const geometries = defineLazyGetters( {}, {
   },
 
   alpha() {
+    const geometry = new THREE.Geometry();
+
+    // Engine.
     const enginePoints = [
-      [ 0.03, 0 ],
-      [ 0.03, 0.05 ],
+      [ 0, 0 ],
+      [ 0.02, 0.01 ],
+      [ 0.025, 0.02 ],
       [ 0.025, 0.16 ],
       [ 0.015, 0.18 ],
       [ 0, 0.18 ]
@@ -79,19 +83,65 @@ const geometries = defineLazyGetters( {}, {
     const leftEngineGeometry = engineGeometry.clone().translate( -0.1, 0, 0 );
     const rightEngineGeometry = engineGeometry.clone().translate( 0.1, 0, 0 );
 
-    const wing = [ 0.35, 0.012, 0.1 ];
-    const leftWingPosition = [ -wing[0] / 2, 0, 0.12 ];
-    const rightWingPosition = [ ...leftWingPosition ];
-    rightWingPosition[0] = -rightWingPosition[0];
-    const wingDihedralAngle = Math.PI / 24;
-
-    const geometry = new THREE.Geometry();
-
     geometry.merge( leftEngineGeometry );
     geometry.merge( rightEngineGeometry );
-    geometry.merge( new THREE.BoxGeometry( ...wing ).translate( ...leftWingPosition ).rotateZ( wingDihedralAngle ) );
-    geometry.merge( new THREE.BoxGeometry( ...wing ).translate( ...rightWingPosition ).rotateZ( -wingDihedralAngle ) );
-    geometry.merge( new THREE.BoxGeometry( 0.12, 0.07, 0.2 ).translate( 0, 0, 0.1 ) );
+
+    // Wings.
+    const wing = [ 0.35, 0.02, 0.12 ];
+    const rightWingPosition = [ wing[0] / 2, 0, 0.12 ];
+    const leftWingPosition = [ ...rightWingPosition ];
+    leftWingPosition[0] = -leftWingPosition[0];
+    const wingDihedralAngle = Math.PI / 24;
+
+    const wingGeometry = new THREE.BoxGeometry( ...wing );
+    wingGeometry.vertices[0].y = ( wingGeometry.vertices[1].y -= 0.018 );
+    wingGeometry.vertices[1].z = ( wingGeometry.vertices[3].z += 0.07 );
+
+    const rightWingGeometry = new THREE.Geometry()
+      .copy( wingGeometry )
+      .translate( ...rightWingPosition )
+      .rotateZ( -wingDihedralAngle );
+
+    geometry.merge( rightWingGeometry );
+
+    const leftWingGeometry = new THREE.Geometry()
+      .copy( wingGeometry )
+      .rotateZ( Math.PI )
+      .translate( ...leftWingPosition )
+      .rotateZ( wingDihedralAngle );
+
+    geometry.merge( leftWingGeometry );
+
+    // Front fuselage.
+    const frontFuselage = [ 0.12, 0.07, 0.3 ];
+    const frontFuselageGeometry = new THREE.BoxGeometry( ...frontFuselage );
+
+    const fx = 0.03;
+    frontFuselageGeometry.vertices[1].x = ( frontFuselageGeometry.vertices[3].x -= fx );
+    frontFuselageGeometry.vertices[4].x = ( frontFuselageGeometry.vertices[6].x += fx );
+
+    const fy = 0.03;
+    frontFuselageGeometry.vertices[1].y = ( frontFuselageGeometry.vertices[4].y -= fy );
+    frontFuselageGeometry.vertices[3].y = ( frontFuselageGeometry.vertices[6].y += fy );
+
+    geometry.merge( frontFuselageGeometry );
+
+    // Rear fuselage.
+    const rearFuselage = [ ...frontFuselage ];
+    rearFuselage[2] = 0.05;
+
+    const rearFuselageGeometry = new THREE.BoxGeometry( ...rearFuselage )
+      .translate( 0, 0, ( frontFuselage[2] + rearFuselage[2] ) / 2 );
+
+    const rx = 0.02;
+    rearFuselageGeometry.vertices[0].x = ( rearFuselageGeometry.vertices[2].x -= rx );
+    rearFuselageGeometry.vertices[5].x = ( rearFuselageGeometry.vertices[7].x += rx );
+
+    const ry = 0.01;
+    rearFuselageGeometry.vertices[0].y = ( rearFuselageGeometry.vertices[5].y -= ry );
+    rearFuselageGeometry.vertices[2].y = ( rearFuselageGeometry.vertices[7].y += ry );
+
+    geometry.merge( rearFuselageGeometry );
 
     geometry.computeFaceNormals();
     geometry.computeVertexNormals();
@@ -126,7 +176,7 @@ const material = new THREE.MeshStandardMaterial({
 
 export default class Ship extends Entity {
   constructor() {
-    super( geometries.basic, material.clone() );
+    super( geometries.alpha, material.clone() );
     collisionMixin( this );
 
     this.type = 'ship';
@@ -140,7 +190,7 @@ export default class Ship extends Entity {
     this.engines = new THREE.Group();
     this.add( this.engines );
 
-    engines.basic.map( position => {
+    engines.alpha.map( position => {
       const engine = new Engine( this );
       engine.position.fromArray( position );
       this.engines.add( engine );
