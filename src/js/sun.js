@@ -100,7 +100,7 @@ export const textures = defineLazyGetters( {}, {
     const texture = new THREE.Texture( canvas );
     texture.needsUpdate = true;
     return texture;
-  }
+  },
 });
 
 export default class Sun extends THREE.Group {

@@ -7,7 +7,7 @@ const lineMaterial = new THREE.LineBasicMaterial({
   linewidth: 16,
   opacity: 0.25,
   side: THREE.DoubleSide,
-  transparent: true
+  transparent: true,
 });
 
 export class LineTrail extends THREE.Line {
@@ -71,7 +71,7 @@ const spriteMaterial = new THREE.SpriteMaterial({
   map: texture,
   rotation: Math.PI / 4,
   transparent: true,
-  opacity: 0.9
+  opacity: 0.9,
 });
 
 export class TrailSprite extends THREE.Sprite {
@@ -89,7 +89,7 @@ export class SpriteTrail extends THREE.Group {
       time = 0.5,
       startScale = 0.02,
       endScale = 0,
-      vertexDistance = 0.1
+      vertexDistance = 0.1,
     } = options;
 
     this.time = time;
@@ -161,7 +161,7 @@ export class ScreenSpaceTrail extends THREE.Mesh {
 
     const material = new THREE.MeshBasicMaterial({
       blending: THREE.AdditiveBlending,
-      color: '#f43'
+      color: '#f43',
     });
 
     super( geometry, material );

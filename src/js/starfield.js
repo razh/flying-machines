@@ -10,7 +10,7 @@ const colors = [
   '#fbf8ff',
   '#fff4e8',
   '#ffddb4',
-  '#ffbd6f'
+  '#ffbd6f',
 ].map( color => new THREE.Color( color ) );
 
 const vector = new THREE.Vector3();

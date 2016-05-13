@@ -59,7 +59,7 @@ export const reticles = defineLazyGetters( {}, {
       blending: THREE.AdditiveBlending,
       depthTest: false,
       map: texture,
-      rotation: Math.PI / 4
+      rotation: Math.PI / 4,
     });
   },
 
@@ -96,9 +96,9 @@ export const reticles = defineLazyGetters( {}, {
     return new THREE.SpriteMaterial({
       blending: THREE.AdditiveBlending,
       depthTest: false,
-      map: texture
+      map: texture,
     });
-  }
+  },
 });
 
 const vector = new THREE.Vector3();

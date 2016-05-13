@@ -8,7 +8,7 @@ export function defineLazyGetter( object, key, fn ) {
       }
 
       return value;
-    }
+    },
   });
 }
 

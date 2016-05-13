@@ -3,7 +3,7 @@ import Peer from 'simple-peer';
 import { createState } from './client';
 import {
   serializeClientState,
-  serializeServerState
+  serializeServerState,
 } from './encode';
 import messages from './messages';
 
@@ -25,7 +25,7 @@ export const createPeer = (() => {
           state[ 0 ] = clientState;
           peer.send( messages.RTCMessage.encode({
             clientState,
-            serverState: serializeServerState( state )
+            serverState: serializeServerState( state ),
           }));
         } catch ( error ) {
           /* eslint-disable no-console */
@@ -37,7 +37,7 @@ export const createPeer = (() => {
       peer.on( 'data', data => {
         const {
           clientState,
-          serverState
+          serverState,
         } = messages.RTCMessage.decode( data );
 
         state[ id ] = clientState;

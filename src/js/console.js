@@ -16,7 +16,7 @@ export default function createConsole() {
   const state = {
     messages: [],
     limit: 20,
-    show: false
+    show: false,
   };
 
   const element = document.createElement( 'div' );

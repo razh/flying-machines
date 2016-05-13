@@ -6,7 +6,7 @@ const scale = () => THREE.Math.randFloat( 0.01, 0.03 );
 const material = new THREE.SpriteMaterial({
   fog: true,
   transparent: true,
-  opacity: 0.2
+  opacity: 0.2,
 });
 
 export class DebrisSprite extends THREE.Sprite {

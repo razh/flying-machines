@@ -31,7 +31,7 @@ const triangle = (() => {
   return new THREE.SpriteMaterial({
     blending: THREE.AdditiveBlending,
     depthTest: false,
-    map: texture
+    map: texture,
   });
 })();
 

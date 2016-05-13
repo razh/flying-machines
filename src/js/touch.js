@@ -5,7 +5,7 @@ function copyTouch( touch ) {
   return {
     identifier: touch.identifier,
     clientX: touch.clientX,
-    clientY: touch.clientY
+    clientY: touch.clientY,
   };
 }
 
@@ -22,7 +22,7 @@ export default class FlyControlsTouch extends FlyControls {
     // Touch regions.
     this.identifiers = {
       left: null,
-      right: null
+      right: null,
     };
 
     this.onTouchStart = this.onTouchStart.bind( this );

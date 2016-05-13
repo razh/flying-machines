@@ -26,7 +26,7 @@ const geometries = defineLazyGetters( {}, {
     const points = [
       [ 0, 0 ],
       [ 0.05, 0.1 ],
-      [ 0, 0.4 ]
+      [ 0, 0.4 ],
     ].map( createLathePoint );
 
     const geometry = new THREE.LatheGeometry( points, 3 )
@@ -36,7 +36,7 @@ const geometries = defineLazyGetters( {}, {
       [ 0, 0 ],
       [ 0.025, 0.04 ],
       [ 0.025, 0.08 ],
-      [ 0, 0.2 ]
+      [ 0, 0.2 ],
     ].map( createLathePoint );
 
     const leftBoosterGeometry = new THREE.LatheGeometry( boosterPoints, 4 );
@@ -73,7 +73,7 @@ const geometries = defineLazyGetters( {}, {
       [ 0.025, 0.02 ],
       [ 0.025, 0.16 ],
       [ 0.015, 0.18 ],
-      [ 0, 0.18 ]
+      [ 0, 0.18 ],
     ].map( createLathePoint );
 
     const engineGeometry = new THREE.LatheGeometry( enginePoints, 16 )
@@ -147,31 +147,31 @@ const geometries = defineLazyGetters( {}, {
     geometry.computeVertexNormals();
 
     return geometry;
-  }
+  },
 });
 
 // Engine attachment points.
 const engines = {
   basic: [
-    [ 0, 0, 0.3 ]
+    [ 0, 0, 0.3 ],
   ],
 
   sphere: [
-    [ 0, 0, 0.3 ]
+    [ 0, 0, 0.3 ],
   ],
 
   diamonds: [
-    [ 0, 0, 0.3 ]
+    [ 0, 0, 0.3 ],
   ],
 
   alpha: [
     [ -0.1, 0, 0.3 ],
-    [ 0.1, 0, 0.3 ]
-  ]
+    [ 0.1, 0, 0.3 ],
+  ],
 };
 
 const material = new THREE.MeshStandardMaterial({
-  shading: THREE.FlatShading
+  shading: THREE.FlatShading,
 });
 
 export default class Ship extends Entity {

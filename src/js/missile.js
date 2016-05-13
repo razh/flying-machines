@@ -23,7 +23,7 @@ const geometries = defineLazyGetters( {}, {
       [ 0.01, 0.03 ],
       [ 0.027, 0.08 ],
       [ 0.007, 0.19 ],
-      [ 0, 0.2 ]
+      [ 0, 0.2 ],
     ].map( ([ x, y ]) => new THREE.Vector2( x, y ) );
 
     const geometry = new THREE.LatheGeometry( points )
@@ -34,12 +34,12 @@ const geometries = defineLazyGetters( {}, {
     geometry.computeVertexNormals();
 
     return geometry;
-  }
+  },
 });
 
 const material = new THREE.MeshPhongMaterial({
   shading: THREE.FlatShading,
-  emissive: '#333'
+  emissive: '#333',
 });
 
 export default class Missile extends Entity {
@@ -53,7 +53,7 @@ export default class Missile extends Entity {
 
     this.engine = new Engine( this, {
       radius: 0.03,
-      height: 0.5
+      height: 0.5,
     });
     this.engine.position.set( 0, 0, 0.2 );
     this.add( this.engine );

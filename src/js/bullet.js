@@ -37,9 +37,9 @@ const materials = defineLazyGetters( {}, {
       depthWrite: false,
       map: texture,
       side: THREE.DoubleSide,
-      transparent: true
+      transparent: true,
     });
-  }
+  },
 });
 
 export default class Bullet extends Entity {

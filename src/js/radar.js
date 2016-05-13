@@ -5,12 +5,12 @@ const scales = {
   ship: 1 / 16,
   bullet: 1 / 96,
   drone: 1 / 32,
-  missile: 1 / 48
+  missile: 1 / 48,
 };
 
 const material = new THREE.SpriteMaterial({
   depthTest: false,
-  rotation: Math.PI / 4
+  rotation: Math.PI / 4,
 });
 
 class RadarPoint extends THREE.Sprite {

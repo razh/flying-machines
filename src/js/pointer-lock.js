@@ -23,7 +23,7 @@ export default function pointerLock( controls, element = document.body ) {
 
     dispatcher.dispatchEvent({
       type: 'change',
-      enabled: controls.enabled
+      enabled: controls.enabled,
     });
   }
 

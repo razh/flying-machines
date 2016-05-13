@@ -100,7 +100,7 @@ const emptyGeometry = new THREE.Geometry();
 
 export default function greeble( geometry, {
   count = 0,
-  greeble = () => emptyGeometry
+  greeble = () => emptyGeometry,
 } = {} ) {
   const greebles = new THREE.Geometry();
 

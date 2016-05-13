@@ -2,7 +2,7 @@ import THREE from 'three';
 
 export const CollisionShapes = {
   PARTICLE: 1,
-  SPHERE: 2
+  SPHERE: 2,
 };
 
 export const CollisionGroups = {
@@ -10,7 +10,7 @@ export const CollisionGroups = {
   BULLET: 2,
   SHIP: 4,
   MISSILE: 8,
-  ALL: 0xFFFF
+  ALL: 0xFFFF,
 };
 
 export function collisionMixin( body ) {
@@ -43,7 +43,7 @@ export const intersectLineSphere = (() => {
 
       return [
         line.at( t0 ),
-        line.at( t1 )
+        line.at( t1 ),
       ];
     }
   };
@@ -83,7 +83,7 @@ export const collisions = (() => {
       if ( sphere.geometry.boundingSphere.containsPoint( vector ) ) {
         return particle.position;
       }
-    }
+    },
   };
 })();
 

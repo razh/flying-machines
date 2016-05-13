@@ -69,7 +69,7 @@ export default function createGraph( height = 64 ) {
 
       d.range = [
         Math.min( ...d.values ),
-        Math.max( ...d.values )
+        Math.max( ...d.values ),
       ];
     },
 
@@ -83,6 +83,6 @@ export default function createGraph( height = 64 ) {
       }
 
       window.removeEventListener( 'resize', resize );
-    }
+    },
   };
 }

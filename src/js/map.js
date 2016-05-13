@@ -13,7 +13,7 @@ function perturbVertex( vertex ) {
 function createAsteroidMesh( x = 0, y = 0, z = 0, radius = 1, detail = 2 ) {
   const geometry = new THREE.IcosahedronGeometry( radius, detail );
   const material = new THREE.MeshPhongMaterial({
-    shading: THREE.FlatShading
+    shading: THREE.FlatShading,
   });
 
   const mesh = new THREE.Mesh( geometry, material );
@@ -37,14 +37,14 @@ const minimal = {
     return light;
   })(),
 
-  hemisphereLight: new THREE.HemisphereLight( '#d43', '#33a', 0.5 )
+  hemisphereLight: new THREE.HemisphereLight( '#d43', '#33a', 0.5 ),
 };
 
 const maps = {
   minimal( scene ) {
     const meshes = createAsteroidMeshes([
       [ 0, 0, -8, 1 ],
-      [ 4, -2, -4, 2 ]
+      [ 4, -2, -4, 2 ],
     ]);
 
     scene.add( ...meshes );
@@ -68,7 +68,7 @@ const maps = {
   sunSprite( scene ) {
     const coreMaterial = new THREE.SpriteMaterial({
       blending: THREE.AdditiveBlending,
-      map: sunTextures.core
+      map: sunTextures.core,
     });
 
     const core = new THREE.Sprite( coreMaterial );
@@ -92,7 +92,7 @@ const maps = {
           THREE.Math.randFloat( 0.5, 2 ),
           THREE.Math.randFloat( 0.5, 2 )
         );
-      }
+      },
     });
 
     artifactGeometry.computeFaceNormals();
@@ -101,7 +101,7 @@ const maps = {
     const artifact = new THREE.Mesh( artifactGeometry, new THREE.MeshPhongMaterial({
       shading: THREE.FlatShading,
       color: '#333',
-      shininess: 10
+      shininess: 10,
     }));
 
     artifact.position.set( -4, 4, -4 );
@@ -135,7 +135,7 @@ const maps = {
 
     const material = new THREE.MeshPhongMaterial({
       shading: THREE.FlatShading,
-      color: '#655'
+      color: '#655',
     });
 
     let count = 32;
@@ -179,7 +179,7 @@ const maps = {
       {
         period: 64,
         fromColor: new THREE.Color( '#223' ),
-        toColor: new THREE.Color( '#000' )
+        toColor: new THREE.Color( '#000' ),
       }
     );
 
@@ -189,7 +189,7 @@ const maps = {
         fog: false,
         side: THREE.BackSide,
         vertexColors: THREE.VertexColors,
-        depthWrite: false
+        depthWrite: false,
       })
     );
 
@@ -203,13 +203,13 @@ const maps = {
         color: '#777',
         fog: false,
         sizeAttenuation: false,
-        vertexColors: THREE.VertexColors
+        vertexColors: THREE.VertexColors,
       })
     );
 
     starfield.scale.setLength( 63 );
     scene.add( starfield );
-  }
+  },
 };
 
 export default function createMap( scene, name ) {

@@ -6,7 +6,7 @@ const material = new THREE.MeshLambertMaterial({
   emissive: '#f43',
   transparent: true,
   opacity: 0.4,
-  premultipliedAlpha: true
+  premultipliedAlpha: true,
 })
 
 export class Flame extends THREE.Mesh {
@@ -20,7 +20,7 @@ export default class Engine extends THREE.Group {
     count = 3,
     radius = 0.04,
     height = 0.25,
-    spread = new THREE.Vector3( 0.005, 0.005, 0.03 )
+    spread = new THREE.Vector3( 0.005, 0.005, 0.03 ),
   } = {} ) {
     super();
 
@@ -30,7 +30,7 @@ export default class Engine extends THREE.Group {
     const points = [
       [ 0, 0 ],
       [ radius, height * 0.2 ],
-      [ 0, height ]
+      [ 0, height ],
     ].map( ([ x, y ]) => new THREE.Vector2( x, y ) );
 
     this.geometry = new THREE.LatheGeometry( points, 5 )

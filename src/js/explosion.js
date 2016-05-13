@@ -48,9 +48,9 @@ const materials = defineLazyGetters( {}, {
       map: texture,
       rotation: Math.PI / 4,
       transparent: true,
-      opacity: 0.9
+      opacity: 0.9,
     });
-  }
+  },
 });
 
 export class ExplosionSprite extends THREE.Sprite {

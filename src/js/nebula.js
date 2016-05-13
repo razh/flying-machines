@@ -8,7 +8,7 @@ function fbm3d( {
   octaves = 6,
   period = 4,
   lacunarity = 2,
-  gain = 0.5
+  gain = 0.5,
 } = {} ) {
   return ( x, y, z ) => {
     let frequency = 1 / period;

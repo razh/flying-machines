@@ -30,7 +30,7 @@ export default class FlyControls {
       yawRight: 0,
 
       rollLeft: 0,
-      rollRight: 0
+      rollRight: 0,
     };
 
     this.movementVector = new THREE.Vector3();

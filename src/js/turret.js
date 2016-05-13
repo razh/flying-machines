@@ -4,19 +4,19 @@ const config = {
   base: {
     radiusTop: 0.05,
     radiusBottom: 0.07,
-    height: 0.12
+    height: 0.12,
   },
   gunhouse: {
     radiusTop: 0.04,
     radiusBottom: 0.05,
-    height: 0.04
+    height: 0.04,
   },
   barrels: {
     radiusTop: 0.008,
     radiusBottom: 0.01,
     height: 0.08,
-    offset: 0.012
-  }
+    offset: 0.012,
+  },
 };
 
 function computeNormals( geometry ) {
@@ -71,7 +71,7 @@ const gunhouseGeometry = computeNormals(
 );
 
 const material = new THREE.MeshPhongMaterial({
-  shading: THREE.FlatShading
+  shading: THREE.FlatShading,
 });
 
 export default class Turret extends THREE.Group {

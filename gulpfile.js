@@ -5,8 +5,8 @@ const PORT = process.env.PORT || 3000;
 const SOURCE_DIR = './src';
 const BUILD_DIR = 'dist';
 
-const html = SOURCE_DIR + '/*.html';
-const css = SOURCE_DIR + '/css/*.css';
+const html = `${SOURCE_DIR}/*.html`;
+const css = `${SOURCE_DIR}/css/*.css`;
 
 const _ = require('lodash');
 const babelify = require('babelify');
@@ -31,15 +31,15 @@ gulp.task('browser-sync', () => {
     browser: [],
     port: PORT,
     server: {
-      baseDir: './' + BUILD_DIR
-    }
+      baseDir: `./${BUILD_DIR}`,
+    },
   });
 });
 
 gulp.task('js', () => {
-  const bundler = watchify(browserify(SOURCE_DIR + '/js/index.js',
+  const bundler = watchify(browserify(`${SOURCE_DIR}/js/index.js`,
     _.assign({
-      debug: true
+      debug: true,
     }, watchify.args)));
 
   bundler

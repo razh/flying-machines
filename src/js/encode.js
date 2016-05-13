@@ -13,7 +13,7 @@ function toBuffer( arrayBuffer ) {
 export function serializeClientState( scene ) {
   const state = {
     bullets: [],
-    missiles: []
+    missiles: [],
   };
 
   scene.traverse( object => {
@@ -41,7 +41,7 @@ function createInitalState() {
   return {
     ships: [],
     bullets: [],
-    missiles: []
+    missiles: [],
   };
 }
 
