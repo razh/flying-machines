@@ -7,6 +7,8 @@ import { collisionMixin, CollisionShapes, CollisionGroups } from './collision';
 
 const createLathePoint = ([ x, y ]) => new THREE.Vector2( x, y );
 
+const ALPHA_ENGINE_Y = -0.01;
+
 const geometries = defineLazyGetters( {}, {
   basic() {
     const geometry = new THREE.CylinderGeometry( 0, 0.1, 0.5, 3 );
@@ -76,9 +78,9 @@ const geometries = defineLazyGetters( {}, {
       [ 0, 0.18 ],
     ].map( createLathePoint );
 
-    const engineGeometry = new THREE.LatheGeometry( enginePoints, 16 )
+    const engineGeometry = new THREE.LatheGeometry( enginePoints, 8 )
       .rotateX( Math.PI / 2 )
-      .translate( 0, 0, 0.02 );
+      .translate( 0, ALPHA_ENGINE_Y, 0.02 );
 
     const leftEngineGeometry = engineGeometry.clone().translate( -0.1, 0, 0 );
     const rightEngineGeometry = engineGeometry.clone().translate( 0.1, 0, 0 );
@@ -165,8 +167,8 @@ const engines = {
   ],
 
   alpha: [
-    [ -0.1, 0, 0.3 ],
-    [ 0.1, 0, 0.3 ],
+    [ -0.1, ALPHA_ENGINE_Y, 0.3 ],
+    [ 0.1, ALPHA_ENGINE_Y, 0.3 ],
   ],
 };
 
