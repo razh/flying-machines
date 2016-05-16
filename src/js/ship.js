@@ -4,6 +4,7 @@ import Shield from './shield';
 import Engine from './engine';
 import { defineLazyGetters } from './lazy';
 import { collisionMixin, CollisionShapes, CollisionGroups } from './collision';
+import { translate as translateBox } from './box-geometry';
 
 const createLathePoint = ([ x, y ]) => new THREE.Vector2( x, y );
 
@@ -96,8 +97,10 @@ const geometries = defineLazyGetters( {}, {
     const wingDihedralAngle = Math.PI / 24;
 
     const wingGeometry = new THREE.BoxGeometry( ...wing );
-    wingGeometry.vertices[0].y = ( wingGeometry.vertices[1].y -= 0.018 );
-    wingGeometry.vertices[1].z = ( wingGeometry.vertices[3].z += 0.07 );
+    translateBox( wingGeometry, {
+      TOP_RIGHT: { y: -0.018 },
+      FRONT_RIGHT: { z: 0.07 },
+    });
 
     const rightWingGeometry = new THREE.Geometry()
       .copy( wingGeometry )
@@ -119,12 +122,13 @@ const geometries = defineLazyGetters( {}, {
     const frontFuselageGeometry = new THREE.BoxGeometry( ...frontFuselage );
 
     const fx = 0.03;
-    frontFuselageGeometry.vertices[1].x = ( frontFuselageGeometry.vertices[3].x -= fx );
-    frontFuselageGeometry.vertices[4].x = ( frontFuselageGeometry.vertices[6].x += fx );
-
     const fy = 0.03;
-    frontFuselageGeometry.vertices[1].y = ( frontFuselageGeometry.vertices[4].y -= fy );
-    frontFuselageGeometry.vertices[3].y = ( frontFuselageGeometry.vertices[6].y += fy );
+    translateBox( frontFuselageGeometry, {
+      FRONT_RIGHT: { x: -fx },
+      FRONT_LEFT: { x: fx },
+      TOP_FRONT: { y: -fy },
+      BOTTOM_FRONT: { y: fy },
+    });
 
     geometry.merge( frontFuselageGeometry );
 
@@ -136,12 +140,13 @@ const geometries = defineLazyGetters( {}, {
       .translate( 0, 0, ( frontFuselage[2] + rearFuselage[2] ) / 2 );
 
     const rx = 0.02;
-    rearFuselageGeometry.vertices[0].x = ( rearFuselageGeometry.vertices[2].x -= rx );
-    rearFuselageGeometry.vertices[5].x = ( rearFuselageGeometry.vertices[7].x += rx );
-
     const ry = 0.01;
-    rearFuselageGeometry.vertices[0].y = ( rearFuselageGeometry.vertices[5].y -= ry );
-    rearFuselageGeometry.vertices[2].y = ( rearFuselageGeometry.vertices[7].y += ry );
+    translateBox( rearFuselageGeometry, {
+      BACK_RIGHT: { x: -rx },
+      BACK_LEFT: { x: rx },
+      TOP_BACK: { y: -ry },
+      BOTTOM_BACK: { y: ry },
+    });
 
     geometry.merge( rearFuselageGeometry );
 
