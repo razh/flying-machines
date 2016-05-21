@@ -80,7 +80,7 @@ const zero = new THREE.Vector3();
 export function translate( geometry, vectors ) {
   Object.keys( vectors ).forEach( key => {
     const delta = vectors[ key ];
-    const indices = Indices[ key ];
+    const indices = Indices[ key.toUpperCase() ];
 
     if ( Array.isArray( delta ) ) {
       vector.fromArray( delta );

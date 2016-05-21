@@ -98,8 +98,8 @@ const geometries = defineLazyGetters( {}, {
 
     const wingGeometry = new THREE.BoxGeometry( ...wing );
     translateBox( wingGeometry, {
-      TOP_RIGHT: { y: -0.018 },
-      FRONT_RIGHT: { z: 0.07 },
+      top_right: { y: -0.018 },
+      front_right: { z: 0.07 },
     });
 
     const rightWingGeometry = new THREE.Geometry()
@@ -124,10 +124,10 @@ const geometries = defineLazyGetters( {}, {
     const fx = 0.03;
     const fy = 0.03;
     translateBox( frontFuselageGeometry, {
-      FRONT_RIGHT: { x: -fx },
-      FRONT_LEFT: { x: fx },
-      TOP_FRONT: { y: -fy },
-      BOTTOM_FRONT: { y: fy },
+      front_right: { x: -fx },
+      front_left: { x: fx },
+      top_front: { y: -fy },
+      bottom_front: { y: fy },
     });
 
     geometry.merge( frontFuselageGeometry );
@@ -142,10 +142,10 @@ const geometries = defineLazyGetters( {}, {
     const rx = 0.02;
     const ry = 0.01;
     translateBox( rearFuselageGeometry, {
-      BACK_RIGHT: { x: -rx },
-      BACK_LEFT: { x: rx },
-      TOP_BACK: { y: -ry },
-      BOTTOM_BACK: { y: ry },
+      back_right: { x: -rx },
+      back_left: { x: rx },
+      top_back: { y: -ry },
+      bottom_back: { y: ry },
     });
 
     geometry.merge( rearFuselageGeometry );
