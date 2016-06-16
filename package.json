@@ -26,7 +26,7 @@
     "protocol-buffers": "3.1.6",
     "simple-peer": "6.0.4",
     "simplex-noise": "2.2.0",
-    "three": "0.77.1",
+    "three": "0.78.0",
     "ws": "1.1.0"
   },
   "devDependencies": {
@@ -34,10 +34,10 @@
     "babel-register": "6.9.0",
     "babelify": "7.3.0",
     "brfs": "1.4.3",
-    "browser-sync": "2.12.10",
+    "browser-sync": "2.13.0",
     "browserify": "13.0.1",
     "del": "2.2.0",
-    "eslint": "2.11.0",
+    "eslint": "2.12.0",
     "gulp": "3.9.1",
     "gulp-load-plugins": "1.2.4",
     "gulp-util": "3.0.7",
