@@ -1,77 +1,154 @@
 import THREE from 'three';
 
 // Vertices.
-// Back-front order is reversed for the left side.
-export const RIGHT_TOP_BACK     = 0;
-export const RIGHT_TOP_FRONT    = 1;
-export const RIGHT_BOTTOM_BACK  = 2;
-export const RIGHT_BOTTOM_FRONT = 3;
-export const LEFT_TOP_FRONT     = 4;
-export const LEFT_TOP_BACK      = 5;
-export const LEFT_BOTTOM_FRONT  = 6;
-export const LEFT_BOTTOM_BACK   = 7;
+// pz-nz order is reversed for the nx side.
+export const PX_PY_PZ = 0;
+export const PX_PY_NZ = 1;
+export const PX_NY_PZ = 2;
+export const PX_NY_NZ = 3;
+export const NX_PY_NZ = 4;
+export const NX_PY_PZ = 5;
+export const NX_NY_NZ = 6;
+export const NX_NY_PZ = 7;
 
 // Edges.
-export const RIGHT_TOP    = [ RIGHT_TOP_BACK, RIGHT_TOP_FRONT ];
-export const RIGHT_BOTTOM = [ RIGHT_BOTTOM_BACK, RIGHT_BOTTOM_FRONT ];
+export const PX_PY = [ PX_PY_PZ, PX_PY_NZ ];
+export const PX_NY = [ PX_NY_PZ, PX_NY_NZ ];
+export const NX_PY = [ NX_PY_NZ, NX_PY_PZ ];
+export const NX_NY = [ NX_NY_NZ, NX_NY_PZ ];
+
+export const PX_PZ = [ PX_PY_PZ, PX_NY_PZ ];
+export const PX_NZ = [ PX_PY_NZ, PX_NY_NZ ];
+export const NX_NZ = [ NX_PY_NZ, NX_NY_NZ ];
+export const NX_PZ = [ NX_PY_PZ, NX_NY_PZ ];
+
+export const PY_PZ = [ PX_PY_PZ, NX_PY_PZ ];
+export const PY_NZ = [ PX_PY_NZ, NX_PY_NZ ];
+export const NY_PZ = [ PX_NY_PZ, NX_NY_PZ ];
+export const NY_NZ = [ PX_NY_NZ, NX_NY_NZ ];
+
+// Faces.
+export const PX = [].concat( PX_PY, PX_NY );
+export const NX = [].concat( NX_PY, NX_NY );
+export const PY = [].concat( PX_PY, NX_PY );
+export const NY = [].concat( PX_NY, NX_NY );
+export const PZ = [].concat( PX_PZ, NX_PZ );
+export const NZ = [].concat( PX_NZ, NX_NZ );
+
+// Vertices.
+// Front-back order is reversed for the left side.
+export const RIGHT_TOP_FRONT    = 0;
+export const RIGHT_TOP_BACK     = 1;
+export const RIGHT_BOTTOM_FRONT = 2;
+export const RIGHT_BOTTOM_BACK  = 3;
+export const LEFT_TOP_BACK      = 4;
+export const LEFT_TOP_FRONT     = 5;
+export const LEFT_BOTTOM_BACK   = 6;
+export const LEFT_BOTTOM_FRONT  = 7;
+
+// Edges.
+export const RIGHT_TOP    = [ RIGHT_TOP_FRONT, RIGHT_TOP_BACK ];
+export const RIGHT_BOTTOM = [ RIGHT_BOTTOM_FRONT, RIGHT_BOTTOM_BACK ];
 export const LEFT_TOP     = [ LEFT_TOP_BACK, LEFT_TOP_FRONT ];
 export const LEFT_BOTTOM  = [ LEFT_BOTTOM_BACK, LEFT_BOTTOM_FRONT ];
 
-export const RIGHT_BACK  = [ RIGHT_TOP_BACK, RIGHT_BOTTOM_BACK ];
 export const RIGHT_FRONT = [ RIGHT_TOP_FRONT, RIGHT_BOTTOM_FRONT ];
+export const RIGHT_BACK  = [ RIGHT_TOP_BACK, RIGHT_BOTTOM_BACK ];
 export const LEFT_FRONT  = [ LEFT_TOP_FRONT, LEFT_BOTTOM_FRONT ];
 export const LEFT_BACK   = [ LEFT_TOP_BACK, LEFT_BOTTOM_BACK ];
 
-export const TOP_BACK     = [ RIGHT_TOP_BACK, LEFT_TOP_BACK ];
 export const TOP_FRONT    = [ RIGHT_TOP_FRONT, LEFT_TOP_FRONT ];
-export const BOTTOM_BACK  = [ RIGHT_BOTTOM_BACK, LEFT_BOTTOM_BACK ];
+export const TOP_BACK     = [ RIGHT_TOP_BACK, LEFT_TOP_BACK ];
 export const BOTTOM_FRONT = [ RIGHT_BOTTOM_FRONT, LEFT_BOTTOM_FRONT ];
-
-// Aliases for more idiomatic orderings.
-export const TOP_RIGHT = RIGHT_TOP;
-export const BOTTOM_RIGHT = RIGHT_BOTTOM;
-export const TOP_LEFT = LEFT_TOP;
-export const BOTTOM_LEFT = LEFT_BOTTOM;
-
-export const BACK_RIGHT = RIGHT_BACK;
-export const FRONT_RIGHT = RIGHT_FRONT;
-export const FRONT_LEFT = LEFT_FRONT;
-export const BACK_LEFT = LEFT_BACK;
+export const BOTTOM_BACK  = [ RIGHT_BOTTOM_BACK, LEFT_BOTTOM_BACK ];
 
 // Faces.
-export const RIGHT  = [ ...RIGHT_TOP, ...RIGHT_BOTTOM ];
-export const LEFT   = [ ...LEFT_TOP, ...LEFT_BOTTOM ];
-export const TOP    = [ ...RIGHT_TOP, ...LEFT_TOP ];
-export const BOTTOM = [ ...RIGHT_BOTTOM, ...LEFT_BOTTOM ];
-export const BACK   = [ ...RIGHT_BACK, ...LEFT_BACK ];
-export const FRONT  = [ ...RIGHT_FRONT, ...LEFT_FRONT ];
+export const RIGHT  = [].concat( RIGHT_TOP, RIGHT_BOTTOM );
+export const LEFT   = [].concat( LEFT_TOP, LEFT_BOTTOM );
+export const TOP    = [].concat( RIGHT_TOP, LEFT_TOP );
+export const BOTTOM = [].concat( RIGHT_BOTTOM, LEFT_BOTTOM );
+export const FRONT  = [].concat( RIGHT_FRONT, LEFT_FRONT );
+export const BACK   = [].concat( RIGHT_BACK, LEFT_BACK );
 
-export const Indices = {
+export const VertexIndices = {
   // Vertices.
-  RIGHT_TOP_BACK,
-  RIGHT_TOP_FRONT,
-  RIGHT_BOTTOM_BACK,
-  RIGHT_BOTTOM_FRONT,
-  LEFT_TOP_FRONT,
-  LEFT_TOP_BACK,
-  LEFT_BOTTOM_FRONT,
-  LEFT_BOTTOM_BACK,
+  PX_PY_PZ,
+  PX_PY_NZ,
+  PX_NY_PZ,
+  PX_NY_NZ,
+  NX_PY_NZ,
+  NX_PY_PZ,
+  NX_NY_NZ,
+  NX_NY_PZ,
 
   // Edges.
-  RIGHT_TOP, RIGHT_BOTTOM, LEFT_TOP, LEFT_BOTTOM,
-  RIGHT_BACK, RIGHT_FRONT, LEFT_FRONT, LEFT_BACK,
-  TOP_BACK, TOP_FRONT, BOTTOM_BACK, BOTTOM_FRONT,
+  PX_PY,
+  PX_NY,
+  NX_PY,
+  NX_NY,
 
-  TOP_RIGHT, BOTTOM_RIGHT, TOP_LEFT, BOTTOM_LEFT,
-  BACK_RIGHT, FRONT_RIGHT, FRONT_LEFT, BACK_LEFT,
+  PX_PZ,
+  PX_NZ,
+  NX_NZ,
+  NX_PZ,
+
+  PY_PZ,
+  PY_NZ,
+  NY_PZ,
+  NY_NZ,
+
+  // Faces.
+  PX,
+  NX,
+  PY,
+  NY,
+  PZ,
+  NZ,
+
+  // Vertices.
+  RIGHT_TOP_FRONT,
+  RIGHT_TOP_BACK,
+  RIGHT_BOTTOM_FRONT,
+  RIGHT_BOTTOM_BACK,
+  LEFT_TOP_BACK,
+  LEFT_TOP_FRONT,
+  LEFT_BOTTOM_BACK,
+  LEFT_BOTTOM_FRONT,
+
+  // Edges.
+  RIGHT_TOP,
+  RIGHT_BOTTOM,
+  LEFT_TOP,
+  LEFT_BOTTOM,
+
+  RIGHT_FRONT,
+  RIGHT_BACK,
+  LEFT_BACK,
+  LEFT_FRONT,
+
+  TOP_FRONT,
+  TOP_BACK,
+  BOTTOM_FRONT,
+  BOTTOM_BACK,
+
+  // Edge aliases.
+  TOP_RIGHT: RIGHT_TOP,
+  BOTTOM_RIGHT: RIGHT_BOTTOM,
+  TOP_LEFT: LEFT_TOP,
+  BOTTOM_LEFT: LEFT_BOTTOM,
+
+  FRONT_RIGHT: RIGHT_FRONT,
+  BACK_RIGHT: RIGHT_BACK,
+  BACK_LEFT: LEFT_BACK,
+  FRONT_LEFT: LEFT_FRONT,
 
   // Faces.
   RIGHT,
   LEFT,
   TOP,
   BOTTOM,
-  BACK,
   FRONT,
+  BACK,
 };
 
 const vector = new THREE.Vector3();
@@ -80,7 +157,7 @@ const zero = new THREE.Vector3();
 export function translate( geometry, vectors ) {
   Object.keys( vectors ).forEach( key => {
     const delta = vectors[ key ];
-    const indices = Indices[ key.toUpperCase() ];
+    const indices = VertexIndices[ key.toUpperCase() ];
 
     if ( Array.isArray( delta ) ) {
       vector.fromArray( delta );
