@@ -1,23 +1,16 @@
 module.exports = {
-  "extends": "eslint:recommended",
-  "env": {
-    "browser": true,
-    "es6": true,
-    "node": true
+  extends: 'eslint:recommended',
+  env: {
+    browser: true,
+    es6: true,
+    node: true,
   },
   parserOptions: {
-    "sourceType": "module"
+    sourceType: 'module',
   },
-  "rules": {
-    "comma-dangle": [2, "always-multiline"],
-    "comma-spacing": 0,
-    "consistent-return": 0,
-    "indent": [2, 2],
-    "key-spacing": 0,
-    "no-multi-spaces": 0,
-    "no-shadow": 0,
-    "strict": [0, "never"],
-    "quotes": [2, "single", "avoid-escape"],
-    "yoda": 0
-  }
+  rules: {
+    'comma-dangle': ['error', 'always-multiline'],
+    indent: ['error', 2],
+    quotes: ['error', 'single', 'avoid-escape'],
+  },
 };
