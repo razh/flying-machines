@@ -1,4 +1,4 @@
-import THREE from 'three';
+import { EventDispatcher } from 'three';
 
 export default function pointerLock( controls, element = document.body ) {
   const hasPointerLock = (
@@ -7,7 +7,7 @@ export default function pointerLock( controls, element = document.body ) {
     'webkitPointerLockElement' in document
   );
 
-  const dispatcher = new THREE.EventDispatcher();
+  const dispatcher = new EventDispatcher();
 
   if ( !hasPointerLock ) {
     controls.enabled = true;

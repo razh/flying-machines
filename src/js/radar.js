@@ -1,4 +1,9 @@
-import THREE from 'three';
+import {
+  SpriteMaterial,
+  Sprite,
+  Group,
+} from 'three';
+
 import createPool from './pool';
 
 const scales = {
@@ -8,22 +13,22 @@ const scales = {
   missile: 1 / 48,
 };
 
-const material = new THREE.SpriteMaterial({
+const material = new SpriteMaterial({
   depthTest: false,
   rotation: Math.PI / 4,
 });
 
-class RadarPoint extends THREE.Sprite {
+class RadarPoint extends Sprite {
   constructor() {
     super( material );
   }
 }
 
-export default class Radar extends THREE.Group {
+export default class Radar extends Group {
   constructor( target, radius = 16, scale = 0.05 ) {
     super();
 
-    this.blips = new THREE.Group();
+    this.blips = new Group();
     this.add( this.blips );
 
     this.target = target;

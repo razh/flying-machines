@@ -1,4 +1,15 @@
-import THREE from 'three';
+import {
+  BoxGeometry,
+  Vector2,
+  CylinderGeometry,
+  IcosahedronGeometry,
+  LatheGeometry,
+  Geometry,
+  MeshStandardMaterial,
+  FlatShading,
+  Group,
+} from 'three';
+
 import Entity from './entity';
 import Shield from './shield';
 import Engine from './engine';
@@ -6,13 +17,13 @@ import { defineLazyGetters } from './lazy';
 import { collisionMixin, CollisionShapes, CollisionGroups } from './collision';
 import { translate as translateBox } from './box-geometry';
 
-const createLathePoint = ([ x, y ]) => new THREE.Vector2( x, y );
+const createLathePoint = ([ x, y ]) => new Vector2( x, y );
 
 const ALPHA_ENGINE_Y = -0.01;
 
 const geometries = defineLazyGetters( {}, {
   basic() {
-    const geometry = new THREE.CylinderGeometry( 0, 0.1, 0.5, 3 );
+    const geometry = new CylinderGeometry( 0, 0.1, 0.5, 3 );
 
     geometry.rotateX( -Math.PI / 2 );
     geometry.computeFaceNormals();
@@ -22,7 +33,7 @@ const geometries = defineLazyGetters( {}, {
   },
 
   sphere() {
-    return new THREE.IcosahedronGeometry( 0.2, 1 );
+    return new IcosahedronGeometry( 0.2, 1 );
   },
 
   diamonds() {
@@ -32,7 +43,7 @@ const geometries = defineLazyGetters( {}, {
       [ 0, 0.4 ],
     ].map( createLathePoint );
 
-    const geometry = new THREE.LatheGeometry( points, 3 )
+    const geometry = new LatheGeometry( points, 3 )
       .rotateX( Math.PI / 2 );
 
     const boosterPoints = [
@@ -42,8 +53,8 @@ const geometries = defineLazyGetters( {}, {
       [ 0, 0.2 ],
     ].map( createLathePoint );
 
-    const leftBoosterGeometry = new THREE.LatheGeometry( boosterPoints, 4 );
-    const rightBoosterGeometry = new THREE.LatheGeometry( boosterPoints, 4 );
+    const leftBoosterGeometry = new LatheGeometry( boosterPoints, 4 );
+    const rightBoosterGeometry = new LatheGeometry( boosterPoints, 4 );
 
     leftBoosterGeometry
       .rotateX( Math.PI / 2 )
@@ -67,7 +78,7 @@ const geometries = defineLazyGetters( {}, {
   },
 
   alpha() {
-    const geometry = new THREE.Geometry();
+    const geometry = new Geometry();
 
     // Engine.
     const enginePoints = [
@@ -79,7 +90,7 @@ const geometries = defineLazyGetters( {}, {
       [ 0, 0.18 ],
     ].map( createLathePoint );
 
-    const engineGeometry = new THREE.LatheGeometry( enginePoints, 8 )
+    const engineGeometry = new LatheGeometry( enginePoints, 8 )
       .rotateX( Math.PI / 2 )
       .translate( 0, ALPHA_ENGINE_Y, 0.02 );
 
@@ -96,20 +107,20 @@ const geometries = defineLazyGetters( {}, {
     leftWingPosition[0] = -leftWingPosition[0];
     const wingDihedralAngle = Math.PI / 24;
 
-    const wingGeometry = new THREE.BoxGeometry( ...wing );
+    const wingGeometry = new BoxGeometry( ...wing );
     translateBox( wingGeometry, {
       top_right: { y: -0.018 },
       front_right: { z: -0.07 },
     });
 
-    const rightWingGeometry = new THREE.Geometry()
+    const rightWingGeometry = new Geometry()
       .copy( wingGeometry )
       .translate( ...rightWingPosition )
       .rotateZ( -wingDihedralAngle );
 
     geometry.merge( rightWingGeometry );
 
-    const leftWingGeometry = new THREE.Geometry()
+    const leftWingGeometry = new Geometry()
       .copy( wingGeometry )
       .rotateZ( Math.PI )
       .translate( ...leftWingPosition )
@@ -119,7 +130,7 @@ const geometries = defineLazyGetters( {}, {
 
     // Front fuselage.
     const frontFuselage = [ 0.12, 0.07, 0.3 ];
-    const frontFuselageGeometry = new THREE.BoxGeometry( ...frontFuselage );
+    const frontFuselageGeometry = new BoxGeometry( ...frontFuselage );
 
     const fx = 0.03;
     const fy = 0.03;
@@ -136,7 +147,7 @@ const geometries = defineLazyGetters( {}, {
     const rearFuselage = [ ...frontFuselage ];
     rearFuselage[2] = 0.05;
 
-    const rearFuselageGeometry = new THREE.BoxGeometry( ...rearFuselage )
+    const rearFuselageGeometry = new BoxGeometry( ...rearFuselage )
       .translate( 0, 0, ( frontFuselage[2] + rearFuselage[2] ) / 2 );
 
     const rx = 0.02;
@@ -177,8 +188,8 @@ const engines = {
   ],
 };
 
-const material = new THREE.MeshStandardMaterial({
-  shading: THREE.FlatShading,
+const material = new MeshStandardMaterial({
+  shading: FlatShading,
 });
 
 export default class Ship extends Entity {
@@ -194,7 +205,7 @@ export default class Ship extends Entity {
     this.shield.visible = false;
     this.add( this.shield );
 
-    this.engines = new THREE.Group();
+    this.engines = new Group();
     this.add( this.engines );
 
     engines.alpha.map( position => {

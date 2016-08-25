@@ -1,7 +1,10 @@
 /* A heavily modified version of THREE.FlyControls. */
-import THREE from 'three';
+import {
+  Quaternion,
+  Vector3,
+} from 'three';
 
-const quaternion = new THREE.Quaternion();
+const quaternion = new Quaternion();
 
 export default class FlyControls {
   constructor( object, domElement = document ) {
@@ -33,8 +36,8 @@ export default class FlyControls {
       rollRight: 0,
     };
 
-    this.movementVector = new THREE.Vector3();
-    this.rotationVector = new THREE.Vector3();
+    this.movementVector = new Vector3();
+    this.rotationVector = new Vector3();
 
     this.onMouseMove = this.onMouseMove.bind( this );
     this.onKeyDown = this.onKeyDown.bind( this );

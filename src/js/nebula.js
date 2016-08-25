@@ -1,7 +1,13 @@
-import THREE from 'three';
+import {
+  BufferAttribute,
+  BufferGeometry,
+  Color,
+  Geometry,
+} from 'three';
+
 import SimplexNoise from 'simplex-noise';
 
-const color = new THREE.Color();
+const color = new Color();
 const simplex = new SimplexNoise();
 
 function fbm3d( {
@@ -30,19 +36,19 @@ function fbm3d( {
   };
 }
 
-export default class Nebula extends THREE.BufferGeometry {
+export default class Nebula extends BufferGeometry {
   constructor( geometry, settings ) {
     super();
 
-    if ( geometry instanceof THREE.BufferGeometry ) {
+    if ( geometry instanceof BufferGeometry ) {
       this.copy( geometry );
-    } else if ( geometry instanceof THREE.Geometry ) {
+    } else if ( geometry instanceof Geometry ) {
       this.fromGeometry( geometry );
     }
 
     const positions = this.attributes.position.array;
     const colors = new Float32Array( positions.length );
-    this.addAttribute( 'color', new THREE.BufferAttribute( colors, 3 ) );
+    this.addAttribute( 'color', new BufferAttribute( colors, 3 ) );
 
     const fbm = fbm3d( settings );
     const { fromColor, toColor } = settings;

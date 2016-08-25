@@ -1,9 +1,18 @@
-import THREE from 'three';
+import {
+  Math as _Math,
+  AdditiveBlending,
+  Group,
+  Sprite,
+  SpriteMaterial,
+  Texture,
+  Vector3,
+} from 'three';
+
 import { randomPointOnSphere } from './math';
 import { remove } from './utils';
 import { defineLazyGetters } from './lazy';
 
-const scale = () => THREE.Math.randFloat( 0.1, 0.5 );
+const scale = () => _Math.randFloat( 0.1, 0.5 );
 
 const materials = defineLazyGetters( {}, {
   explosion() {
@@ -40,11 +49,11 @@ const materials = defineLazyGetters( {}, {
     drawShadowRect( ctx, '#f85', 0.8, 0.2 );
     drawShadowRect( ctx, '#fff', 0.4, 0.2 );
 
-    const texture = new THREE.Texture( canvas );
+    const texture = new Texture( canvas );
     texture.needsUpdate = true;
 
-    return new THREE.SpriteMaterial({
-      blending: THREE.AdditiveBlending,
+    return new SpriteMaterial({
+      blending: AdditiveBlending,
       map: texture,
       rotation: Math.PI / 4,
       transparent: true,
@@ -53,7 +62,7 @@ const materials = defineLazyGetters( {}, {
   },
 });
 
-export class ExplosionSprite extends THREE.Sprite {
+export class ExplosionSprite extends Sprite {
   constructor() {
     super( materials.explosion );
     this.reset();
@@ -64,7 +73,7 @@ export class ExplosionSprite extends THREE.Sprite {
   }
 }
 
-export default class Explosion extends THREE.Group {
+export default class Explosion extends Group {
   constructor( radius = 0.2, count = 24 ) {
     super();
 
@@ -77,7 +86,7 @@ export default class Explosion extends THREE.Group {
     let i = count;
     while ( i-- ) {
       this.add( new ExplosionSprite() );
-      this.velocities.push( new THREE.Vector3() );
+      this.velocities.push( new Vector3() );
     }
 
     this.reset();
@@ -97,7 +106,7 @@ export default class Explosion extends THREE.Group {
   reset() {
     this.children.forEach( sprite => {
       randomPointOnSphere( sprite.position )
-        .multiplyScalar( THREE.Math.randFloatSpread( this.radius ) );
+        .multiplyScalar( _Math.randFloatSpread( this.radius ) );
 
       sprite.reset();
     });
@@ -114,7 +123,7 @@ export default class Explosion extends THREE.Group {
   }
 }
 
-export class ExplosionPool extends THREE.Group {
+export class ExplosionPool extends Group {
   constructor( ...args ) {
     super( ...args );
 

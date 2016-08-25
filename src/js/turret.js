@@ -1,4 +1,11 @@
-import THREE from 'three';
+import {
+  CylinderGeometry,
+  FlatShading,
+  Geometry,
+  Group,
+  Mesh,
+  MeshPhongMaterial,
+} from 'three';
 
 const config = {
   base: {
@@ -34,16 +41,16 @@ function turretTransform( geometry, height ) {
 }
 
 const baseGeometry = computeNormals(
-  turretTransform( new THREE.CylinderGeometry(
+  turretTransform( new CylinderGeometry(
     config.base.radiusTop, config.base.radiusBottom, config.base.height,
     4, 1, false
   ), config.base.height )
 );
 
 const barrelsGeometry = (() => {
-  const geometry = new THREE.Geometry();
+  const geometry = new Geometry();
 
-  const leftBarrelGeometry = new THREE.CylinderGeometry(
+  const leftBarrelGeometry = new CylinderGeometry(
     config.barrels.radiusTop, config.barrels.radiusBottom, config.barrels.height,
     4, 1, false
   );
@@ -64,23 +71,23 @@ const barrelsGeometry = (() => {
 })();
 
 const gunhouseGeometry = computeNormals(
-  turretTransform( new THREE.CylinderGeometry(
+  turretTransform( new CylinderGeometry(
     config.gunhouse.radiusTop, config.gunhouse.radiusBottom, config.gunhouse.height,
     4, 1, false
   ), config.gunhouse.height )
 );
 
-const material = new THREE.MeshPhongMaterial({
-  shading: THREE.FlatShading,
+const material = new MeshPhongMaterial({
+  shading: FlatShading,
 });
 
-export default class Turret extends THREE.Group {
+export default class Turret extends Group {
   constructor() {
     super();
 
-    this.base = new THREE.Mesh( baseGeometry, material.clone() );
-    this.gunhouse = new THREE.Mesh( gunhouseGeometry, material.clone() );
-    this.barrels = new THREE.Mesh( barrelsGeometry, material.clone() );
+    this.base = new Mesh( baseGeometry, material.clone() );
+    this.gunhouse = new Mesh( gunhouseGeometry, material.clone() );
+    this.barrels = new Mesh( barrelsGeometry, material.clone() );
 
     this.gunhouse.position.y = config.base.height;
     this.barrels.position.y = config.gunhouse.height / 2;

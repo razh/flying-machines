@@ -1,6 +1,11 @@
-import THREE from 'three';
+import {
+  Geometry,
+  Matrix4,
+  Triangle,
+  Vector3,
+} from 'three';
 
-const triangle = new THREE.Triangle();
+const triangle = new Triangle();
 
 /**
  * Copies of various utility functions from THREE.GeometryUtils.
@@ -16,7 +21,7 @@ function randomPointInTriangle( vA, vB, vC ) {
 
   const c = 1 - a - b;
 
-  return new THREE.Vector3()
+  return new Vector3()
     .addScaledVector( vA, a )
     .addScaledVector( vB, b )
     .addScaledVector( vC, c );
@@ -92,17 +97,17 @@ function randomPointsNormalsInGeometry( geometry, count ) {
 }
 
 
-const matrix = new THREE.Matrix4();
-const origin = new THREE.Vector3();
-const up = new THREE.Vector3( 0, 1, 0 );
+const matrix = new Matrix4();
+const origin = new Vector3();
+const up = new Vector3( 0, 1, 0 );
 
-const emptyGeometry = new THREE.Geometry();
+const emptyGeometry = new Geometry();
 
 export default function greeble( geometry, {
   count = 0,
   greeble = () => emptyGeometry,
 } = {} ) {
-  const greebles = new THREE.Geometry();
+  const greebles = new Geometry();
 
   const { points, normals } = randomPointsNormalsInGeometry( geometry, count );
 

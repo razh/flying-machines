@@ -1,4 +1,13 @@
-import THREE from 'three';
+import {
+  Math as _Math,
+  Clock,
+  Group,
+  PerspectiveCamera,
+  Scene,
+  Vector3,
+  WebGLRenderer,
+} from 'three';
+
 import FlyControlsTouch from './touch';
 import pointerLock from './pointer-lock';
 import Ship from './ship';
@@ -15,30 +24,35 @@ import update from './update';
 import { collide, collisions } from './collision';
 import config from './config';
 import createMap from './map';
+import createGraph from './graph';
 import { remove } from './utils';
 import createWebRTCComponent from './webrtc-component';
+import {} from './audio';
+
+import createConsole from './console';
+createConsole();
 
 const container = document.createElement( 'div' );
 document.body.appendChild( container );
 
-const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+const renderer = new WebGLRenderer({ antialias: true, alpha: true });
 renderer.setPixelRatio( window.devicePixelRatio );
 renderer.setSize( window.innerWidth, window.innerHeight );
 container.appendChild( renderer.domElement );
 
-const scene = new THREE.Scene();
+const scene = new Scene();
 createMap( scene, 'minimal' );
 createMap( scene, 'artifacts' );
 
-const client = new THREE.Group();
+const client = new Group();
 scene.add( client );
 
-const server = new THREE.Group();
+const server = new Group();
 scene.add( server );
 
 createClient( client, server );
 
-const camera = new THREE.PerspectiveCamera( 60, window.innerWidth / window.innerHeight, 0.1 );
+const camera = new PerspectiveCamera( 60, window.innerWidth / window.innerHeight, 0.1 );
 scene.add( camera );
 
 const ship = new Ship();
@@ -72,7 +86,7 @@ const controls = new FlyControlsTouch( ship, renderer.domElement );
 controls.speed = config.ship.speed;
 pointerLock( controls );
 
-const clock = new THREE.Clock();
+const clock = new Clock();
 let running = true;
 
 const dt = 1 / 60;
@@ -80,8 +94,8 @@ let accumulatedTime = 0;
 
 const updateCamera = ( target => {
   const stiffness = 6;
-  const offset = new THREE.Vector3( 0, 0.3, 1 );
-  const vector = new THREE.Vector3();
+  const offset = new Vector3( 0, 0.3, 1 );
+  const vector = new Vector3();
 
   return dt => {
     // Ideal camera position.
@@ -109,7 +123,7 @@ const canFire = (() => {
 })();
 
 const fire = (() => {
-  const offset = new THREE.Vector3( 0, 0, -ship.geometry.boundingSphere.radius );
+  const offset = new Vector3( 0, 0, -ship.geometry.boundingSphere.radius );
 
   return () => {
     const bullet = new Bullet();
@@ -244,7 +258,7 @@ function switchTarget( direction = 1 ) {
   });
 
   const index = targets.indexOf( targetingComputer.target );
-  const newIndex = THREE.Math.euclideanModulo( index + direction, targets.length );
+  const newIndex = _Math.euclideanModulo( index + direction, targets.length );
   const newTarget = targets[ newIndex ];
 
   if ( newTarget ) {

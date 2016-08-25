@@ -1,15 +1,21 @@
-import THREE from 'three';
+import {
+  Math as _Math,
+  Group,
+  Sprite,
+  SpriteMaterial,
+} from 'three';
+
 import { randomPointOnSphere } from './math';
 
-const scale = () => THREE.Math.randFloat( 0.01, 0.03 );
+const scale = () => _Math.randFloat( 0.01, 0.03 );
 
-const material = new THREE.SpriteMaterial({
+const material = new SpriteMaterial({
   fog: true,
   transparent: true,
   opacity: 0.2,
 });
 
-export class DebrisSprite extends THREE.Sprite {
+export class DebrisSprite extends Sprite {
   constructor() {
     super( material );
     this.reset();
@@ -20,7 +26,7 @@ export class DebrisSprite extends THREE.Sprite {
   }
 }
 
-export default class Debris extends THREE.Group {
+export default class Debris extends Group {
   constructor( radius = 6, count = 64 ) {
     super();
 

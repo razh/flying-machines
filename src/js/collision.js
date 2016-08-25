@@ -1,4 +1,4 @@
-import THREE from 'three';
+import { Vector3 } from 'three';
 
 export const CollisionShapes = {
   PARTICLE: 1,
@@ -21,8 +21,8 @@ export function collisionMixin( body ) {
 }
 
 export const intersectLineSphere = (() => {
-  const v0 = new THREE.Vector3();
-  const v1 = new THREE.Vector3();
+  const v0 = new Vector3();
+  const v1 = new Vector3();
 
   return function intersectLineSphere( line, sphere ) {
     line.delta( v0 );
@@ -75,7 +75,7 @@ export function findNearest( scene, target, callback ) {
 }
 
 export const collisions = (() => {
-  const vector = new THREE.Vector3();
+  const vector = new Vector3();
 
   return {
     [ CollisionShapes.PARTICLE | CollisionShapes.SPHERE ]( particle, sphere ) {

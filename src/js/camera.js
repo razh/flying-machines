@@ -1,15 +1,18 @@
-import THREE from 'three';
+import {
+  PerspectiveCamera,
+  Vector3,
+} from 'three';
 
-const vector = new THREE.Vector3();
+const vector = new Vector3();
 
-export default class Camera extends THREE.PerspectiveCamera {
+export default class Camera extends PerspectiveCamera {
   constructor( ...args ) {
     super( ...args );
 
     this.target = null;
 
     this.stiffness = 6;
-    this.offset = new THREE.Vector3();
+    this.offset = new Vector3();
   }
 
   update( dt ) {

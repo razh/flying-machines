@@ -1,4 +1,12 @@
-import THREE from 'three';
+import {
+  AdditiveBlending,
+  Group,
+  Sprite,
+  SpriteMaterial,
+  Texture,
+  Vector3,
+} from 'three';
+
 import config from './config';
 import { defineLazyGetters } from './lazy';
 
@@ -52,11 +60,11 @@ export const reticles = defineLazyGetters( {}, {
     ctx.strokeStyle = '#fff';
     ctx.stroke();
 
-    const texture = new THREE.Texture( canvas );
+    const texture = new Texture( canvas );
     texture.needsUpdate = true;
 
-    return new THREE.SpriteMaterial({
-      blending: THREE.AdditiveBlending,
+    return new SpriteMaterial({
+      blending: AdditiveBlending,
       depthTest: false,
       map: texture,
       rotation: Math.PI / 4,
@@ -90,20 +98,20 @@ export const reticles = defineLazyGetters( {}, {
       ctx.stroke();
     }
 
-    const texture = new THREE.Texture( canvas );
+    const texture = new Texture( canvas );
     texture.needsUpdate = true;
 
-    return new THREE.SpriteMaterial({
-      blending: THREE.AdditiveBlending,
+    return new SpriteMaterial({
+      blending: AdditiveBlending,
       depthTest: false,
       map: texture,
     });
   },
 });
 
-const vector = new THREE.Vector3();
+const vector = new Vector3();
 
-export default class Reticle extends THREE.Sprite {
+export default class Reticle extends Sprite {
   constructor( target ) {
     super( reticles.diamond );
 
@@ -128,7 +136,7 @@ export default class Reticle extends THREE.Sprite {
   }
 }
 
-export class Prediction extends THREE.Sprite {
+export class Prediction extends Sprite {
   constructor( target ) {
     super( reticles.diamond );
 
@@ -151,7 +159,7 @@ export class Prediction extends THREE.Sprite {
   }
 }
 
-export class TargetingComputer extends THREE.Group {
+export class TargetingComputer extends Group {
   constructor( source, target ) {
     super();
 
@@ -161,8 +169,8 @@ export class TargetingComputer extends THREE.Group {
     this.speed = config.bullet.speed;
     this.stiffness = 12;
 
-    this.reticle = new THREE.Sprite( reticles.diamond );
-    this.prediction = new THREE.Sprite( reticles.diamond );
+    this.reticle = new Sprite( reticles.diamond );
+    this.prediction = new Sprite( reticles.diamond );
 
     const scale = 1 / 2;
     this.reticle.scale.setLength( scale );

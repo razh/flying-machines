@@ -1,9 +1,16 @@
-import THREE from 'three';
+import {
+  AdditiveBlending,
+  DoubleSide,
+  MeshBasicMaterial,
+  PlaneBufferGeometry,
+  Texture,
+} from 'three';
+
 import Entity from './entity';
 import { defineLazyGetters } from './lazy';
 import { collisionMixin, CollisionShapes, CollisionGroups } from './collision';
 
-const geometry = new THREE.PlaneBufferGeometry( 1, 1 );
+const geometry = new PlaneBufferGeometry( 1, 1 );
 
 const materials = defineLazyGetters( {}, {
   bullet() {
@@ -29,14 +36,14 @@ const materials = defineLazyGetters( {}, {
     ctx.fillStyle = gradient;
     ctx.fillRect( 0, 0, canvas.width, canvas.height );
 
-    const texture = new THREE.Texture( canvas );
+    const texture = new Texture( canvas );
     texture.needsUpdate = true;
 
-    return new THREE.MeshBasicMaterial({
-      blending: THREE.AdditiveBlending,
+    return new MeshBasicMaterial({
+      blending: AdditiveBlending,
       depthWrite: false,
       map: texture,
-      side: THREE.DoubleSide,
+      side: DoubleSide,
       transparent: true,
     });
   },

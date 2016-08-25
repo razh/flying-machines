@@ -1,8 +1,15 @@
-import THREE from 'three';
+import {
+  Curve,
+  FlatShading,
+  IcosahedronGeometry,
+  MeshPhongMaterial,
+  Vector3,
+} from 'three';
+
 import Entity from './entity';
 import { collisionMixin, CollisionShapes, CollisionGroups } from './collision';
 
-const TorusKnot = THREE.Curve.create(
+const TorusKnot = Curve.create(
   function TorusKnot( scale = 10 ) {
     this.scale = scale;
   },
@@ -17,14 +24,14 @@ const TorusKnot = THREE.Curve.create(
     const ty = ( 2 + Math.cos( q * t ) ) * Math.sin( p * t );
     const tz = Math.sin( q * t );
 
-    return new THREE.Vector3( tx, ty, tz )
+    return new Vector3( tx, ty, tz )
       .multiplyScalar( this.scale );
   }
 );
 
-const geometry = new THREE.IcosahedronGeometry( 0.2 );
-const material = new THREE.MeshPhongMaterial({
-  shading: THREE.FlatShading,
+const geometry = new IcosahedronGeometry( 0.2 );
+const material = new MeshPhongMaterial({
+  shading: FlatShading,
 });
 
 export default class Drone extends Entity {

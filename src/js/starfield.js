@@ -1,4 +1,10 @@
-import THREE from 'three';
+import {
+  BufferAttribute,
+  BufferGeometry,
+  Color,
+  Vector3,
+} from 'three';
+
 import { randomPointOnSphere } from './math';
 
 // https://en.wikipedia.org/wiki/Stellar_classification
@@ -11,11 +17,11 @@ const colors = [
   '#fff4e8',
   '#ffddb4',
   '#ffbd6f',
-].map( color => new THREE.Color( color ) );
+].map( color => new Color( color ) );
 
-const vector = new THREE.Vector3();
+const vector = new Vector3();
 
-export default class Starfield extends THREE.BufferGeometry {
+export default class Starfield extends BufferGeometry {
   constructor( count = 32 ) {
     super();
 
@@ -28,7 +34,7 @@ export default class Starfield extends THREE.BufferGeometry {
       colors[ i % colors.length ].toArray( vertexColors, i * 3 );
     }
 
-    this.addAttribute( 'position', new THREE.BufferAttribute( vertices, 3 ) );
-    this.addAttribute( 'color', new THREE.BufferAttribute( vertexColors, 3 ) );
+    this.addAttribute( 'position', new BufferAttribute( vertices, 3 ) );
+    this.addAttribute( 'color', new BufferAttribute( vertexColors, 3 ) );
   }
 }

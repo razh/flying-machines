@@ -1,6 +1,12 @@
-import THREE from 'three';
+import {
+  AdditiveBlending,
+  Sprite,
+  SpriteMaterial,
+  Texture,
+  Vector3,
+} from 'three';
 
-const vector = new THREE.Vector3();
+const vector = new Vector3();
 
 const triangle = (() => {
   const canvas = document.createElement( 'canvas' );
@@ -25,17 +31,17 @@ const triangle = (() => {
   ctx.fillStyle = '#f43';
   ctx.fill();
 
-  const texture = new THREE.Texture( canvas );
+  const texture = new Texture( canvas );
   texture.needsUpdate = true;
 
-  return new THREE.SpriteMaterial({
-    blending: THREE.AdditiveBlending,
+  return new SpriteMaterial({
+    blending: AdditiveBlending,
     depthTest: false,
     map: texture,
   });
 })();
 
-export default class Offscreen extends THREE.Sprite {
+export default class Offscreen extends Sprite {
   constructor( camera ) {
     super( triangle.clone() );
 

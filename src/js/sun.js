@@ -1,4 +1,11 @@
-import THREE from 'three';
+import {
+  AdditiveBlending,
+  Color,
+  Group,
+  LensFlare,
+  Texture,
+} from 'three';
+
 import color from 'color';
 import { defineLazyGetters } from './lazy';
 
@@ -28,7 +35,7 @@ export const textures = defineLazyGetters( {}, {
     ctx.fillStyle = gradient;
     ctx.fillRect( 0, 0, canvas.width, canvas.height );
 
-    const texture = new THREE.Texture( canvas );
+    const texture = new Texture( canvas );
     texture.needsUpdate = true;
     return texture;
   },
@@ -55,7 +62,7 @@ export const textures = defineLazyGetters( {}, {
     ctx.fillStyle = gradient;
     ctx.fillRect( 0, 0, canvas.width, canvas.height );
 
-    const texture = new THREE.Texture( canvas );
+    const texture = new Texture( canvas );
     texture.needsUpdate = true;
     return texture;
   },
@@ -97,28 +104,28 @@ export const textures = defineLazyGetters( {}, {
     ctx.fillStyle = gradient;
     ctx.fillRect( 0, 0, canvas.width, canvas.height / scaleY );
 
-    const texture = new THREE.Texture( canvas );
+    const texture = new Texture( canvas );
     texture.needsUpdate = true;
     return texture;
   },
 });
 
-export default class Sun extends THREE.Group {
+export default class Sun extends Group {
   constructor( ...args ) {
     super( ...args );
 
-    const lensFlare = new THREE.LensFlare();
-    lensFlare.add( textures.core, 128, 0, THREE.AdditiveBlending );
+    const lensFlare = new LensFlare();
+    lensFlare.add( textures.core, 128, 0, AdditiveBlending );
 
-    const color = new THREE.Color( '#77f' );
-    lensFlare.add( textures.anamorphicFlare, 1024, 0, THREE.AdditiveBlending, color, 0.5 );
-    lensFlare.add( textures.lensFlare, 64, 0.5, THREE.AdditiveBlending, color, 0.1 );
-    lensFlare.add( textures.lensFlare, 96, 0.7, THREE.AdditiveBlending, color, 0.1 );
-    lensFlare.add( textures.lensFlare, 128, 0.9, THREE.AdditiveBlending, color, 0.1 );
-    lensFlare.add( textures.lensFlare, 96, 1, THREE.AdditiveBlending, color, 0.1 );
+    const color = new Color( '#77f' );
+    lensFlare.add( textures.anamorphicFlare, 1024, 0, AdditiveBlending, color, 0.5 );
+    lensFlare.add( textures.lensFlare, 64, 0.5, AdditiveBlending, color, 0.1 );
+    lensFlare.add( textures.lensFlare, 96, 0.7, AdditiveBlending, color, 0.1 );
+    lensFlare.add( textures.lensFlare, 128, 0.9, AdditiveBlending, color, 0.1 );
+    lensFlare.add( textures.lensFlare, 96, 1, AdditiveBlending, color, 0.1 );
 
     lensFlare.customUpdateCallback = () => {
-      THREE.LensFlare.prototype.updateLensFlares.call( lensFlare );
+      LensFlare.prototype.updateLensFlares.call( lensFlare );
       lensFlare.lensFlares[1].rotation = 0;
     };
 

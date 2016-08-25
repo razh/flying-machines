@@ -1,15 +1,19 @@
-import THREE from 'three';
+import {
+  Mesh,
+  Quaternion,
+  Vector3,
+} from 'three';
 
-const vector = new THREE.Vector3();
-const quaternion = new THREE.Quaternion();
+const vector = new Vector3();
+const quaternion = new Quaternion();
 
-export default class Entity extends THREE.Mesh {
+export default class Entity extends Mesh {
   constructor( ...args ) {
     super( ...args );
 
-    this.velocity = new THREE.Vector3();
-    this.acceleration = new THREE.Vector3();
-    this.angularVelocity = new THREE.Vector3();
+    this.velocity = new Vector3();
+    this.acceleration = new Vector3();
+    this.angularVelocity = new Vector3();
   }
 
   update( dt ) {

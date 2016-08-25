@@ -1,6 +1,6 @@
-import THREE from 'three';
+import { Vector3 } from 'three';
 
-export function randomPointOnSphere( vector = new THREE.Vector3() ) {
+export function randomPointOnSphere( vector = new Vector3() ) {
   const theta = 2 * Math.PI * Math.random();
   const u = 2 * Math.random() - 1;
   const v = Math.sqrt( 1 - u * u );

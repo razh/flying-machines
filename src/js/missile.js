@@ -1,4 +1,11 @@
-import THREE from 'three';
+import {
+  CylinderGeometry,
+  FlatShading,
+  LatheGeometry,
+  MeshPhongMaterial,
+  Vector2,
+} from 'three';
+
 import Entity from './entity';
 import Engine from './engine';
 import { collisionMixin, CollisionShapes, CollisionGroups } from './collision';
@@ -6,7 +13,7 @@ import { defineLazyGetters } from './lazy';
 
 const geometries = defineLazyGetters( {}, {
   basic() {
-    const geometry = new THREE.CylinderGeometry( 0, 0.05, 0.2, 3 );
+    const geometry = new CylinderGeometry( 0, 0.05, 0.2, 3 );
 
     geometry.rotateX( -Math.PI / 2 );
     geometry.computeFaceNormals();
@@ -24,9 +31,9 @@ const geometries = defineLazyGetters( {}, {
       [ 0.027, 0.08 ],
       [ 0.007, 0.19 ],
       [ 0, 0.2 ],
-    ].map( ([ x, y ]) => new THREE.Vector2( x, y ) );
+    ].map( ([ x, y ]) => new Vector2( x, y ) );
 
-    const geometry = new THREE.LatheGeometry( points )
+    const geometry = new LatheGeometry( points )
       .rotateX( -Math.PI / 2 )
       .translate( 0, 0, 0.05 );
 
@@ -37,8 +44,8 @@ const geometries = defineLazyGetters( {}, {
   },
 });
 
-const material = new THREE.MeshPhongMaterial({
-  shading: THREE.FlatShading,
+const material = new MeshPhongMaterial({
+  shading: FlatShading,
   emissive: '#333',
 });
 

@@ -1,4 +1,4 @@
-import THREE from 'three';
+import { Vector3 } from 'three';
 
 // Vertices.
 // pz-nz order is reversed for the nx side.
@@ -151,8 +151,8 @@ export const VertexIndices = {
   BACK,
 };
 
-const vector = new THREE.Vector3();
-const zero = new THREE.Vector3();
+const vector = new Vector3();
+const zero = new Vector3();
 
 export function translate( geometry, vectors ) {
   Object.keys( vectors ).forEach( key => {

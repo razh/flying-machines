@@ -1,8 +1,8 @@
-import THREE from 'three';
+import { Scene } from 'three';
 
 export default class Skybox {
   constructor( camera ) {
-    this.scene = new THREE.Scene();
+    this.scene = new Scene();
     this.camera = camera.clone();
   }
 

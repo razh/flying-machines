@@ -1,29 +1,45 @@
-import THREE from 'three';
+import {
+  AdditiveBlending,
+  BufferAttribute,
+  BufferGeometry,
+  DoubleSide,
+  Group,
+  Line,
+  LineBasicMaterial,
+  Mesh,
+  MeshBasicMaterial,
+  PlaneBufferGeometry,
+  Sprite,
+  SpriteMaterial,
+  Texture,
+  Vector3,
+} from 'three';
+
 import times from 'lodash/times';
 
-const lineMaterial = new THREE.LineBasicMaterial({
-  blending: THREE.AdditiveBlending,
+const lineMaterial = new LineBasicMaterial({
+  blending: AdditiveBlending,
   color: '#f43',
   linewidth: 16,
   opacity: 0.25,
-  side: THREE.DoubleSide,
+  side: DoubleSide,
   transparent: true,
 });
 
-export class LineTrail extends THREE.Line {
+export class LineTrail extends Line {
   constructor( count = 64 ) {
-    const geometry = new THREE.BufferGeometry();
+    const geometry = new BufferGeometry();
     const vertices = new Float32Array( 3 * count );
-    const attribute = new THREE.BufferAttribute( vertices, 3 );
+    const attribute = new BufferAttribute( vertices, 3 );
     geometry.addAttribute( 'position', attribute );
 
     super( geometry, lineMaterial );
 
     // Offset from target.
-    this.offset = new THREE.Vector3();
+    this.offset = new Vector3();
 
     // Circular array of previous positions.
-    this.positions = times( count, () => new THREE.Vector3() );
+    this.positions = times( count, () => new Vector3() );
 
     // Current index of position array start.
     this.start = 0;
@@ -63,24 +79,24 @@ canvas.height = size;
 ctx.fillStyle = '#a32';
 ctx.fillRect( 0, 0, size, size );
 
-const texture = new THREE.Texture( canvas );
+const texture = new Texture( canvas );
 texture.needsUpdate = true;
 
-const spriteMaterial = new THREE.SpriteMaterial({
-  blending: THREE.AdditiveBlending,
+const spriteMaterial = new SpriteMaterial({
+  blending: AdditiveBlending,
   map: texture,
   rotation: Math.PI / 4,
   transparent: true,
   opacity: 0.9,
 });
 
-export class TrailSprite extends THREE.Sprite {
+export class TrailSprite extends Sprite {
   constructor() {
     super( spriteMaterial );
   }
 }
 
-export class SpriteTrail extends THREE.Group {
+export class SpriteTrail extends Group {
   constructor( options = {} ) {
     super();
 
@@ -109,7 +125,7 @@ export class SpriteTrail extends THREE.Group {
 
     this.previousPosition = null;
     this.distance = 0;
-    this.offset = new THREE.Vector3();
+    this.offset = new Vector3();
   }
 
   next() {
@@ -151,16 +167,16 @@ export class SpriteTrail extends THREE.Group {
   }
 }
 
-const cameraDirection = new THREE.Vector3();
-const normal = new THREE.Vector3();
-const vector = new THREE.Vector3();
+const cameraDirection = new Vector3();
+const normal = new Vector3();
+const vector = new Vector3();
 
-export class ScreenSpaceTrail extends THREE.Mesh {
+export class ScreenSpaceTrail extends Mesh {
   constructor( count = 256 ) {
-    const geometry = new THREE.PlaneBufferGeometry( 1, 1, 1, count - 1 );
+    const geometry = new PlaneBufferGeometry( 1, 1, 1, count - 1 );
 
-    const material = new THREE.MeshBasicMaterial({
-      blending: THREE.AdditiveBlending,
+    const material = new MeshBasicMaterial({
+      blending: AdditiveBlending,
       color: '#f43',
     });
 
@@ -169,10 +185,10 @@ export class ScreenSpaceTrail extends THREE.Mesh {
     this.count = count;
 
     // Offset from target.
-    this.offset = new THREE.Vector3();
+    this.offset = new Vector3();
 
     // Circular array of previous positions.
-    this.positions = times( count, () => new THREE.Vector3() );
+    this.positions = times( count, () => new Vector3() );
 
     // Current index of position array start.
     this.start = 0;
