@@ -26,7 +26,7 @@
     "protocol-buffers": "3.1.6",
     "simple-peer": "6.0.7",
     "simplex-noise": "2.2.0",
-    "three": "0.78.0",
+    "three": "0.80.1",
     "ws": "1.1.1"
   },
   "devDependencies": {
