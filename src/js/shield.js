@@ -1,4 +1,4 @@
-import THREE from 'three';
+import * as THREE from 'three';
 
 const geometry = new THREE.IcosahedronGeometry( 0.2, 1 );
 const material = new THREE.MeshPhongMaterial({

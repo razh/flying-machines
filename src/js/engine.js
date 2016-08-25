@@ -1,4 +1,4 @@
-import THREE from 'three';
+import * as THREE from 'three';
 
 const material = new THREE.MeshLambertMaterial({
   blending: THREE.AdditiveBlending,

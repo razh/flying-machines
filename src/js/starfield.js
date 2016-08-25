@@ -1,4 +1,4 @@
-import THREE from 'three';
+import * as THREE from 'three';
 import { randomPointOnSphere } from './math';
 
 // https://en.wikipedia.org/wiki/Stellar_classification

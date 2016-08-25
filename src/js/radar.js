@@ -1,4 +1,4 @@
-import THREE from 'three';
+import * as THREE from 'three';
 import createPool from './pool';
 
 const scales = {

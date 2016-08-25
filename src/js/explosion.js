@@ -1,4 +1,4 @@
-import THREE from 'three';
+import * as THREE from 'three';
 import { randomPointOnSphere } from './math';
 import { remove } from './utils';
 import { defineLazyGetters } from './lazy';
