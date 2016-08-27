@@ -13,7 +13,11 @@ require('three/examples/js/shaders/LuminosityHighPassShader.js');
 require('three/examples/js/postprocessing/UnrealBloomPass.js');
 
 export default class Bloom {
-  constructor( renderer, scene, camera ) {
+  constructor( renderer, scene, camera, {
+    strength = 1.5,
+    radius = 0.4,
+    threshold = 0.85,
+  } = {} ) {
     this.scene = scene;
     this.camera = camera;
 
@@ -33,13 +37,13 @@ export default class Bloom {
         window.innerWidth,
         window.innerHeight
       ),
-      1.5,
-      0.4,
-      0.85
+      strength,
+      radius,
+      threshold
     );
 
     this.composer = new THREE.EffectComposer( renderer );
-    this.composer.setSize(window.innerWidth, window.innerHeight);
+    this.composer.setSize( window.innerWidth, window.innerHeight );
     this.composer.addPass( this.renderPass );
     this.composer.addPass( this.fxaa );
     this.composer.addPass( this.bloom );
