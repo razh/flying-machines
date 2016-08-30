@@ -1,6 +1,9 @@
 import * as THREE from 'three';
 import times from 'lodash/times';
 
+window.THREE = THREE;
+require('./vendor/THREE.MeshLine');
+
 const lineMaterial = new THREE.LineBasicMaterial({
   blending: THREE.AdditiveBlending,
   color: '#f43',
@@ -222,5 +225,41 @@ export class ScreenSpaceTrail extends THREE.Mesh {
     }
 
     position.needsUpdate = true;
+  }
+}
+
+export class MeshLineTrail extends THREE.Mesh {
+  constructor( count = 256 ) {
+    const geometry = new THREE.Geometry();
+
+    const material = new THREE.MeshLineMaterial({
+      blending: THREE.AdditiveBlending,
+      color: '#f43',
+    });
+
+    const line = new THREE.MeshLine();
+    line.setGeometry( geometry );
+
+    super( line.geometry, material );
+
+    this.line = line;
+
+    // Offset from target.
+    this.offset = new THREE.Vector3();
+
+    // Circular array of previous positions.
+    this.positions = times( count, () => new THREE.Vector3() );
+    this.count = count;
+
+    // Current index of position array start.
+    this.start = 0;
+  }
+
+  track( target ) {
+    this.positions[ this.start ].copy( this.offset )
+      .applyQuaternion( target.quaternion )
+      .add( target.position );
+
+    this.start = ( this.start + 1 ) % this.positions.length;
   }
 }
