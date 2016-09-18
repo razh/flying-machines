@@ -1,11 +1,17 @@
+// eslint-disable-next-line no-console
+console.time('test');
+
 import * as THREE from 'three';
 import FlyControlsTouch from './touch';
 import pointerLock from './pointer-lock';
 import Ship from './ship';
 import Bullet from './bullet';
+import Missile from './missile';
+import { LineTrail, SpriteTrail, ScreenSpaceTrail } from './trail';
 import Drone from './drone';
 import Radar from './radar';
 import { TargetingComputer } from './reticle';
+import Offscreen from './offscreen';
 import Skybox from'./skybox';
 import Debris from './debris';
 import { ExplosionPool } from './explosion';
@@ -17,6 +23,8 @@ import config from './config';
 import createMap from './map';
 import { remove } from './utils';
 import createWebRTCComponent from './webrtc-component';
+import createGraph from './graph';
+import Bloom from './bloom';
 
 const container = document.createElement( 'div' );
 document.body.appendChild( container );
@@ -48,6 +56,18 @@ client.add( ship );
 const radar = new Radar( ship );
 client.add( radar );
 
+const lineTrail = new LineTrail();
+lineTrail.offset.set( 0, 0, 0.4 );
+// client.add( lineTrail );
+
+const spriteTrail = new SpriteTrail();
+spriteTrail.offset.set( 0, 0, 0.4 );
+// client.add( spriteTrail );
+
+const screenSpaceTrail = new ScreenSpaceTrail();
+screenSpaceTrail.offset.set( 0, 0, 0.4 );
+scene.add( screenSpaceTrail );
+
 const droneA = new Drone();
 client.add( droneA );
 
@@ -58,8 +78,17 @@ client.add( droneB );
 const targetingComputer = new TargetingComputer( ship, droneA );
 scene.add( targetingComputer );
 
+const offscreen = new Offscreen( camera );
+offscreen.target = droneA;
+scene.add( offscreen );
+
 const debris = new Debris();
 scene.add( debris );
+
+const missile = new Missile();
+missile.position.set( 0, 0, -3 );
+missile.velocity.set( 0, 0, -1 );
+client.add( missile );
 
 const explosionPool = new ExplosionPool();
 scene.add( explosionPool );
@@ -71,6 +100,20 @@ const keys = [];
 const controls = new FlyControlsTouch( ship, renderer.domElement );
 controls.speed = config.ship.speed;
 pointerLock( controls );
+
+const graph = createGraph();
+window.graph = graph;
+document.body.appendChild( graph.canvas );
+graph.canvas.style.position = 'absolute';
+graph.canvas.style.bottom = 0;
+graph.add( 'px' );
+
+graph.add('ox', '#fff');
+graph.add('oy', '#f00');
+graph.add('oz', '#ddf');
+
+scene.add( skybox.scene )
+const bloom = new Bloom(renderer, scene, camera);
 
 const clock = new THREE.Clock();
 let running = true;
@@ -157,10 +200,11 @@ function onCollide( a, b ) {
 }
 
 function render() {
-  renderer.autoClear = false;
-  skybox.render( renderer, camera );
-  renderer.render( scene, camera );
-  renderer.autoClear = true;
+  // renderer.autoClear = false;
+  // skybox.render( renderer, camera );
+  // renderer.render( scene, camera );
+  // renderer.autoClear = true;
+  bloom.render();
 }
 
 function animate() {
@@ -192,19 +236,32 @@ function animate() {
 
     removed.forEach( remove );
 
+    spriteTrail.track( ship );
+
     // Update camera after ship update.
     updateCamera( dt );
 
     accumulatedTime -= dt;
   }
 
+  graph.update('ox', offscreen.position.x);
+  graph.update('oy', offscreen.position.y);
+  graph.update('oz', offscreen.position.z);
+
   radar.position.set( -1, -1, -2 )
     .applyQuaternion( camera.quaternion )
     .add( camera.position );
 
+  // graph.update( 'px', ship.position.x );
+  graph.draw();
+
   radar.reset();
   radar.track( client );
   radar.track( server );
+  lineTrail.track( ship );
+  lineTrail.generate();
+  screenSpaceTrail.track( ship );
+  screenSpaceTrail.generate( camera );
   debris.track( ship );
 
   render();
@@ -213,6 +270,9 @@ function animate() {
     requestAnimationFrame( animate );
   }
 }
+
+// eslint-disable-next-line no-console
+console.timeEnd('test');
 
 animate();
 

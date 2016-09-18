@@ -165,6 +165,9 @@ export class ScreenSpaceTrail extends THREE.Mesh {
     const material = new THREE.MeshBasicMaterial({
       blending: THREE.AdditiveBlending,
       color: '#f43',
+      // opacity: 0.25,
+      // transparent: true,
+      // wireframe: true
     });
 
     super( geometry, material );
@@ -181,6 +184,7 @@ export class ScreenSpaceTrail extends THREE.Mesh {
     this.start = 0;
 
     this.frustumCulled = false;
+    this.visible = false;
   }
 
   track( target ) {
