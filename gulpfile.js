@@ -8,7 +8,6 @@ const BUILD_DIR = 'dist';
 const html = `${SOURCE_DIR}/*.html`;
 const css = `${SOURCE_DIR}/css/*.css`;
 
-const _ = require('lodash');
 const babelify = require('babelify');
 const brfs = require( 'brfs' );
 const browserify = require('browserify');
@@ -38,7 +37,7 @@ gulp.task('browser-sync', () => {
 
 gulp.task('js', () => {
   const bundler = watchify(browserify(`${SOURCE_DIR}/js/index.js`,
-    _.assign({
+    Object.assign({
       debug: true,
     }, watchify.args)));
 
@@ -51,7 +50,7 @@ gulp.task('js', () => {
       .on('error', onError)
       .pipe(source('bundle.js'))
       .pipe(gulp.dest(BUILD_DIR))
-      .pipe(browserSync.reload({stream: true}));
+      .pipe(browserSync.reload({ stream: true }));
   }
 
   bundler
@@ -64,13 +63,13 @@ gulp.task('js', () => {
 gulp.task('html', () => {
   return gulp.src(html)
     .pipe(gulp.dest(BUILD_DIR))
-    .pipe(browserSync.reload({stream: true}));
+    .pipe(browserSync.reload({ stream: true }));
 });
 
 gulp.task('css', () => {
   return gulp.src(css)
     .pipe(gulp.dest(BUILD_DIR))
-    .pipe(browserSync.reload({stream: true}));
+    .pipe(browserSync.reload({ stream: true }));
 });
 
 gulp.task('clean', () => del([BUILD_DIR]));
