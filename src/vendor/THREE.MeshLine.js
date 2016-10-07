@@ -1,3 +1,5 @@
+( function() {
+
 THREE.MeshLine = function() {
 
 	this.positions = [];
@@ -10,7 +12,7 @@ THREE.MeshLine = function() {
 	this.uvs = [];
 	this.counters = [];
 	this.geometry = new THREE.BufferGeometry();
-	
+
 	this.widthCallback = null;
 
 }
@@ -20,6 +22,7 @@ THREE.MeshLine.prototype.setGeometry = function( g, c ) {
 	this.widthCallback = c;
 
 	this.positions = [];
+	this.counters = [];
 
 	if( g instanceof THREE.Geometry ) {
 		for( var j = 0; j < g.vertices.length; j++ ) {
@@ -42,7 +45,7 @@ THREE.MeshLine.prototype.setGeometry = function( g, c ) {
 			this.positions.push( g[ j ], g[ j + 1 ], g[ j + 2 ] );
 			this.positions.push( g[ j ], g[ j + 1 ], g[ j + 2 ] );
 			this.counters.push(c);
-            this.counters.push(c);
+			this.counters.push(c);
 		}
 	}
 
@@ -109,7 +112,7 @@ THREE.MeshLine.prototype.process = function() {
 		this.previous.push( v[ 0 ], v[ 1 ], v[ 2 ] );
 	}
 
-	for( var j = 1; j < l; j++ ) {	
+	for( var j = 1; j < l; j++ ) {
 		v = this.copyV3( j );
 		this.next.push( v[ 0 ], v[ 1 ], v[ 2 ] );
 		this.next.push( v[ 0 ], v[ 1 ], v[ 2 ] );
@@ -153,7 +156,7 @@ THREE.MeshLine.prototype.process = function() {
 		this.attributes.width.needsUpdate = true;
 		this.attributes.uv.copyArray(new Float32Array(this.uvs));
 		this.attributes.uv.needsUpdate = true;
-		this.attributes.index.copyArray(new Uint16Array(this.index));
+		this.attributes.index.copyArray(new Uint16Array(this.indices_array));
 		this.attributes.index.needsUpdate = true;
     }
 
@@ -168,6 +171,67 @@ THREE.MeshLine.prototype.process = function() {
 	this.geometry.setIndex( this.attributes.index );
 
 }
+
+function memcpy (src, srcOffset, dst, dstOffset, length) {
+	var i
+
+	src = src.subarray || src.slice ? src : src.buffer
+	dst = dst.subarray || dst.slice ? dst : dst.buffer
+
+	src = srcOffset ? src.subarray ?
+	src.subarray(srcOffset, length && srcOffset + length) :
+	src.slice(srcOffset, length && srcOffset + length) : src
+
+	if (dst.set) {
+		dst.set(src, dstOffset)
+	} else {
+		for (i=0; i<src.length; i++) {
+			dst[i + dstOffset] = src[i]
+		}
+	}
+
+	return dst
+}
+
+/**
+ * Fast method to advance the line by one position.  The oldest position is removed.
+ * @param position
+ */
+THREE.MeshLine.prototype.advance = function(position) {
+
+	var positions = this.attributes.position.array;
+	var previous = this.attributes.previous.array;
+	var next = this.attributes.next.array;
+	var l = positions.length;
+
+	// PREVIOUS
+	memcpy( positions, 0, previous, 0, l );
+
+	// POSITIONS
+	memcpy( positions, 6, positions, 0, l - 6 );
+
+	positions[l - 6] = position.x;
+	positions[l - 5] = position.y;
+	positions[l - 4] = position.z;
+	positions[l - 3] = position.x;
+	positions[l - 2] = position.y;
+	positions[l - 1] = position.z;
+
+    // NEXT
+	memcpy( positions, 6, next, 0, l - 6 );
+
+	next[l - 6]  = position.x;
+	next[l - 5]  = position.y;
+	next[l - 4]  = position.z;
+	next[l - 3]  = position.x;
+	next[l - 2]  = position.y;
+	next[l - 1]  = position.z;
+
+	this.attributes.position.needsUpdate = true;
+	this.attributes.previous.needsUpdate = true;
+	this.attributes.next.needsUpdate = true;
+
+};
 
 THREE.MeshLineMaterial = function ( parameters ) {
 
@@ -280,7 +344,7 @@ THREE.MeshLineMaterial = function ( parameters ) {
 '	 	 ',
 '	 }',
 '    gl_FragColor = c;',
-'	 gl_FragColor.a = step(vCounters,visibility);',   
+'	 gl_FragColor.a = step(vCounters,visibility);',
 '}' ];
 
 	function check( v, d ) {
@@ -304,8 +368,8 @@ THREE.MeshLineMaterial = function ( parameters ) {
 	this.dashArray = check( parameters.dashArray, [] );
 	this.useDash = ( this.dashArray !== [] ) ? 1 : 0;
 	this.visibility = check( parameters.visibility, 1 );
-  
-	var material = new THREE.RawShaderMaterial( { 
+
+	var material = new THREE.RawShaderMaterial( {
 		uniforms:{
 			lineWidth: { type: 'f', value: this.lineWidth },
 			map: { type: 't', value: this.map },
@@ -334,8 +398,8 @@ THREE.MeshLineMaterial = function ( parameters ) {
 	delete parameters.near;
 	delete parameters.far;
 	delete parameters.dashArray;
-    delete parameters.visibility;
-  
+	delete parameters.visibility;
+
 	material.type = 'MeshLineMaterial';
 
 	material.setValues( parameters );
@@ -364,3 +428,7 @@ THREE.MeshLineMaterial.prototype.copy = function ( source ) {
 	return this;
 
 };
+
+window.THREE.MeshLineMaterial = THREE.MeshLineMaterial;
+
+})();
