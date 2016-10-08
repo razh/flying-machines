@@ -2,7 +2,7 @@ import * as THREE from 'three';
 import times from 'lodash/times';
 
 window.THREE = THREE;
-require('./vendor/THREE.MeshLine');
+require('../vendor/THREE.MeshLine');
 
 const lineMaterial = new THREE.LineBasicMaterial({
   blending: THREE.AdditiveBlending,
@@ -229,37 +229,45 @@ export class ScreenSpaceTrail extends THREE.Mesh {
 }
 
 export class MeshLineTrail extends THREE.Mesh {
-  constructor( count = 256 ) {
+  constructor( offset = new THREE.Vector3(), count = 32 ) {
     const geometry = new THREE.Geometry();
+
+    for (let i = 0; i < count; i++) {
+      geometry.vertices.push( offset.clone() );
+    }
 
     const material = new THREE.MeshLineMaterial({
       blending: THREE.AdditiveBlending,
-      color: '#f43',
+      color: new THREE.Color( '#f43' ),
+      resolution: new THREE.Vector2( window.innerWidth, window.innerHeight ),
+      sizeAttenuation: true,
+      lineWidth: 0.025,
+      transparent: true,
+      opacity: 0.5,
+      depthTest: false,
     });
 
     const line = new THREE.MeshLine();
-    line.setGeometry( geometry );
+    line.setGeometry( geometry, p =>
+      p > 0.95
+        ? THREE.Math.mapLinear( p, 1, 0.95, 0, 1 )
+        : THREE.Math.mapLinear( p, 0.95, 0, 1, 0 )
+    );
 
     super( line.geometry, material );
 
     this.line = line;
+    this.frustumCulled = false;
 
     // Offset from target.
-    this.offset = new THREE.Vector3();
-
-    // Circular array of previous positions.
-    this.positions = times( count, () => new THREE.Vector3() );
-    this.count = count;
-
-    // Current index of position array start.
-    this.start = 0;
+    this.offset = offset;
   }
 
-  track( target ) {
-    this.positions[ this.start ].copy( this.offset )
+  advance( target ) {
+    vector.copy( this.offset )
       .applyQuaternion( target.quaternion )
       .add( target.position );
 
-    this.start = ( this.start + 1 ) % this.positions.length;
+    this.line.advance( vector );
   }
 }

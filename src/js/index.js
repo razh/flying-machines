@@ -3,6 +3,7 @@ import FlyControlsTouch from './touch';
 import pointerLock from './pointer-lock';
 import Ship from './ship';
 import Bullet from './bullet';
+import { MeshLineTrail } from './trail';
 import Drone from './drone';
 import Radar from './radar';
 import { TargetingComputer } from './reticle';
@@ -47,6 +48,12 @@ client.add( ship );
 
 const radar = new Radar( ship );
 client.add( radar );
+
+const leftTrail = new MeshLineTrail( new THREE.Vector3( -0.1, 0, 0.45 ) );
+scene.add( leftTrail );
+
+const rightTrail = new MeshLineTrail( new THREE.Vector3( 0.1, 0, 0.45 ) );
+scene.add( rightTrail );
 
 const droneA = new Drone();
 client.add( droneA );
@@ -206,6 +213,8 @@ function animate() {
   radar.track( client );
   radar.track( server );
   debris.track( ship );
+  leftTrail.advance( ship );
+  rightTrail.advance( ship );
 
   render();
 
