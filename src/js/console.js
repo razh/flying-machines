@@ -23,9 +23,10 @@ export default function createConsole() {
   element.className = 'console';
   document.body.appendChild( element );
 
-  /* eslint-disable no-console */
+  // eslint-disable-next-line no-console
   const log = console.log.bind( console );
 
+  // eslint-disable-next-line no-console
   console.log = ( ...args ) => {
     log( ...args );
 
@@ -36,7 +37,6 @@ export default function createConsole() {
 
     render( element, state );
   };
-  /* eslint-enable no-console */
 
   document.addEventListener( 'keydown', event => {
     // Backtick.

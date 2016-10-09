@@ -15,7 +15,7 @@ export default function createServer() {
       try {
         socket.send( encodeServerState( state ), { binary: true } );
       } catch ( error ) {
-        /* eslint-disable no-console */
+        // eslint-disable-next-line no-console
         console.error( error );
         clearInterval( interval );
       }
