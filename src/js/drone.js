@@ -22,7 +22,7 @@ const TorusKnot = THREE.Curve.create(
   }
 );
 
-const geometry = new THREE.IcosahedronGeometry( 0.2 );
+const geometry = new THREE.IcosahedronBufferGeometry( 0.2 );
 const material = new THREE.MeshPhongMaterial({
   shading: THREE.FlatShading,
 });

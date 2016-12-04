@@ -175,7 +175,7 @@ const maps = {
 
     // Nebula.
     const nebulaGeometry = new Nebula(
-      new THREE.IcosahedronGeometry( 64, 3 ),
+      new THREE.IcosahedronBufferGeometry( 64, 3 ),
       {
         period: 64,
         fromColor: new THREE.Color( '#223' ),

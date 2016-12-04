@@ -12,7 +12,7 @@ const ALPHA_ENGINE_Y = -0.01;
 
 const geometries = defineLazyGetters( {}, {
   basic() {
-    const geometry = new THREE.CylinderGeometry( 0, 0.1, 0.5, 3 );
+    const geometry = new THREE.CylinderBufferGeometry( 0, 0.1, 0.5, 3 );
 
     geometry.rotateX( -Math.PI / 2 );
     geometry.computeFaceNormals();
@@ -22,7 +22,7 @@ const geometries = defineLazyGetters( {}, {
   },
 
   sphere() {
-    return new THREE.IcosahedronGeometry( 0.2, 1 );
+    return new THREE.IcosahedronBufferGeometry( 0.2, 1 );
   },
 
   diamonds() {
