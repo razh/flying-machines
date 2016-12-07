@@ -21,7 +21,7 @@
   "homepage": "https://github.com/razh/flying-machines#readme",
   "dependencies": {
     "cannon": "0.6.2",
-    "color": "0.11.4",
+    "color": "1.0.2",
     "lodash": "4.17.2",
     "protocol-buffers": "3.2.1",
     "simple-peer": "6.1.0",
