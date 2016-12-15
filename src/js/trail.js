@@ -1,8 +1,6 @@
 import * as THREE from 'three';
+import { MeshLine, MeshLineMaterial } from 'three.meshline';
 import times from 'lodash/times';
-
-window.THREE = THREE;
-require('../vendor/THREE.MeshLine');
 
 const lineMaterial = new THREE.LineBasicMaterial({
   blending: THREE.AdditiveBlending,
@@ -236,7 +234,7 @@ export class MeshLineTrail extends THREE.Mesh {
       geometry.vertices.push( offset.clone() );
     }
 
-    const material = new THREE.MeshLineMaterial({
+    const material = new MeshLineMaterial({
       blending: THREE.AdditiveBlending,
       color: new THREE.Color( '#f43' ),
       resolution: new THREE.Vector2( window.innerWidth, window.innerHeight ),
@@ -247,7 +245,7 @@ export class MeshLineTrail extends THREE.Mesh {
       depthTest: false,
     });
 
-    const line = new THREE.MeshLine();
+    const line = new MeshLine();
     line.setGeometry( geometry, p =>
       p > 0.95
         ? THREE.Math.mapLinear( p, 1, 0.95, 0, 1 )

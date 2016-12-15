@@ -27,6 +27,7 @@
     "simple-peer": "6.1.0",
     "simplex-noise": "2.2.0",
     "three": "0.82.1",
+    "three.meshline": "1.0.0",
     "ws": "1.1.1"
   },
   "devDependencies": {
