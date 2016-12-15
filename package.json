@@ -34,15 +34,15 @@
     "babel-register": "6.18.0",
     "babelify": "7.3.0",
     "brfs": "1.4.3",
-    "browser-sync": "2.18.2",
+    "browser-sync": "2.18.5",
     "browserify": "13.1.1",
     "del": "2.2.2",
-    "eslint": "3.11.1",
+    "eslint": "3.12.2",
     "gulp": "3.9.1",
     "gulp-load-plugins": "1.4.0",
     "gulp-util": "3.0.7",
     "run-sequence": "1.2.2",
     "vinyl-source-stream": "1.1.0",
-    "watchify": "3.7.0"
+    "watchify": "3.8.0"
   }
 }
