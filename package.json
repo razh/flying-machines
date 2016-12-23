@@ -21,12 +21,12 @@
   "homepage": "https://github.com/razh/flying-machines#readme",
   "dependencies": {
     "cannon": "0.6.2",
-    "color": "1.0.2",
+    "color": "1.0.3",
     "lodash": "4.17.2",
     "protocol-buffers": "3.2.1",
     "simple-peer": "6.1.0",
     "simplex-noise": "2.2.0",
-    "three": "0.82.1",
+    "three": "0.83.0",
     "three.meshline": "1.0.0",
     "ws": "1.1.1"
   },
