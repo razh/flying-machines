@@ -22,12 +22,12 @@
   "dependencies": {
     "cannon": "0.6.2",
     "color": "1.0.3",
-    "lodash": "4.17.2",
+    "lodash": "4.17.4",
     "protocol-buffers": "3.2.1",
     "simple-peer": "6.1.0",
-    "simplex-noise": "2.2.0",
+    "simplex-noise": "2.3.0",
     "three": "0.83.0",
-    "three.meshline": "1.0.0",
+    "three.meshline": "1.0.1",
     "ws": "1.1.1"
   },
   "devDependencies": {
@@ -35,13 +35,13 @@
     "babel-register": "6.18.0",
     "babelify": "7.3.0",
     "brfs": "1.4.3",
-    "browser-sync": "2.18.5",
-    "browserify": "13.1.1",
+    "browser-sync": "2.18.6",
+    "browserify": "13.3.0",
     "del": "2.2.2",
-    "eslint": "3.12.2",
+    "eslint": "3.13.0",
     "gulp": "3.9.1",
     "gulp-load-plugins": "1.4.0",
-    "gulp-util": "3.0.7",
+    "gulp-util": "3.0.8",
     "run-sequence": "1.2.2",
     "vinyl-source-stream": "1.1.0",
     "watchify": "3.8.0"
