@@ -1,4 +1,5 @@
 import * as THREE from 'three';
+import { TURRET } from './types';
 
 const config = {
   base: {
@@ -90,7 +91,7 @@ export default class Turret extends THREE.Group {
     this.gunhouse.add( this.barrels );
 
     this.time = 0;
-    this.type = 'turret';
+    this.type = TURRET;
   }
 
   update( dt ) {

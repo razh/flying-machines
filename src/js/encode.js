@@ -1,4 +1,5 @@
 import messages from './messages';
+import { BULLET, MISSILE, SHIP } from './types';
 
 function toBuffer( arrayBuffer ) {
   const buffer = new Buffer( arrayBuffer.byteLength );
@@ -17,11 +18,11 @@ export function serializeClientState( scene ) {
   };
 
   scene.traverse( object => {
-    if ( object.type === 'ship' ) {
+    if ( object.type === SHIP ) {
       state.ship = object;
-    } else if ( object.type === 'bullet' ) {
+    } else if ( object.type === BULLET ) {
       state.bullets.push( object );
-    } else if ( object.type === 'missile' ) {
+    } else if ( object.type === MISSILE ) {
       state.missiles.push( object );
     }
   });

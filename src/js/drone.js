@@ -1,5 +1,6 @@
 import * as THREE from 'three';
 import Entity from './entity';
+import { DRONE } from './types';
 import { collisionMixin, CollisionShapes, CollisionGroups } from './collision';
 
 const TorusKnot = THREE.Curve.create(
@@ -33,7 +34,7 @@ export default class Drone extends Entity {
     this.geometry.computeBoundingSphere();
     collisionMixin( this );
 
-    this.type = 'drone';
+    this.type = DRONE;
     this.shape = CollisionShapes.SPHERE;
     this.collisionFilterGroup = CollisionGroups.SHIP;
 

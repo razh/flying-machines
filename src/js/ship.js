@@ -1,5 +1,6 @@
 import * as THREE from 'three';
 import Entity from './entity';
+import { SHIP } from './types';
 import Shield from './shield';
 import Engine from './engine';
 import { defineLazyGetters } from './lazy';
@@ -186,7 +187,7 @@ export default class Ship extends Entity {
     super( geometries.alpha, material.clone() );
     collisionMixin( this );
 
-    this.type = 'ship';
+    this.type = SHIP;
     this.shape = CollisionShapes.SPHERE;
     this.collisionFilterGroup = CollisionGroups.SHIP;
 

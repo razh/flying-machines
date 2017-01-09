@@ -1,4 +1,5 @@
 import * as THREE from 'three';
+import { ASTEROID } from './types';
 import Nebula from './nebula';
 import Starfield from './starfield';
 import Sun, { textures as sunTextures } from './sun';
@@ -20,7 +21,7 @@ function createAsteroidMesh( x = 0, y = 0, z = 0, radius = 1, detail = 2 ) {
   mesh.position.set( x, y, z );
 
   collisionMixin( mesh );
-  mesh.type = 'asteroid';
+  mesh.type = ASTEROID;
   mesh.shape = CollisionShapes.SPHERE;
 
   return mesh;

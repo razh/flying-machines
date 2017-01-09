@@ -1,4 +1,5 @@
 import * as THREE from 'three';
+import { BULLET, DRONE, MISSILE } from './types';
 import FlyControlsTouch from './touch';
 import pointerLock from './pointer-lock';
 import Ship from './ship';
@@ -139,7 +140,7 @@ const fire = (() => {
 let collided = [];
 
 function onCollide( a, b ) {
-  if ( a.type !== 'bullet' && b.type !== 'bullet' ) {
+  if ( a.type !== BULLET && b.type !== BULLET ) {
     return;
   }
 
@@ -184,7 +185,7 @@ function animate() {
     const removed = [];
 
     update( scene, dt, object => {
-      if ( object.type === 'bullet' ) {
+      if ( object.type === BULLET ) {
         object.lookAt( camera.position );
         if ( object.start &&
              object.start.distanceTo( object.position ) > config.bullet.range ) {
@@ -242,7 +243,7 @@ function switchTarget( direction = 1 ) {
   const targets = [];
 
   traverse( client, object => {
-    if ( object.type === 'drone' || object.type === 'missile' ) {
+    if ( object.type === DRONE || object.type === MISSILE ) {
       const distanceToSquared = ship.position
         .distanceToSquared( object.position );
 

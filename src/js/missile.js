@@ -1,5 +1,6 @@
 import * as THREE from 'three';
 import Entity from './entity';
+import { MISSILE } from './types';
 import Engine from './engine';
 import { collisionMixin, CollisionShapes, CollisionGroups } from './collision';
 import { defineLazyGetters } from './lazy';
@@ -47,7 +48,7 @@ export default class Missile extends Entity {
     super( geometries.rpg, material.clone() );
     collisionMixin( this );
 
-    this.type = 'missile';
+    this.type = MISSILE;
     this.shape = CollisionShapes.SPHERE;
     this.collisionFilterGroup = CollisionGroups.MISSILE;
 

@@ -1,5 +1,6 @@
 import * as THREE from 'three';
 import Entity from './entity';
+import { BULLET } from './types';
 import { defineLazyGetters } from './lazy';
 import { collisionMixin, CollisionShapes, CollisionGroups } from './collision';
 
@@ -47,7 +48,7 @@ export default class Bullet extends Entity {
     super( geometry, materials.bullet );
     collisionMixin( this );
 
-    this.type = 'bullet';
+    this.type = BULLET;
     this.shape = CollisionShapes.PARTICLE;
     this.collisionFilterGroup = CollisionGroups.BULLET;
     this.collisionFilterMask = CollisionGroups.ALL ^ CollisionGroups.BULLET;
