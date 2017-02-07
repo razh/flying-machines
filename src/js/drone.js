@@ -3,12 +3,14 @@ import Entity from './entity';
 import { DRONE } from './types';
 import { collisionMixin, CollisionShapes, CollisionGroups } from './collision';
 
-const TorusKnot = THREE.Curve.create(
-  function TorusKnot( scale = 10 ) {
-    this.scale = scale;
-  },
+class TorusKnot extends THREE.Curve {
+  constructor( scale = 10 ) {
+    super();
 
-  function getPoint( t ) {
+    this.scale = scale;
+  }
+
+  getPoint( t ) {
     const p = 3;
     const q = 4;
 
@@ -21,7 +23,7 @@ const TorusKnot = THREE.Curve.create(
     return new THREE.Vector3( tx, ty, tz )
       .multiplyScalar( this.scale );
   }
-);
+}
 
 const geometry = new THREE.IcosahedronBufferGeometry( 0.2 );
 const material = new THREE.MeshPhongMaterial({
