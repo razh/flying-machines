@@ -1,11 +1,12 @@
 import * as THREE from 'three';
 import createPool from './pool';
+import { SHIP, BULLET, DRONE, MISSILE } from './types';
 
 const scales = {
-  ship: 1 / 16,
-  bullet: 1 / 96,
-  drone: 1 / 32,
-  missile: 1 / 48,
+  [SHIP]: 1 / 16,
+  [BULLET]: 1 / 96,
+  [DRONE]: 1 / 32,
+  [MISSILE]: 1 / 48,
 };
 
 const material = new THREE.SpriteMaterial({
