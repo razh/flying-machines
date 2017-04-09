@@ -111,7 +111,7 @@ export default class Reticle extends THREE.Sprite {
 
     this.lookahead = 1;
     this.stiffness = 12;
-    this.scale.setLength( 1 / 2 );
+    this.scale.setLength( 8 );
   }
 
   update( dt ) {
@@ -136,7 +136,7 @@ export class Prediction extends THREE.Sprite {
 
     this.lookahead = 1;
     this.stiffness = 12;
-    this.scale.setLength( 1 / 2 );
+    this.scale.setLength( 8 );
   }
 
   update( dt ) {
@@ -164,7 +164,7 @@ export class TargetingComputer extends THREE.Group {
     this.reticle = new THREE.Sprite( reticles.diamond );
     this.prediction = new THREE.Sprite( reticles.diamond );
 
-    const scale = 1 / 2;
+    const scale = 8;
     this.reticle.scale.setLength( scale );
     this.prediction.scale.setLength( scale );
 

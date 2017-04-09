@@ -18,9 +18,9 @@ export class Flame extends THREE.Mesh {
 export default class Engine extends THREE.Group {
   constructor( source, {
     count = 3,
-    radius = 0.04,
-    height = 0.25,
-    spread = new THREE.Vector3( 0.005, 0.005, 0.03 ),
+    radius = 0.64,
+    height = 4,
+    spread = new THREE.Vector3( 0.08, 0.08, 0.5 ),
   } = {} ) {
     super();
 

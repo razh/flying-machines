@@ -9,11 +9,11 @@ import { translate as translateBox } from './box-geometry';
 
 const createLathePoint = ([ x, y ]) => new THREE.Vector2( x, y );
 
-const ALPHA_ENGINE_Y = -0.01;
+const ALPHA_ENGINE_Y = -0.16;
 
 const geometries = defineLazyGetters( {}, {
   basic() {
-    const geometry = new THREE.CylinderBufferGeometry( 0, 0.1, 0.5, 3 );
+    const geometry = new THREE.CylinderBufferGeometry( 0, 1.6, 8, 48 );
 
     geometry.rotateX( -Math.PI / 2 );
     geometry.computeFaceNormals();
@@ -23,14 +23,14 @@ const geometries = defineLazyGetters( {}, {
   },
 
   sphere() {
-    return new THREE.IcosahedronBufferGeometry( 0.2, 1 );
+    return new THREE.IcosahedronBufferGeometry( 3.2, 1 );
   },
 
   diamonds() {
     const points = [
       [ 0, 0 ],
-      [ 0.05, 0.1 ],
-      [ 0, 0.4 ],
+      [ 0.8, 1.6 ],
+      [ 0, 6.4 ],
     ].map( createLathePoint );
 
     const geometry = new THREE.LatheGeometry( points, 3 )
@@ -38,9 +38,9 @@ const geometries = defineLazyGetters( {}, {
 
     const boosterPoints = [
       [ 0, 0 ],
-      [ 0.025, 0.04 ],
-      [ 0.025, 0.08 ],
-      [ 0, 0.2 ],
+      [ 0.4, 0.64 ],
+      [ 0.4, 1.28 ],
+      [ 0, 3.2 ],
     ].map( createLathePoint );
 
     const leftBoosterGeometry = new THREE.LatheGeometry( boosterPoints, 4 );
@@ -48,18 +48,18 @@ const geometries = defineLazyGetters( {}, {
 
     leftBoosterGeometry
       .rotateX( Math.PI / 2 )
-      .translate( -0.1, 0, 0 );
+      .translate( -1.6, 0, 0 );
 
     rightBoosterGeometry
       .rotateX( Math.PI / 2 )
-      .translate( 0.1, 0, 0 );
+      .translate( 1.6, 0, 0 );
 
     geometry.merge( leftBoosterGeometry );
     geometry.merge( rightBoosterGeometry );
 
     geometry
       .rotateX( Math.PI )
-      .translate( 0, 0, 0.15 );
+      .translate( 0, 0, 2.4 );
 
     geometry.computeFaceNormals();
     geometry.computeVertexNormals();
@@ -73,34 +73,34 @@ const geometries = defineLazyGetters( {}, {
     // Engine.
     const enginePoints = [
       [ 0, 0 ],
-      [ 0.02, 0.01 ],
-      [ 0.025, 0.02 ],
-      [ 0.025, 0.16 ],
-      [ 0.015, 0.18 ],
-      [ 0, 0.18 ],
+      [ 0.32, 0.16 ],
+      [ 0.4, 0.32 ],
+      [ 0.4, 2.56 ],
+      [ 0.24, 2.88 ],
+      [ 0, 2.88 ],
     ].map( createLathePoint );
 
     const engineGeometry = new THREE.LatheGeometry( enginePoints, 8 )
       .rotateX( Math.PI / 2 )
-      .translate( 0, ALPHA_ENGINE_Y, 0.02 );
+      .translate( 0, ALPHA_ENGINE_Y, 0.32 );
 
-    const leftEngineGeometry = engineGeometry.clone().translate( -0.1, 0, 0 );
-    const rightEngineGeometry = engineGeometry.clone().translate( 0.1, 0, 0 );
+    const leftEngineGeometry = engineGeometry.clone().translate( -1.6, 0, 0 );
+    const rightEngineGeometry = engineGeometry.clone().translate( 1.6, 0, 0 );
 
     geometry.merge( leftEngineGeometry );
     geometry.merge( rightEngineGeometry );
 
     // Wings.
-    const wing = [ 0.35, 0.02, 0.12 ];
-    const rightWingPosition = [ wing[0] / 2, 0, 0.12 ];
+    const wing = [ 5.6, 0.32, 1.92 ];
+    const rightWingPosition = [ wing[0] / 2, 0, 1.92 ];
     const leftWingPosition = [ ...rightWingPosition ];
     leftWingPosition[0] = -leftWingPosition[0];
     const wingDihedralAngle = Math.PI / 24;
 
     const wingGeometry = new THREE.BoxGeometry( ...wing );
     translateBox( wingGeometry, {
-      top_right: { y: -0.018 },
-      front_right: { z: -0.07 },
+      top_right: { y: -0.288 },
+      front_right: { z: -1.12 },
     });
 
     const rightWingGeometry = new THREE.Geometry()
@@ -119,11 +119,11 @@ const geometries = defineLazyGetters( {}, {
     geometry.merge( leftWingGeometry );
 
     // Front fuselage.
-    const frontFuselage = [ 0.12, 0.07, 0.3 ];
+    const frontFuselage = [ 1.92, 1.12, 4.8 ];
     const frontFuselageGeometry = new THREE.BoxGeometry( ...frontFuselage );
 
-    const fx = 0.03;
-    const fy = 0.03;
+    const fx = 0.48;
+    const fy = 0.48;
     translateBox( frontFuselageGeometry, {
       back_right: { x: -fx },
       back_left: { x: fx },
@@ -135,13 +135,13 @@ const geometries = defineLazyGetters( {}, {
 
     // Rear fuselage.
     const rearFuselage = [ ...frontFuselage ];
-    rearFuselage[2] = 0.05;
+    rearFuselage[2] = 0.8;
 
     const rearFuselageGeometry = new THREE.BoxGeometry( ...rearFuselage )
       .translate( 0, 0, ( frontFuselage[2] + rearFuselage[2] ) / 2 );
 
-    const rx = 0.02;
-    const ry = 0.01;
+    const rx = 0.32;
+    const ry = 0.16;
     translateBox( rearFuselageGeometry, {
       front_right: { x: -rx },
       front_left: { x: rx },
@@ -161,20 +161,20 @@ const geometries = defineLazyGetters( {}, {
 // Engine attachment points.
 const engines = {
   basic: [
-    [ 0, 0, 0.3 ],
+    [ 0, 0, 4.8 ],
   ],
 
   sphere: [
-    [ 0, 0, 0.3 ],
+    [ 0, 0, 4.8 ],
   ],
 
   diamonds: [
-    [ 0, 0, 0.3 ],
+    [ 0, 0, 4.8 ],
   ],
 
   alpha: [
-    [ -0.1, ALPHA_ENGINE_Y, 0.3 ],
-    [ 0.1, ALPHA_ENGINE_Y, 0.3 ],
+    [ -1.6, ALPHA_ENGINE_Y, 4.8 ],
+    [ 1.6, ALPHA_ENGINE_Y, 4.8 ],
   ],
 };
 

@@ -16,7 +16,7 @@ export class MeshLineTrail extends THREE.Mesh {
       color: new THREE.Color( '#f43' ),
       resolution: new THREE.Vector2( window.innerWidth, window.innerHeight ),
       sizeAttenuation: true,
-      lineWidth: 0.025,
+      lineWidth: 0.4,
       transparent: true,
       opacity: 0.5,
       depthTest: false,

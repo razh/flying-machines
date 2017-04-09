@@ -34,7 +34,7 @@ function createAsteroidMeshes( asteroids ) {
 const minimal = {
   pointLight: (() => {
     const light = new THREE.PointLight( '#aaf' );
-    light.position.set( 8, 8, 8 );
+    light.position.set( 128, 128, 128 );
     return light;
   })(),
 
@@ -44,8 +44,8 @@ const minimal = {
 const maps = {
   minimal( scene ) {
     const meshes = createAsteroidMeshes([
-      [ 0, 0, -8, 1 ],
-      [ 4, -2, -4, 2 ],
+      [ 0, 0, -128, 16 ],
+      [ 64, -32, -64, 32 ],
     ]);
 
     scene.add( ...meshes );
@@ -54,7 +54,7 @@ const maps = {
     scene.add( minimal.hemisphereLight.clone() );
 
     const turret = new Turret();
-    turret.position.set( 4, -0.02, -4 );
+    turret.position.set( 64, -0.32, -64 );
     scene.add( turret );
 
     maps.sunLensFlare( scene );
@@ -62,7 +62,7 @@ const maps = {
 
   sunLensFlare( scene ) {
     const sun = new Sun();
-    sun.position.copy( minimal.pointLight.position ).setLength( 64 );
+    sun.position.copy( minimal.pointLight.position ).setLength( 1024 );
     scene.add( sun );
   },
 
@@ -73,25 +73,25 @@ const maps = {
     });
 
     const core = new THREE.Sprite( coreMaterial );
-    core.position.copy( minimal.pointLight.position ).setLength( 64 );
+    core.position.copy( minimal.pointLight.position ).setLength( 1024 );
     core.scale.setLength( 16 );
 
     scene.add( core );
   },
 
   artifacts( scene ) {
-    const baseGeometry = new THREE.BoxGeometry( 16, 1, 1 )
-      .translate( 0, 5, 0 );
+    const baseGeometry = new THREE.BoxGeometry( 256, 16, 16 )
+      .translate( 0, 80, 0 );
 
-    baseGeometry.merge( new THREE.BoxGeometry( 12, 1, 1 ) );
+    baseGeometry.merge( new THREE.BoxGeometry( 192, 16, 16 ) );
 
     const artifactGeometry = greeble( baseGeometry, {
       count: 100,
       greeble() {
         return new THREE.BoxGeometry(
-          THREE.Math.randFloat( 0.5, 2 ),
-          THREE.Math.randFloat( 0.5, 2 ),
-          THREE.Math.randFloat( 0.5, 2 )
+          THREE.Math.randFloat( 8, 32 ),
+          THREE.Math.randFloat( 8, 32 ),
+          THREE.Math.randFloat( 8, 32 )
         );
       },
     });
@@ -105,7 +105,7 @@ const maps = {
       shininess: 10,
     }));
 
-    artifact.position.set( -4, 4, -4 );
+    artifact.position.set( -64, 64, -64 );
     artifact.rotation.z = Math.PI / 4;
 
     scene.add( artifact );
@@ -116,9 +116,9 @@ const maps = {
     scene.add( minimal.hemisphereLight.clone() );
 
     // Asteroid belt.
-    const radius = 32;
-    const positionSpread = 8;
-    const scaleSpread = 0.5;
+    const radius = 512;
+    const positionSpread = 128;
+    const scaleSpread = 8;
 
     scene.fog = new THREE.Fog(
       '#000',
@@ -156,9 +156,9 @@ const maps = {
         .normalize();
 
       scale.set(
-        1 + THREE.Math.randFloatSpread( scaleSpread ),
-        1 + THREE.Math.randFloatSpread( scaleSpread ),
-        1 + THREE.Math.randFloatSpread( scaleSpread )
+        16 + THREE.Math.randFloatSpread( scaleSpread ),
+        16 + THREE.Math.randFloatSpread( scaleSpread ),
+        16 + THREE.Math.randFloatSpread( scaleSpread )
       );
 
       matrix.compose( position, quaternion, scale );
@@ -176,9 +176,9 @@ const maps = {
 
     // Nebula.
     const nebulaGeometry = new Nebula(
-      new THREE.IcosahedronBufferGeometry( 64, 3 ),
+      new THREE.IcosahedronBufferGeometry( 1024, 3 ),
       {
-        period: 64,
+        period: 1024,
         fromColor: new THREE.Color( '#223' ),
         toColor: new THREE.Color( '#000' ),
       }
@@ -208,7 +208,7 @@ const maps = {
       })
     );
 
-    starfield.scale.setLength( 63 );
+    starfield.scale.setLength( 1008 );
     scene.add( starfield );
   },
 };

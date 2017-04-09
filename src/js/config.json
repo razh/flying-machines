@@ -1,14 +1,14 @@
 {
   "ship": {
-    "speed": 1
+    "speed": 16
   },
   "bullet": {
-    "speed": 8,
-    "range": 24,
+    "speed": 128,
+    "range": 384,
     "rate": 8
   },
   "missile": {
-    "speed": 4,
-    "range": 12
+    "speed": 64,
+    "range": 192
   }
 }

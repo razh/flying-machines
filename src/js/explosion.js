@@ -3,7 +3,7 @@ import { randomPointOnSphere } from './math';
 import { remove } from './utils';
 import { defineLazyGetters } from './lazy';
 
-const scale = () => THREE.Math.randFloat( 0.1, 0.5 );
+const scale = () => THREE.Math.randFloat( 1.6, 8 );
 
 const materials = defineLazyGetters( {}, {
   explosion() {
@@ -65,11 +65,11 @@ export class ExplosionSprite extends THREE.Sprite {
 }
 
 export default class Explosion extends THREE.Group {
-  constructor( radius = 0.2, count = 24 ) {
+  constructor( radius = 5, count = 24 ) {
     super();
 
     this.radius = radius;
-    this.speed = 2;
+    this.speed = 32;
     this.decay = 6;
 
     this.velocities = [];

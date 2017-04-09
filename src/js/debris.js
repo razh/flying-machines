@@ -1,7 +1,7 @@
 import * as THREE from 'three';
 import { randomPointOnSphere } from './math';
 
-const scale = () => THREE.Math.randFloat( 0.01, 0.03 );
+const scale = () => THREE.Math.randFloat( 0.2, 0.5 );
 
 const material = new THREE.SpriteMaterial({
   fog: true,
@@ -21,7 +21,7 @@ export class DebrisSprite extends THREE.Sprite {
 }
 
 export default class Debris extends THREE.Group {
-  constructor( radius = 6, count = 64 ) {
+  constructor( radius = 96, count = 64 ) {
     super();
 
     this.radius = radius;

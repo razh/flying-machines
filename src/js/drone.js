@@ -4,7 +4,7 @@ import { DRONE } from './types';
 import { collisionMixin, CollisionShapes, CollisionGroups } from './collision';
 
 class TorusKnot extends THREE.Curve {
-  constructor( scale = 10 ) {
+  constructor( scale = 160 ) {
     super();
 
     this.scale = scale;
@@ -25,7 +25,7 @@ class TorusKnot extends THREE.Curve {
   }
 }
 
-const geometry = new THREE.IcosahedronBufferGeometry( 0.2 );
+const geometry = new THREE.IcosahedronBufferGeometry( 3.2 );
 const material = new THREE.MeshPhongMaterial({
   shading: THREE.FlatShading,
 });
@@ -41,9 +41,9 @@ export default class Drone extends Entity {
     this.collisionFilterGroup = CollisionGroups.SHIP;
 
     this.time = 0;
-    this.path = new TorusKnot( 2 );
+    this.path = new TorusKnot( 32 );
     this.length = this.path.getLength();
-    this.speed = 1;
+    this.speed = 16;
     this.duration = this.length / this.speed;
   }
 

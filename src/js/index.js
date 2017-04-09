@@ -40,7 +40,7 @@ scene.add( server );
 
 createClient( client, server );
 
-const camera = new THREE.PerspectiveCamera( 60, window.innerWidth / window.innerHeight, 0.1 );
+const camera = new THREE.PerspectiveCamera( 60, window.innerWidth / window.innerHeight );
 scene.add( camera );
 
 const ship = new Ship();
@@ -50,10 +50,10 @@ client.add( ship );
 const radar = new Radar( ship );
 client.add( radar );
 
-const leftTrail = new MeshLineTrail( new THREE.Vector3( -0.1, 0, 0.45 ) );
+const leftTrail = new MeshLineTrail( new THREE.Vector3( -1.6, 0, 7.2 ) );
 scene.add( leftTrail );
 
-const rightTrail = new MeshLineTrail( new THREE.Vector3( 0.1, 0, 0.45 ) );
+const rightTrail = new MeshLineTrail( new THREE.Vector3( 1.6, 0, 7.2 ) );
 scene.add( rightTrail );
 
 const droneA = new Drone();
@@ -88,7 +88,7 @@ let accumulatedTime = 0;
 
 const updateCamera = ( target => {
   const stiffness = 6;
-  const offset = new THREE.Vector3( 0, 0.3, 1 );
+  const offset = new THREE.Vector3( 0, 5, 16 );
   const vector = new THREE.Vector3();
 
   return dt => {
@@ -206,7 +206,7 @@ function animate() {
     accumulatedTime -= dt;
   }
 
-  radar.position.set( -1, -1, -2 )
+  radar.position.set( -16, -16, -32 )
     .applyQuaternion( camera.quaternion )
     .add( camera.position );
 

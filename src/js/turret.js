@@ -3,20 +3,20 @@ import { TURRET } from './types';
 
 const config = {
   base: {
-    radiusTop: 0.05,
-    radiusBottom: 0.07,
-    height: 0.12,
+    radiusTop: 0.8,
+    radiusBottom: 1.12,
+    height: 1.92,
   },
   gunhouse: {
-    radiusTop: 0.04,
-    radiusBottom: 0.05,
-    height: 0.04,
+    radiusTop: 0.64,
+    radiusBottom: 0.8,
+    height: 0.64,
   },
   barrels: {
-    radiusTop: 0.008,
-    radiusBottom: 0.01,
-    height: 0.08,
-    offset: 0.012,
+    radiusTop: 0.128,
+    radiusBottom: 0.16,
+    height: 1.28,
+    offset: 0.192,
   },
 };
 

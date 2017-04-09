@@ -3,10 +3,10 @@ import createPool from './pool';
 import { SHIP, BULLET, DRONE, MISSILE } from './types';
 
 const scales = {
-  [SHIP]: 1 / 16,
-  [BULLET]: 1 / 96,
-  [DRONE]: 1 / 32,
-  [MISSILE]: 1 / 48,
+  [SHIP]: 1,
+  [BULLET]: 1 / 6,
+  [DRONE]: 1 / 2,
+  [MISSILE]: 1 / 3,
 };
 
 const material = new THREE.SpriteMaterial({
@@ -21,7 +21,7 @@ class RadarPoint extends THREE.Sprite {
 }
 
 export default class Radar extends THREE.Group {
-  constructor( target, radius = 16, scale = 0.05 ) {
+  constructor( target, radius = 256, scale = 1 / 20 ) {
     super();
 
     this.blips = new THREE.Group();

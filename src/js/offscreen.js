@@ -43,7 +43,7 @@ export default class Offscreen extends THREE.Sprite {
     this.target = null;
 
     this.limit = 0.9;
-    this.scale.set( 1 / 16, 1 / 16, 0 );
+    this.scale.set( 1, 1, 0 );
   }
 
   update() {
