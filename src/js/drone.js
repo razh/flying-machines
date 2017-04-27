@@ -41,9 +41,9 @@ export default class Drone extends Entity {
     this.collisionFilterGroup = CollisionGroups.SHIP;
 
     this.time = 0;
-    this.path = new TorusKnot( 32 );
+    this.path = new TorusKnot( 128 );
     this.length = this.path.getLength();
-    this.speed = 16;
+    this.speed = 128;
     this.duration = this.length / this.speed;
   }
 

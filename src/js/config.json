@@ -3,8 +3,8 @@
     "speed": 16
   },
   "bullet": {
-    "speed": 128,
-    "range": 384,
+    "speed": 256,
+    "range": 1024,
     "rate": 8
   },
   "missile": {
