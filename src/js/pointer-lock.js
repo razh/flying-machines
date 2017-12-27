@@ -1,11 +1,7 @@
 import * as THREE from 'three';
 
 export default function pointerLock( controls, element = document.body ) {
-  const hasPointerLock = (
-    'pointerLockElement' in document ||
-    'mozPointerLockElement' in document ||
-    'webkitPointerLockElement' in document
-  );
+  const hasPointerLock = 'pointerLockElement' in document;
 
   const dispatcher = new THREE.EventDispatcher();
 
@@ -15,11 +11,7 @@ export default function pointerLock( controls, element = document.body ) {
   }
 
   function onPointerLockChange() {
-    controls.enabled = (
-      element === document.pointerLockElement ||
-      element === document.mozPointerLockElement ||
-      element === document.webkitPointerLockElement
-    );
+    controls.enabled = element === document.pointerLockElement;
 
     dispatcher.dispatchEvent({
       type: 'change',
@@ -32,19 +24,7 @@ export default function pointerLock( controls, element = document.body ) {
   }
 
   document.addEventListener( 'pointerlockchange', onPointerLockChange );
-  document.addEventListener( 'mozpointerlockchange', onPointerLockChange );
-  document.addEventListener( 'webkitpointerlockchange', onPointerLockChange );
-
   document.addEventListener( 'pointerlockerror', onPointerLockError );
-  document.addEventListener( 'mozpointerlockerror', onPointerLockError );
-  document.addEventListener( 'webkitpointerlockerror', onPointerLockError );
-
-  element.requestPointerLock = (
-    element.requestPointerLock ||
-    element.mozRequestPointerLock ||
-    element.webkitRequestPointerLock
-  );
-
   document.addEventListener( 'click', () => element.requestPointerLock() );
 
   return dispatcher;
