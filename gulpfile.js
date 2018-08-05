@@ -13,15 +13,14 @@ const brfs = require('brfs');
 const browserify = require('browserify');
 const browserSync = require('browser-sync').create();
 const del = require('del');
-const runSequence = require('run-sequence');
 const source = require('vinyl-source-stream');
 const watchify = require('watchify');
 
 const gulp = require('gulp');
-const $ = require('gulp-load-plugins')();
+const log = require('gulplog');
 
 function onError(error) {
-  $.util.log(error.message);
+  log.error(error.message);
   this.emit('end');
 }
 
@@ -54,7 +53,7 @@ gulp.task('js', () => {
       .pipe(browserSync.reload({ stream: true }));
   }
 
-  bundler.on('log', $.util.log).on('update', rebundle);
+  bundler.on('log', log.info).on('update', rebundle);
 
   return rebundle();
 });
@@ -73,13 +72,18 @@ gulp.task('css', () => {
     .pipe(browserSync.reload({ stream: true }));
 });
 
-gulp.task('clean', () => del([BUILD_DIR]));
+gulp.task('clean', () => del(BUILD_DIR));
 
 gulp.task('watch', () => {
-  gulp.watch([html], ['html']);
-  gulp.watch([css], ['css']);
+  gulp.watch(html, gulp.series('html'));
+  gulp.watch(css, gulp.series('css'));
 });
 
-gulp.task('default', ['clean'], cb => {
-  return runSequence(['html', 'css', 'js'], ['browser-sync', 'watch'], cb);
-});
+gulp.task(
+  'default',
+  gulp.series(
+    'clean',
+    gulp.parallel('html', 'css', 'js'),
+    gulp.parallel('browser-sync', 'watch'),
+  ),
+);
