@@ -1,10 +1,12 @@
 {
   "presets": [
-    ["env", {
-      "targets": {
-        "uglify": true
-      },
-      "useBuiltIns": true
-    }]
+    [
+      "@babel/preset-env",
+      {
+        "targets": {
+          "node": "current"
+        }
+      }
+    ]
   ]
 }

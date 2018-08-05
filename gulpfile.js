@@ -9,7 +9,7 @@ const html = `${SOURCE_DIR}/*.html`;
 const css = `${SOURCE_DIR}/css/*.css`;
 
 const babelify = require('babelify');
-const brfs = require( 'brfs' );
+const brfs = require('brfs');
 const browserify = require('browserify');
 const browserSync = require('browser-sync').create();
 const del = require('del');
@@ -36,38 +36,39 @@ gulp.task('browser-sync', () => {
 });
 
 gulp.task('js', () => {
-  const bundler = watchify(browserify(`${SOURCE_DIR}/js/index.js`,
-    Object.assign({
+  const bundler = watchify(
+    browserify(`${SOURCE_DIR}/js/index.js`, {
+      ...watchify.args,
       debug: true,
-    }, watchify.args)));
+    }),
+  );
 
-  bundler
-    .transform(babelify)
-    .transform(brfs);
+  bundler.transform(babelify).transform(brfs);
 
   function rebundle() {
-    return bundler.bundle()
+    return bundler
+      .bundle()
       .on('error', onError)
       .pipe(source('bundle.js'))
       .pipe(gulp.dest(BUILD_DIR))
       .pipe(browserSync.reload({ stream: true }));
   }
 
-  bundler
-    .on('log', $.util.log)
-    .on('update', rebundle);
+  bundler.on('log', $.util.log).on('update', rebundle);
 
   return rebundle();
 });
 
 gulp.task('html', () => {
-  return gulp.src(html)
+  return gulp
+    .src(html)
     .pipe(gulp.dest(BUILD_DIR))
     .pipe(browserSync.reload({ stream: true }));
 });
 
 gulp.task('css', () => {
-  return gulp.src(css)
+  return gulp
+    .src(css)
     .pipe(gulp.dest(BUILD_DIR))
     .pipe(browserSync.reload({ stream: true }));
 });
@@ -80,9 +81,5 @@ gulp.task('watch', () => {
 });
 
 gulp.task('default', ['clean'], cb => {
-  return runSequence(
-    ['html', 'css', 'js'],
-    ['browser-sync', 'watch'],
-    cb
-  );
+  return runSequence(['html', 'css', 'js'], ['browser-sync', 'watch'], cb);
 });
