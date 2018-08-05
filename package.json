@@ -21,29 +21,29 @@
   "homepage": "https://github.com/razh/flying-machines#readme",
   "dependencies": {
     "cannon": "0.6.2",
-    "color": "2.0.0",
-    "lodash": "4.17.4",
-    "protocol-buffers": "3.2.1",
-    "simple-peer": "8.1.1",
-    "simplex-noise": "2.3.0",
+    "color": "3.0.0",
+    "lodash": "4.17.10",
+    "protocol-buffers": "4.0.4",
+    "simple-peer": "9.1.2",
+    "simplex-noise": "2.4.0",
     "three": "0.86.0",
-    "three.meshline": "1.0.3",
-    "ws": "3.1.0"
+    "three.meshline": "1.1.0",
+    "ws": "6.0.0"
   },
   "devDependencies": {
-    "babel-preset-env": "1.6.0",
-    "babel-register": "6.24.1",
-    "babelify": "7.3.0",
-    "brfs": "1.4.3",
-    "browser-sync": "2.18.13",
-    "browserify": "14.4.0",
+    "babel-preset-env": "1.7.0",
+    "babel-register": "6.26.0",
+    "babelify": "8.0.0",
+    "brfs": "2.0.0",
+    "browser-sync": "2.24.6",
+    "browserify": "16.2.2",
     "del": "3.0.0",
-    "eslint": "4.3.0",
+    "eslint": "5.3.0",
     "gulp": "3.9.1",
     "gulp-load-plugins": "1.5.0",
     "gulp-util": "3.0.8",
-    "run-sequence": "2.1.0",
-    "vinyl-source-stream": "1.1.0",
-    "watchify": "3.9.0"
+    "run-sequence": "2.2.1",
+    "vinyl-source-stream": "2.0.0",
+    "watchify": "3.11.0"
   }
 }
