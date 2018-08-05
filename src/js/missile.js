@@ -39,7 +39,7 @@ const geometries = defineLazyGetters( {}, {
 });
 
 const material = new THREE.MeshPhongMaterial({
-  shading: THREE.FlatShading,
+  flatShading: true,
   emissive: '#333',
 });
 

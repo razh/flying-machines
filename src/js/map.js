@@ -14,7 +14,7 @@ function perturbVertex( vertex ) {
 function createAsteroidMesh( x = 0, y = 0, z = 0, radius = 1, detail = 2 ) {
   const geometry = new THREE.IcosahedronGeometry( radius, detail );
   const material = new THREE.MeshPhongMaterial({
-    shading: THREE.FlatShading,
+    flatShading: true,
   });
 
   const mesh = new THREE.Mesh( geometry, material );
@@ -100,7 +100,7 @@ const maps = {
     artifactGeometry.computeVertexNormals();
 
     const artifact = new THREE.Mesh( artifactGeometry, new THREE.MeshPhongMaterial({
-      shading: THREE.FlatShading,
+      flatShading: true,
       color: '#333',
       shininess: 10,
     }));
@@ -135,7 +135,7 @@ const maps = {
     const matrix = new THREE.Matrix4();
 
     const material = new THREE.MeshPhongMaterial({
-      shading: THREE.FlatShading,
+      flatShading: true,
       color: '#655',
     });
 

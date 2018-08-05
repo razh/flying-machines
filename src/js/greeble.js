@@ -51,7 +51,7 @@ function randomPointsNormalsInGeometry( geometry, count ) {
 
     totalArea += triangle
       .setFromPointsAndIndices( vertices, face.a, face.b, face.c )
-      .area();
+      .getArea();
 
     cumulativeAreas[i] = totalArea;
   }

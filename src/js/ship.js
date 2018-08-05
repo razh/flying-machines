@@ -179,7 +179,7 @@ const engines = {
 };
 
 const material = new THREE.MeshStandardMaterial({
-  shading: THREE.FlatShading,
+  flatShading: true,
 });
 
 export default class Ship extends Entity {

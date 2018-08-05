@@ -72,7 +72,7 @@ const gunhouseGeometry = computeNormals(
 );
 
 const material = new THREE.MeshPhongMaterial({
-  shading: THREE.FlatShading,
+  flatShading: true,
 });
 
 export default class Turret extends THREE.Group {

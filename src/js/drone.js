@@ -27,7 +27,7 @@ class TorusKnot extends THREE.Curve {
 
 const geometry = new THREE.IcosahedronBufferGeometry( 3.2 );
 const material = new THREE.MeshPhongMaterial({
-  shading: THREE.FlatShading,
+  flatShading: true,
 });
 
 export default class Drone extends Entity {

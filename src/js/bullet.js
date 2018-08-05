@@ -4,7 +4,7 @@ import { BULLET } from './types';
 import { defineLazyGetters } from './lazy';
 import { collisionMixin, CollisionShapes, CollisionGroups } from './collision';
 
-const geometry = new THREE.PlaneBufferGeometry( 1, 1 );
+const geometry = new THREE.PlaneBufferGeometry();
 
 const materials = defineLazyGetters( {}, {
   bullet() {

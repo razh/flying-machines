@@ -2,6 +2,9 @@ import * as THREE from 'three';
 import color from 'color';
 import { defineLazyGetters } from './lazy';
 
+window.THREE = THREE;
+require('three/examples/js/objects/Lensflare');
+
 export const textures = defineLazyGetters( {}, {
   core() {
     const diameter = 512;
@@ -48,8 +51,8 @@ export const textures = defineLazyGetters( {}, {
       radius, radius, radius
     );
 
-    gradient.addColorStop( 0, 'rgba(255, 255, 255, 0.5)' );
-    gradient.addColorStop( 0.5, 'rgba(255, 255, 255, 0.4)' );
+    gradient.addColorStop( 0, 'rgba(255, 255, 255, 0.05)' );
+    gradient.addColorStop( 0.5, 'rgba(255, 255, 255, 0.04)' );
     gradient.addColorStop( 1, 'transparent' );
 
     ctx.fillStyle = gradient;
@@ -76,7 +79,7 @@ export const textures = defineLazyGetters( {}, {
       radius, radius, radius
     );
 
-    gradient.addColorStop( 0, '#fff' );
+    gradient.addColorStop( 0, 'rgba(255, 255, 255, 0.5)' );
     gradient.addColorStop( 1, 'transparent' );
 
     /*
@@ -107,15 +110,15 @@ export default class Sun extends THREE.Group {
   constructor( ...args ) {
     super( ...args );
 
-    const lensFlare = new THREE.LensFlare();
-    lensFlare.add( textures.core, 128, 0, THREE.AdditiveBlending );
+    const lensFlare = new THREE.Lensflare();
+    lensFlare.addElement( new THREE.LensflareElement( textures.core, 128, 0 ) );
 
     const color = new THREE.Color( '#77f' );
-    lensFlare.add( textures.anamorphicFlare, 1024, 0, THREE.AdditiveBlending, color, 0.5 );
-    lensFlare.add( textures.lensFlare, 64, 0.5, THREE.AdditiveBlending, color, 0.1 );
-    lensFlare.add( textures.lensFlare, 96, 0.7, THREE.AdditiveBlending, color, 0.1 );
-    lensFlare.add( textures.lensFlare, 128, 0.9, THREE.AdditiveBlending, color, 0.1 );
-    lensFlare.add( textures.lensFlare, 96, 1, THREE.AdditiveBlending, color, 0.1 );
+    lensFlare.addElement( new THREE.LensflareElement( textures.anamorphicFlare, 1024, 0, color ) );
+    lensFlare.addElement( new THREE.LensflareElement( textures.lensFlare, 64, 0.5, color ) );
+    lensFlare.addElement( new THREE.LensflareElement( textures.lensFlare, 96, 0.7, color ) );
+    lensFlare.addElement( new THREE.LensflareElement( textures.lensFlare, 128, 0.9, color ) );
+    lensFlare.addElement( new THREE.LensflareElement( textures.lensFlare, 96, 1, color ) );
 
     lensFlare.customUpdateCallback = () => {
       THREE.LensFlare.prototype.updateLensFlares.call( lensFlare );
