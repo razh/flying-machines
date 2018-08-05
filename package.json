@@ -26,7 +26,7 @@
     "protocol-buffers": "4.0.4",
     "simple-peer": "9.1.2",
     "simplex-noise": "2.4.0",
-    "three": "0.86.0",
+    "three": "0.95.0",
     "three.meshline": "1.1.0",
     "ws": "6.0.0"
   },
